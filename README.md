@@ -100,9 +100,9 @@ tcg-stats-tracker/
 Following the specification milestones:
 
 - [x] **M0**: Project Setup - Repository, CI, environments, Prisma/Supabase CLI
-- [ ] **M1**: Core Schema & RLS - Database tables, enums, RLS policies, seed data
-- [ ] **M2**: Add Entry Flow - Entry form with validations, offline queue
-- [ ] **M3**: Analytics v1 - Win rates, matchup analysis, battlefield splits
+- [x] **M1**: Core Schema & RLS - Database tables, enums, RLS policies, seed data
+- [x] **M2**: Add Entry Flow - Entry form with validations, offline queue
+- [x] **M3**: Analytics v1 - Win rates, matchup analysis, battlefield splits
 - [ ] **M4**: Matchup Notebook - Notes log UI with search and pin
 - [ ] **M5**: Exports & Imports - CSV export/import with validation
 - [ ] **M6**: Hardening & A11y - Error handling, accessibility, E2E tests

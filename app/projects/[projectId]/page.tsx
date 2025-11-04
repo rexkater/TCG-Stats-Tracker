@@ -1,8 +1,9 @@
 import { prisma } from '@/lib/prisma';
 import type { Entry, Deck, Category, ContextOption } from '@prisma/client';
 import Link from 'next/link';
+import { calculateProjectAnalytics, formatWinRate, formatRecord, type EntryWithRelations } from '@/lib/analytics';
 
-type EntryWithRelations = Entry & {
+type EntryWithRelationsLocal = Entry & {
   myDeck: Deck;
   oppDeck: Deck;
   category: Category;
@@ -57,14 +58,19 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
 
   // Count unique decks used in entries (only myDeck)
   const usedDeckIds = new Set<string>();
-  project.entries.forEach((entry: EntryWithRelations) => {
+  project.entries.forEach((entry: EntryWithRelationsLocal) => {
     usedDeckIds.add(entry.myDeckId);
   });
   const decksUsed = usedDeckIds.size;
 
   // Count unique categories used in entries
-  const usedCategoryIds = new Set(project.entries.map((e: EntryWithRelations) => e.categoryId));
+  const usedCategoryIds = new Set(project.entries.map((e: EntryWithRelationsLocal) => e.categoryId));
   const categoriesUsed = usedCategoryIds.size;
+
+  // Calculate analytics
+  const analytics = project.entries.length > 0
+    ? calculateProjectAnalytics(project.entries as EntryWithRelations[])
+    : null;
 
   return (
     <main className="space-y-6">
@@ -108,6 +114,225 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
           </div>
         </div>
       </div>
+
+      {/* Analytics Section */}
+      {analytics && (
+        <>
+          {/* Overall Win Rate */}
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Overall Performance</h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div>
+                <div className="text-sm text-gray-600 mb-1">Win Rate</div>
+                <div className="text-3xl font-bold text-gray-900">
+                  {formatWinRate(analytics.overall.winRate)}
+                </div>
+                <div className="text-xs text-gray-500 mt-1">
+                  {formatWinRate(analytics.overall.winRateExcludingDraws)} excl. draws
+                </div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-600 mb-1">Record</div>
+                <div className="text-2xl font-bold text-gray-900">
+                  {formatRecord(analytics.overall)}
+                </div>
+                <div className="text-xs text-gray-500 mt-1">
+                  {analytics.overall.wins}W {analytics.overall.losses}L {analytics.overall.draws}D
+                </div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-600 mb-1">Going First</div>
+                <div className="text-2xl font-bold text-gray-900">
+                  {formatWinRate(analytics.byInitiative.first.winRate)}
+                </div>
+                <div className="text-xs text-gray-500 mt-1">
+                  {formatRecord(analytics.byInitiative.first)}
+                </div>
+              </div>
+              <div>
+                <div className="text-sm text-gray-600 mb-1">Going Second</div>
+                <div className="text-2xl font-bold text-gray-900">
+                  {formatWinRate(analytics.byInitiative.second.winRate)}
+                </div>
+                <div className="text-xs text-gray-500 mt-1">
+                  {formatRecord(analytics.byInitiative.second)}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Matchup Analysis */}
+          {analytics.byMatchup.length > 0 && (
+            <div className="bg-white rounded-lg border border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h2 className="text-xl font-semibold text-gray-900">Matchup Analysis</h2>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        My Deck
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        vs
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Opponent Deck
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Record
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Win Rate
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Games
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {analytics.byMatchup.map((matchup, idx) => (
+                      <tr key={`${matchup.myDeckId}-${matchup.oppDeckId}`} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {matchup.myDeckName}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          vs
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {matchup.oppDeckName}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {formatRecord(matchup)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            matchup.winRate >= 60 ? 'bg-green-100 text-green-800' :
+                            matchup.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            {formatWinRate(matchup.winRate)}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {matchup.total}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Deck Performance */}
+          {analytics.byDeck.length > 0 && (
+            <div className="bg-white rounded-lg border border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h2 className="text-xl font-semibold text-gray-900">Deck Performance</h2>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Deck
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Record
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Win Rate
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Games
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {analytics.byDeck.map((deck) => (
+                      <tr key={deck.deckId} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {deck.deckName}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {formatRecord(deck)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            deck.winRate >= 60 ? 'bg-green-100 text-green-800' :
+                            deck.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            {formatWinRate(deck.winRate)}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {deck.totalGames}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Context/Battlefield Performance */}
+          {tcgSettings.contextLabel && analytics.byContext.length > 0 && (
+            <div className="bg-white rounded-lg border border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h2 className="text-xl font-semibold text-gray-900">{tcgSettings.contextLabel} Performance</h2>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        {tcgSettings.contextLabel}
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Record
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Win Rate
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Games
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {analytics.byContext.map((context) => (
+                      <tr key={context.contextOptionId || 'none'} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {context.contextOptionName || 'None'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {formatRecord(context)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            context.winRate >= 60 ? 'bg-green-100 text-green-800' :
+                            context.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            {formatWinRate(context.winRate)}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {context.total}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </>
+      )}
 
       {/* Recent Entries */}
       <div className="bg-white rounded-lg border border-gray-200">
@@ -155,7 +380,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {project.entries.map((entry: EntryWithRelations) => (
+                {project.entries.map((entry: EntryWithRelationsLocal) => (
                   <tr key={entry.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
