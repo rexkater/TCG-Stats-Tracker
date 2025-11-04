@@ -47,20 +47,23 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
     const myDeckId = formData.get("myDeckId") as string;
     const oppDeckId = formData.get("oppDeckId") as string;
     const categoryId = formData.get("categoryId") as string;
-    const contextOptionId = formData.get("contextOptionId") as string;
+    const myBattlefieldId = formData.get("myBattlefieldId") as string;
+    const oppBattlefieldId = formData.get("oppBattlefieldId") as string;
     const result = formData.get("result") as MatchResult;
     const initiative = formData.get("initiative") as Initiative;
     const notesShort = formData.get("notesShort") as string;
     const myScoreStr = formData.get("myScore") as string;
     const oppScoreStr = formData.get("oppScore") as string;
+    const gameNumberStr = formData.get("gameNumber") as string;
+    const seriesId = formData.get("seriesId") as string;
 
     // Validation
     if (!myDeckId || !oppDeckId || !categoryId || !result || !initiative) {
       throw new Error("Missing required fields");
     }
 
-    if (tcgSettings.contextRequired && !contextOptionId) {
-      throw new Error(`${tcgSettings.contextLabel} is required for ${project.tcg.name}`);
+    if (tcgSettings.contextRequired && (!myBattlefieldId || !oppBattlefieldId)) {
+      throw new Error(`Both battlefields are required for ${project.tcg.name}`);
     }
 
     await prisma.entry.create({
@@ -69,12 +72,15 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
         myDeckId,
         oppDeckId,
         categoryId,
-        contextOptionId: contextOptionId || null,
+        myBattlefieldId: myBattlefieldId || null,
+        oppBattlefieldId: oppBattlefieldId || null,
         result,
         initiative,
         notesShort: notesShort || null,
         myScore: myScoreStr ? Number(myScoreStr) : null,
         oppScore: oppScoreStr ? Number(oppScoreStr) : null,
+        gameNumber: gameNumberStr ? Number(gameNumberStr) : null,
+        seriesId: seriesId || null,
       }
     });
 
@@ -151,25 +157,46 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
           </select>
         </div>
 
-        {/* Context Option (Battlefield for Riftbound) */}
+        {/* Dual Battlefields */}
         {tcgSettings.contextLabel && project.tcg.contextOptions.length > 0 && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {tcgSettings.contextLabel}
-              {tcgSettings.contextRequired && <span className="text-red-500"> *</span>}
-            </label>
-            <select
-              name="contextOptionId"
-              required={tcgSettings.contextRequired}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">
-                {tcgSettings.contextRequired ? 'Select...' : '(none)'}
-              </option>
-              {project.tcg.contextOptions.map((option: ContextOption) => (
-                <option key={option.id} value={option.id}>{option.name}</option>
-              ))}
-            </select>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                My {tcgSettings.contextLabel}
+                {tcgSettings.contextRequired && <span className="text-red-500"> *</span>}
+              </label>
+              <select
+                name="myBattlefieldId"
+                required={tcgSettings.contextRequired}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">
+                  {tcgSettings.contextRequired ? 'Select...' : '(none)'}
+                </option>
+                {project.tcg.contextOptions.map((option: ContextOption) => (
+                  <option key={option.id} value={option.id}>{option.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Opponent {tcgSettings.contextLabel}
+                {tcgSettings.contextRequired && <span className="text-red-500"> *</span>}
+              </label>
+              <select
+                name="oppBattlefieldId"
+                required={tcgSettings.contextRequired}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">
+                  {tcgSettings.contextRequired ? 'Select...' : '(none)'}
+                </option>
+                {project.tcg.contextOptions.map((option: ContextOption) => (
+                  <option key={option.id} value={option.id}>{option.name}</option>
+                ))}
+              </select>
+            </div>
           </div>
         )}
 
@@ -233,6 +260,42 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
               placeholder="Optional"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
+          </div>
+        </div>
+
+        {/* Best-of-3 Tracking */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Game Number
+            </label>
+            <select
+              name="gameNumber"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">Single game (not part of series)</option>
+              <option value="1">Game 1</option>
+              <option value="2">Game 2</option>
+              <option value="3">Game 3</option>
+            </select>
+            <p className="text-xs text-gray-500 mt-1">
+              For best-of-3 matches, select which game this was
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Series ID
+            </label>
+            <input
+              name="seriesId"
+              type="text"
+              placeholder="Optional (e.g., 'match-1')"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Group games from the same match together
+            </p>
           </div>
         </div>
 

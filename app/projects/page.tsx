@@ -76,6 +76,14 @@ export default async function Projects() {
 
   return (
     <main className="space-y-6">
+      <div className="mb-4">
+        <Link
+          href="/"
+          className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1"
+        >
+          ← Back to Home
+        </Link>
+      </div>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
         <Link

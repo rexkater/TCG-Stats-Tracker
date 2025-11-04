@@ -37,13 +37,18 @@ model TCG {
 }
 
 model ContextOption {
-  id        String   @id @default(cuid())
-  tcg       TCG      @relation(fields: [tcgId], references: [id])
-  tcgId     String
-  name      String
-  active    Boolean  @default(true)
-  entries   Entry[]
-  createdAt DateTime @default(now())
+  id                    String   @id @default(cuid())
+  tcg                   TCG      @relation(fields: [tcgId], references: [id])
+  tcgId                 String
+  name                  String
+  active                Boolean  @default(true)
+
+  // Relations to Entry
+  myBattlefieldEntries  Entry[]  @relation("MyBattlefield")
+  oppBattlefieldEntries Entry[]  @relation("OppBattlefield")
+  legacyEntries         Entry[]  @relation("LegacyContext")
+
+  createdAt             DateTime @default(now())
 
   @@unique([tcgId, name])
   @@index([tcgId])
@@ -110,34 +115,47 @@ model DeckImage {
 }
 
 model Entry {
-  id              String         @id @default(cuid())
-  project         Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId       String
+  id                  String         @id @default(cuid())
+  project             Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId           String
 
-  myDeck          Deck           @relation("MyDeck", fields: [myDeckId], references: [id])
-  myDeckId        String
-  oppDeck         Deck           @relation("OppDeck", fields: [oppDeckId], references: [id])
-  oppDeckId       String
+  myDeck              Deck           @relation("MyDeck", fields: [myDeckId], references: [id])
+  myDeckId            String
+  oppDeck             Deck           @relation("OppDeck", fields: [oppDeckId], references: [id])
+  oppDeckId           String
 
-  category        Category       @relation(fields: [categoryId], references: [id])
-  categoryId      String
+  category            Category       @relation(fields: [categoryId], references: [id])
+  categoryId          String
 
-  contextOption   ContextOption? @relation(fields: [contextOptionId], references: [id])
-  contextOptionId String?        // Required if TCG.settingsJson.contextRequired = true
+  // Dual battlefield tracking
+  myBattlefield       ContextOption? @relation("MyBattlefield", fields: [myBattlefieldId], references: [id])
+  myBattlefieldId     String?
+  oppBattlefield      ContextOption? @relation("OppBattlefield", fields: [oppBattlefieldId], references: [id])
+  oppBattlefieldId    String?
 
-  result          MatchResult
-  initiative      Initiative
-  notesShort      String?
+  // Legacy single battlefield (deprecated, keeping for migration)
+  contextOption       ContextOption? @relation("LegacyContext", fields: [contextOptionId], references: [id])
+  contextOptionId     String?
 
-  myScore         Float?
-  oppScore        Float?
+  result              MatchResult
+  initiative          Initiative
+  notesShort          String?
 
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  myScore             Float?
+  oppScore            Float?
+
+  // Best-of-3 tracking
+  gameNumber          Int?           // 1, 2, or 3 for games in a series
+  seriesId            String?        // Groups games in the same match
+
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 
   @@index([projectId, myDeckId, oppDeckId])
   @@index([projectId, initiative])
-  @@index([projectId, contextOptionId])
+  @@index([projectId, myBattlefieldId])
+  @@index([projectId, oppBattlefieldId])
+  @@index([projectId, seriesId])
 }
 
 model MatchupNotesLog {
@@ -153,8 +171,10 @@ model MatchupNotesLog {
   author          User     @relation(fields: [authorUserId], references: [id])
   authorUserId    String
   contentMarkdown String
+  pinned          Boolean  @default(false)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
   @@index([projectId, deckAId, deckBId])
+  @@index([projectId, pinned])
 }

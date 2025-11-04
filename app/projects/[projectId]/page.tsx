@@ -8,6 +8,8 @@ type EntryWithRelationsLocal = Entry & {
   oppDeck: Deck;
   category: Category;
   contextOption: ContextOption | null;
+  myBattlefield: ContextOption | null;
+  oppBattlefield: ContextOption | null;
 };
 
 export default async function ProjectPage({ params }: { params: Promise<{ projectId: string }> }) {
@@ -30,7 +32,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
           myDeck: true,
           oppDeck: true,
           category: true,
-          contextOption: true
+          contextOption: true,
+          myBattlefield: true,
+          oppBattlefield: true
         },
         orderBy: { createdAt: 'desc' },
         take: 20
@@ -87,12 +91,32 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
             </span>
           </p>
         </div>
-        <Link
-          href={`/projects/${project.id}/entries/new`}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-        >
-          + New Entry
-        </Link>
+        <div className="flex gap-3">
+          <Link
+            href={`/projects/${project.id}/notes`}
+            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+          >
+            📝 Notes
+          </Link>
+          <Link
+            href={`/projects/${project.id}/export`}
+            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+          >
+            📥 Export CSV
+          </Link>
+          <Link
+            href={`/projects/${project.id}/import`}
+            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+          >
+            📤 Import CSV
+          </Link>
+          <Link
+            href={`/projects/${project.id}/entries/new`}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          >
+            + New Entry
+          </Link>
+        </div>
       </div>
 
       {/* Stats Overview */}
@@ -367,15 +391,26 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                     Initiative
                   </th>
                   {tcgSettings.contextLabel && (
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      {tcgSettings.contextLabel}
-                    </th>
+                    <>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        My {tcgSettings.contextLabel}
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Opp {tcgSettings.contextLabel}
+                      </th>
+                    </>
                   )}
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Category
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Score
+                    Game
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Match Score
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Notes
                   </th>
                 </tr>
               </thead>
@@ -401,18 +436,32 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                       {entry.initiative === 'FIRST' ? '1st' : '2nd'}
                     </td>
                     {tcgSettings.contextLabel && (
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                        {entry.contextOption?.name || '-'}
-                      </td>
+                      <>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                          {entry.myBattlefield?.name || entry.contextOption?.name || '-'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                          {entry.oppBattlefield?.name || '-'}
+                        </td>
+                      </>
                     )}
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {entry.category.name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      {entry.gameNumber ? `G${entry.gameNumber}` : '-'}
+                      {entry.seriesId && (
+                        <span className="text-xs text-gray-400 ml-1">({entry.seriesId})</span>
+                      )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {entry.myScore !== null && entry.oppScore !== null
                         ? `${entry.myScore} - ${entry.oppScore}`
                         : '-'
                       }
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                      {entry.notesShort || '-'}
                     </td>
                   </tr>
                 ))}
