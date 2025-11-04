@@ -157,4 +157,3 @@ ISC
 - Event mode
 - Google Sheets import
 - API access tokens
-
