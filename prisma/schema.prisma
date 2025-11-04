@@ -1,0 +1,160 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum MatchResult {
+  WIN
+  LOSS
+  DRAW
+}
+
+enum Initiative {
+  FIRST
+  SECOND
+}
+
+model User {
+  id               String            @id @default(cuid())
+  email            String            @unique
+  createdAt        DateTime          @default(now())
+  projects         Project[]
+  matchupNotesLogs MatchupNotesLog[]
+}
+
+model TCG {
+  id               String             @id @default(cuid())
+  name             String             @unique
+  settingsJson     String             @default("{}") // JSON string for TCG-specific config
+  projects         Project[]
+  contextOptions   ContextOption[]
+  matchupNotesLogs MatchupNotesLog[]
+  createdAt        DateTime           @default(now())
+}
+
+model ContextOption {
+  id        String   @id @default(cuid())
+  tcg       TCG      @relation(fields: [tcgId], references: [id])
+  tcgId     String
+  name      String
+  active    Boolean  @default(true)
+  entries   Entry[]
+  createdAt DateTime @default(now())
+
+  @@unique([tcgId, name])
+  @@index([tcgId])
+}
+
+model Project {
+  id               String            @id @default(cuid())
+  name             String
+  tcg              TCG               @relation(fields: [tcgId], references: [id])
+  tcgId            String
+  archivedAt       DateTime?
+  categories       Category[]
+  decks            Deck[]
+  entries          Entry[]
+  owners           User[]
+  matchupNotesLogs MatchupNotesLog[]
+  createdAt        DateTime          @default(now())
+
+  @@index([tcgId])
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  active    Boolean  @default(true)
+
+  entries   Entry[]  // back-relation to Entry.category
+
+  @@unique([projectId, name])
+  @@index([projectId])
+}
+
+model Deck {
+  id        String            @id @default(cuid())
+  name      String
+  project   Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  active    Boolean           @default(true)
+
+  images    DeckImage[]
+
+  // back-relations for Entry.myDeck and Entry.oppDeck (named relations)
+  myEntries  Entry[]          @relation("MyDeck")
+  oppEntries Entry[]          @relation("OppDeck")
+
+  // back-relations for MatchupNotesLog
+  notesAsDeckA MatchupNotesLog[] @relation("DeckANotes")
+  notesAsDeckB MatchupNotesLog[] @relation("DeckBNotes")
+
+  createdAt DateTime          @default(now())
+
+  @@unique([projectId, name])
+  @@index([projectId])
+}
+
+model DeckImage {
+  id        String   @id @default(cuid())
+  deck      Deck     @relation(fields: [deckId], references: [id])
+  deckId    String
+  url       String
+  createdAt DateTime @default(now())
+}
+
+model Entry {
+  id              String         @id @default(cuid())
+  project         Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId       String
+
+  myDeck          Deck           @relation("MyDeck", fields: [myDeckId], references: [id])
+  myDeckId        String
+  oppDeck         Deck           @relation("OppDeck", fields: [oppDeckId], references: [id])
+  oppDeckId       String
+
+  category        Category       @relation(fields: [categoryId], references: [id])
+  categoryId      String
+
+  contextOption   ContextOption? @relation(fields: [contextOptionId], references: [id])
+  contextOptionId String?        // Required if TCG.settingsJson.contextRequired = true
+
+  result          MatchResult
+  initiative      Initiative
+  notesShort      String?
+
+  myScore         Float?
+  oppScore        Float?
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@index([projectId, myDeckId, oppDeckId])
+  @@index([projectId, initiative])
+  @@index([projectId, contextOptionId])
+}
+
+model MatchupNotesLog {
+  id              String   @id @default(cuid())
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId       String
+  tcg             TCG      @relation(fields: [tcgId], references: [id])
+  tcgId           String
+  deckA           Deck     @relation("DeckANotes", fields: [deckAId], references: [id])
+  deckAId         String
+  deckB           Deck     @relation("DeckBNotes", fields: [deckBId], references: [id])
+  deckBId         String
+  author          User     @relation(fields: [authorUserId], references: [id])
+  authorUserId    String
+  contentMarkdown String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([projectId, deckAId, deckBId])
+}
