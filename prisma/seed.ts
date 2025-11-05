@@ -33,13 +33,32 @@ async function main() {
 
   console.log("✅ Created TCGs");
 
-  // Create Riftbound battlefields (context options)
+  // Create Riftbound battlefields (context options) - Actual Riftbound battlefields
   const battlefields = [
-    "Forest of Echoes",
-    "Crimson Wastes",
-    "Frozen Peaks",
-    "Sunken Ruins",
-    "Celestial Spire",
+    "Altar of Unity",
+    "Aspirant's Climb",
+    "Back-Alley Bar",
+    "Bandle Tree",
+    "Fortified Position",
+    "Grove of the God-Willow",
+    "Hallowed Tomb",
+    "Monastery of Hirana",
+    "Navori Fighting Pit",
+    "Obelisk of Power",
+    "Reaver's Row",
+    "Reckoner's Arena",
+    "Sigil of the Storm",
+    "Startipped Peak",
+    "Targon's Peak",
+    "The Arena's Greatest",
+    "The Candlelit Sanctum",
+    "The Dreaming Tree",
+    "The Grand Plaza",
+    "Trifarian War Camp",
+    "Vilemaw's Lair",
+    "Void Gate",
+    "Windswept Hillock",
+    "Zaun Warrens",
   ];
 
   for (const battlefield of battlefields) {
@@ -88,18 +107,35 @@ async function main() {
 
   console.log("✅ Created project with categories");
 
-  // Create decks
-  const [myDeck, oppDeck1, oppDeck2] = await Promise.all([
-    db.deck.create({
-      data: { name: "Shadow Control", projectId: project.id, active: true },
-    }),
-    db.deck.create({
-      data: { name: "Fire Aggro", projectId: project.id, active: true },
-    }),
-    db.deck.create({
-      data: { name: "Nature Midrange", projectId: project.id, active: true },
-    }),
-  ]);
+  // Create decks - Actual Riftbound legends
+  const legendNames = [
+    "Ahri",
+    "Annie",
+    "Darius",
+    "Garen",
+    "Jinx",
+    "Kai'Sa",
+    "Lee Sin",
+    "Leona",
+    "Lux",
+    "Master Yi",
+    "Miss Fortune",
+    "Sett",
+    "Teemo",
+    "Viktor",
+    "Volibear",
+    "Yasuo",
+  ];
+
+  const decks = await Promise.all(
+    legendNames.map((name) =>
+      db.deck.create({
+        data: { name, projectId: project.id, active: true },
+      })
+    )
+  );
+
+  const [myDeck, oppDeck1, oppDeck2] = [decks[0], decks[1], decks[2]];
 
   console.log("✅ Created decks");
 
@@ -163,16 +199,17 @@ async function main() {
       deckAId: myDeck.id,
       deckBId: oppDeck1.id,
       authorUserId: user.id,
-      contentMarkdown: `# Shadow Control vs Fire Aggro
+      contentMarkdown: `# Ahri vs Annie
 
 ## Key Points
-- Mulligan aggressively for early removal
-- Save counterspells for their finishers
-- Don't tap out on turn 3-4
+- Mulligan for early charm effects
+- Watch for Annie's burst damage windows
+- Position carefully to avoid AoE
 
-## Sideboard
-- +2 Lifegain cards
-- -2 Late game bombs`,
+## Strategy
+- Play around Tibbers summon
+- Use mobility to dodge skill shots
+- Pressure early before she scales`,
     },
   });
 
