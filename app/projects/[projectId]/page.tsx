@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import type { Entry, Deck, Category, ContextOption } from '@prisma/client';
 import Link from 'next/link';
 import { calculateProjectAnalytics, formatWinRate, formatRecord, type EntryWithRelations } from '@/lib/analytics';
+import DeleteButton from '@/app/components/DeleteButton';
 
 // Force dynamic rendering - don't try to statically generate this page
 export const dynamic = 'force-dynamic';
@@ -95,6 +96,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
           </p>
         </div>
         <div className="flex gap-3">
+          <DeleteButton
+            itemId={project.id}
+            itemType="project"
+            itemName={project.name}
+            redirectTo="/projects"
+            className="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
+          />
           <Link
             href={`/projects/${project.id}/notes`}
             className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
@@ -415,6 +423,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Notes
                   </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -465,6 +476,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
                       {entry.notesShort || '-'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <DeleteButton
+                        itemId={entry.id}
+                        itemType="entry"
+                        itemName={`${entry.myDeck.name} vs ${entry.oppDeck.name}`}
+                      />
                     </td>
                   </tr>
                 ))}
