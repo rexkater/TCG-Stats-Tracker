@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import type { Entry, Deck, Category, ContextOption } from '@prisma/client';
 import Link from 'next/link';
 import { calculateProjectAnalytics, formatWinRate, formatRecord, type EntryWithRelations } from '@/lib/analytics';
-import DeleteButton from '@/app/components/DeleteButton';
+import DeleteButton from '@/components/DeleteButton';
 
 // Force dynamic rendering - don't try to statically generate this page
 export const dynamic = 'force-dynamic';
