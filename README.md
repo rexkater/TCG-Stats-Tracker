@@ -24,10 +24,12 @@ TCG Stats Tracker allows users to maintain multiple projects, each tracking comp
 ## Tech Stack
 
 - **Frontend**: Next.js 15 + React 18 + TypeScript
-- **Database**: Prisma ORM with SQLite (MVP) / PostgreSQL (Production via Supabase)
-- **Styling**: Tailwind CSS
-- **Authentication**: Supabase Auth (planned)
-- **Storage**: Supabase Storage for deck images (planned)
+- **Database**: PostgreSQL (Railway) via Prisma ORM
+- **Styling**: Tailwind CSS v4
+- **Testing**: Playwright (E2E & Accessibility)
+- **Deployment**: Vercel
+- **Authentication**: Planned for V2
+- **Storage**: Planned for V2 (deck images)
 
 ## Project Structure
 
