@@ -22,11 +22,54 @@ export default async function NewProjectPage() {
       throw new Error('Name and TCG are required');
     }
 
-    // Create the project
+    // Get the TCG to check if it's Riftbound
+    const tcg = await prisma.tCG.findUnique({
+      where: { id: tcgId },
+    });
+
+    // Riftbound legends (decks)
+    const riftboundLegends = [
+      "Ahri",
+      "Annie",
+      "Darius",
+      "Garen",
+      "Jinx",
+      "Kai'Sa",
+      "Lee Sin",
+      "Leona",
+      "Lux",
+      "Master Yi",
+      "Miss Fortune",
+      "Sett",
+      "Teemo",
+      "Viktor",
+      "Volibear",
+      "Yasuo",
+    ];
+
+    // Default categories
+    const defaultCategories = [
+      { name: "Ladder", active: true },
+      { name: "Tournament", active: true },
+      { name: "Testing", active: true },
+    ];
+
+    // Create the project with categories and decks if Riftbound
     const project = await prisma.project.create({
       data: {
         name,
         tcgId,
+        categories: {
+          create: defaultCategories,
+        },
+        ...(tcg?.name === 'Riftbound' && {
+          decks: {
+            create: riftboundLegends.map((legend) => ({
+              name: legend,
+              active: true,
+            })),
+          },
+        }),
       },
     });
 
