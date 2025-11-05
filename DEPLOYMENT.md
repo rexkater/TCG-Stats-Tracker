@@ -25,15 +25,15 @@ Vercel is the easiest way to deploy Next.js applications and is perfect for beta
    - Click "Deploy"
 
 3. **Environment Variables**
-   Add these in Vercel dashboard:
+   Add these in Vercel dashboard (Settings → Environment Variables):
    ```
-   DATABASE_URL=file:./prisma/dev.db
+   DATABASE_URL=postgresql://user:password@host:port/database
    NODE_ENV=production
    ```
 
 4. **Database Setup**
-   - For beta, SQLite will work but has limitations
-   - For production, migrate to PostgreSQL (see below)
+   - Use PostgreSQL (Railway, Neon, or Supabase)
+   - See "Database Setup" section below for details
 
 **Vercel Deployment URL**: Your app will be available at `https://your-project.vercel.app`
 
@@ -112,35 +112,44 @@ For more control, deploy to a VPS or cloud provider.
 
 ---
 
-## 🗄️ Database Migration (SQLite → PostgreSQL)
+## 🗄️ Database Setup (PostgreSQL)
 
-For production deployment, migrate from SQLite to PostgreSQL.
+The application uses PostgreSQL for production. Choose one of these providers:
 
-### Using Supabase (Recommended)
+### Option 1: Railway (Recommended - IPv4 Compatible)
 
-1. **Create Supabase Project**
-   - Go to [supabase.com](https://supabase.com)
-   - Create a new project
-   - Note your database connection string
+1. **Create Railway Account**
+   - Go to [railway.app](https://railway.app)
+   - Sign up with GitHub
 
-2. **Update Environment Variables**
-   ```bash
-   DATABASE_URL="postgresql://postgres:[password]@db.[project-ref].supabase.co:5432/postgres"
-   ```
+2. **Create PostgreSQL Database**
+   - Click "New Project"
+   - Select "Provision PostgreSQL"
+   - Wait for database to be created (~30 seconds)
 
-3. **Update Prisma Schema**
-   ```prisma
-   datasource db {
-     provider = "postgresql"
-     url      = env("DATABASE_URL")
-   }
-   ```
+3. **Get Connection String**
+   - Click on PostgreSQL service
+   - Go to "Connect" or "Variables" tab
+   - Copy the public/external connection string (e.g., `postgresql://postgres:...@hopper.proxy.rlwy.net:xxxxx/railway`)
 
-4. **Run Migrations**
-   ```bash
-   npx prisma migrate deploy
-   npx prisma db seed
-   ```
+4. **Add to Vercel**
+   - In Vercel: Settings → Environment Variables
+   - Add `DATABASE_URL` with the Railway connection string
+   - Select all environments (Production, Preview, Development)
+
+### Option 2: Neon (Serverless PostgreSQL)
+
+1. Go to [neon.tech](https://neon.tech)
+2. Create a new project
+3. Copy the connection string
+4. Add to Vercel environment variables
+
+### Option 3: Supabase (Requires IPv6)
+
+1. Go to [supabase.com](https://supabase.com)
+2. Create a new project
+3. Get connection string from Settings → Database
+4. Note: Requires IPv6 connectivity for migrations
 
 ### Using Other PostgreSQL Providers
 
@@ -169,11 +178,6 @@ NEXT_PUBLIC_APP_URL=https://your-domain.com
 ### Optional Variables (for V2)
 
 ```bash
-# Supabase (for auth and storage)
-NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-
 # Analytics
 NEXT_PUBLIC_GA_ID=your-google-analytics-id
 
@@ -201,12 +205,6 @@ pm2 logs tcg-stats-tracker
 ```
 
 ### Backups
-
-**SQLite**:
-```bash
-# Backup database
-cp prisma/dev.db prisma/backup-$(date +%Y%m%d).db
-```
 
 **PostgreSQL**:
 ```bash
@@ -261,13 +259,13 @@ Before sharing with beta testers:
 ### Beta (Current)
 
 - ⚠️ No authentication - single user mode
-- ⚠️ SQLite database - not suitable for multi-user
+- ✅ PostgreSQL database (Railway/Neon/Supabase)
 - ⚠️ No rate limiting
 - ⚠️ No CSRF protection
 
 ### Production (V2)
 
-- ✅ User authentication with Supabase Auth
+- ✅ User authentication (planned)
 - ✅ PostgreSQL with Row-Level Security (RLS)
 - ✅ Rate limiting on API routes
 - ✅ CSRF protection
