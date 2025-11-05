@@ -37,9 +37,9 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/lib/*": ["src/lib/*"],
+      "@/components/*": ["components/*"],
+      "@/*": ["./*"]
     },
     "lib": [
       "dom",
