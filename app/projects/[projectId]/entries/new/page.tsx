@@ -4,6 +4,9 @@ import { MatchResult, Initiative } from '@prisma/client';
 import type { Deck, Category, ContextOption } from '@prisma/client';
 import Link from 'next/link';
 
+// Force dynamic rendering - don't try to statically generate this page
+export const dynamic = 'force-dynamic';
+
 export default async function NewEntry({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
   const project = await prisma.project.findUnique({

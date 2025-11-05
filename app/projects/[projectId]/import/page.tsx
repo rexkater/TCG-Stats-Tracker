@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import type { MatchResult, Initiative, Deck, Category, ContextOption } from '@prisma/client';
 
+// Force dynamic rendering - don't try to statically generate this page
+export const dynamic = 'force-dynamic';
+
 export default async function ImportPage({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
   const project = await prisma.project.findUnique({

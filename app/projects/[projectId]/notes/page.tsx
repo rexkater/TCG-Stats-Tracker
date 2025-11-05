@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import type { MatchupNotesLog, Deck, User } from '@prisma/client';
 
+// Force dynamic rendering - don't try to statically generate this page
+export const dynamic = 'force-dynamic';
+
 type NoteWithRelations = MatchupNotesLog & {
   deckA: Deck;
   deckB: Deck;

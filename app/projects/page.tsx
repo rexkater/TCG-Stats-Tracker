@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma';
 import type { Project, TCG } from '@prisma/client';
 import Link from 'next/link';
 
+// Force dynamic rendering - don't try to statically generate this page
+export const dynamic = 'force-dynamic';
+
 type ProjectEntry = {
   id: string;
   myDeckId: string;

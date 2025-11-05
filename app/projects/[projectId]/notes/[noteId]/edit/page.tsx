@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import type { Deck } from '@prisma/client';
 
+// Force dynamic rendering - don't try to statically generate this page
+export const dynamic = 'force-dynamic';
+
 type PageProps = {
   params: Promise<{ projectId: string; noteId: string }>;
 };

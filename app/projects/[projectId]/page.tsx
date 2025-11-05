@@ -3,6 +3,9 @@ import type { Entry, Deck, Category, ContextOption } from '@prisma/client';
 import Link from 'next/link';
 import { calculateProjectAnalytics, formatWinRate, formatRecord, type EntryWithRelations } from '@/lib/analytics';
 
+// Force dynamic rendering - don't try to statically generate this page
+export const dynamic = 'force-dynamic';
+
 type EntryWithRelationsLocal = Entry & {
   myDeck: Deck;
   oppDeck: Deck;
