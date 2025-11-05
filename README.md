@@ -1,10 +1,16 @@
 # TCG Stats Tracker
 
+> **Version 1.0.0-beta** - Currently in beta testing
+
 A data-gathering application for tracking competitive Trading Card Game (TCG) results with real-time statistics and analytics.
 
 ## Overview
 
 TCG Stats Tracker allows users to maintain multiple projects, each tracking competitive TCG results. The app computes statistics like overall win rate, matchup win rates, and first-vs-second (draw/play) win rates.
+
+**🧪 Beta Status**: This is a beta release. We're actively collecting feedback to improve the application.
+- **Beta Testing Guide**: See [BETA_GUIDE.md](./BETA_GUIDE.md) for detailed testing instructions
+- **V2 Roadmap**: See [V2_BACKLOG.md](./V2_BACKLOG.md) for planned features and improvements
 
 ### Key Features
 
@@ -90,6 +96,10 @@ tcg-stats-tracker/
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm start` - Start production server
+- `npm test` - Run E2E tests with Playwright
+- `npm run test:ui` - Run E2E tests with Playwright UI
+- `npm run test:headed` - Run E2E tests in headed mode
+- `npm run test:report` - Show Playwright test report
 - `npm run prisma:generate` - Generate Prisma Client
 - `npm run prisma:migrate` - Run database migrations
 - `npm run prisma:seed` - Seed database with sample data
@@ -105,8 +115,8 @@ Following the specification milestones:
 - [x] **M3**: Analytics v1 - Win rates, matchup analysis, battlefield splits
 - [x] **M4**: Matchup Notebook - Notes log UI with search and pin
 - [x] **M5**: Exports & Imports - CSV export/import with validation
-- [ ] **M6**: Hardening & A11y - Error handling, accessibility, E2E tests
-- [ ] **M7**: Beta Cut & Feedback - User feedback and v2 backlog
+- [x] **M6**: Hardening & A11y - Error handling, accessibility, E2E tests
+- [x] **M7**: Beta Cut & Feedback - User feedback and v2 backlog
 
 ## Database Schema (Current)
 
@@ -125,6 +135,30 @@ Following the specification milestones:
 - Add `tcg_context_options` table (battlefields)
 - Restructure notes to `matchup_notes_log` (timestamped, per matchup)
 - Add TCG configuration with `settings_json`
+
+## Beta Testing & Feedback
+
+We're actively seeking feedback from beta testers!
+
+### How to Provide Feedback
+
+- **Feedback Page**: Visit `/feedback` in the app or click "Provide Feedback" on the home page
+- **GitHub Issues**: Report bugs or request features at [github.com/rexkater/TCG-Stats-Tracker/issues](https://github.com/rexkater/TCG-Stats-Tracker/issues)
+- **Email**: Send detailed feedback to rex.reyes@upr.edu
+
+### What We're Looking For
+
+- 🐛 Bugs or unexpected behavior
+- 🤔 Confusing UI or unclear workflows
+- 💡 Feature requests
+- 🐌 Performance issues
+- ♿ Accessibility concerns
+- 📊 Data accuracy issues in analytics
+
+### Beta Documentation
+
+- **[BETA_GUIDE.md](./BETA_GUIDE.md)**: Comprehensive guide for beta testers
+- **[V2_BACKLOG.md](./V2_BACKLOG.md)**: Planned features for version 2
 
 ## Contributing
 
