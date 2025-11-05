@@ -135,7 +135,9 @@ async function main() {
     )
   );
 
-  const [myDeck, oppDeck1, oppDeck2] = [decks[0], decks[1], decks[2]];
+  const myDeck = decks[0]!;
+  const oppDeck1 = decks[1]!;
+  const oppDeck2 = decks[2]!;
 
   console.log("✅ Created decks");
 
