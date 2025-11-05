@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import type { TCG } from '@prisma/client';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
@@ -88,7 +89,7 @@ export default async function NewProjectPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Select a TCG...</option>
-              {tcgs.map((tcg) => {
+              {tcgs.map((tcg: TCG) => {
                 const settings = JSON.parse(tcg.settingsJson);
                 return (
                   <option key={tcg.id} value={tcg.id}>
@@ -109,7 +110,7 @@ export default async function NewProjectPage() {
               Available TCGs
             </h3>
             <ul className="space-y-2 text-sm text-blue-800">
-              {tcgs.map((tcg) => {
+              {tcgs.map((tcg: TCG) => {
                 const settings = JSON.parse(tcg.settingsJson);
                 return (
                   <li key={tcg.id} className="flex items-start gap-2">
