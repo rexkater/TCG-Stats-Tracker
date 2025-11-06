@@ -3,17 +3,13 @@ import type { Entry, Deck, Category, ContextOption } from '@prisma/client';
 import Link from 'next/link';
 import { calculateProjectAnalytics, formatWinRate, formatRecord, type EntryWithRelations } from '@/lib/analytics';
 import DeleteButton from '@/components/DeleteButton';
+import RenameProject from '@/components/RenameProject';
 
 // Force dynamic rendering - don't try to statically generate this page
 export const dynamic = 'force-dynamic';
 
 type EntryWithRelationsLocal = Entry & {
-  myDeck: Deck;
-  oppDeck: Deck;
   category: Category;
-  contextOption: ContextOption | null;
-  myBattlefield: ContextOption | null;
-  oppBattlefield: ContextOption | null;
 };
 
 export default async function ProjectPage({ params }: { params: Promise<{ projectId: string }> }) {
@@ -33,12 +29,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
       },
       entries: {
         include: {
-          myDeck: true,
-          oppDeck: true,
-          category: true,
-          contextOption: true,
-          myBattlefield: true,
-          oppBattlefield: true
+          category: true
         },
         orderBy: { createdAt: 'desc' },
         take: 20
@@ -65,11 +56,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
   const totalEntries = project.entries.length;
 
   // Count unique decks used in entries (only myDeck)
-  const usedDeckIds = new Set<string>();
+  const usedDeckNames = new Set<string>();
   project.entries.forEach((entry: EntryWithRelationsLocal) => {
-    usedDeckIds.add(entry.myDeckId);
+    usedDeckNames.add(entry.myDeckName);
   });
-  const decksUsed = usedDeckIds.size;
+  const decksUsed = usedDeckNames.size;
 
   // Count unique categories used in entries
   const usedCategoryIds = new Set(project.entries.map((e: EntryWithRelationsLocal) => e.categoryId));
@@ -88,10 +79,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
           <Link href="/projects" className="text-sm text-blue-600 hover:text-blue-700 mb-2 inline-block">
             ← Back to projects
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">{project.name}</h1>
+          <RenameProject projectId={project.id} currentName={project.name} />
           <p className="text-gray-600 mt-1">
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
               {project.tcg.name}
+            </span>
+            <span className="ml-2 text-sm text-gray-500">
+              Created {new Date(project.createdAt).toLocaleDateString()}
             </span>
           </p>
         </div>
@@ -228,7 +222,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {analytics.byMatchup.map((matchup, idx) => (
-                      <tr key={`${matchup.myDeckId}-${matchup.oppDeckId}`} className="hover:bg-gray-50">
+                      <tr key={`${matchup.myDeckName}-${matchup.oppDeckName}-${idx}`} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {matchup.myDeckName}
                         </td>
@@ -287,7 +281,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {analytics.byDeck.map((deck) => (
-                      <tr key={deck.deckId} className="hover:bg-gray-50">
+                      <tr key={deck.deckName} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {deck.deckName}
                         </td>
@@ -305,59 +299,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {deck.totalGames}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* Context/Battlefield Performance */}
-          {tcgSettings.contextLabel && analytics.byContext.length > 0 && (
-            <div className="bg-white rounded-lg border border-gray-200">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900">{tcgSettings.contextLabel} Performance</h2>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        {tcgSettings.contextLabel}
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Record
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Win Rate
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Games
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {analytics.byContext.map((context) => (
-                      <tr key={context.contextOptionId || 'none'} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {context.contextOptionName || 'None'}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {formatRecord(context)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            context.winRate >= 60 ? 'bg-green-100 text-green-800' :
-                            context.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-red-100 text-red-800'
-                          }`}>
-                            {formatWinRate(context.winRate)}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {context.total}
                         </td>
                       </tr>
                     ))}
@@ -390,6 +331,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Result
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -401,16 +345,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Initiative
                   </th>
-                  {tcgSettings.contextLabel && (
-                    <>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        My {tcgSettings.contextLabel}
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Opp {tcgSettings.contextLabel}
-                      </th>
-                    </>
-                  )}
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Category
                   </th>
@@ -431,6 +365,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
               <tbody className="bg-white divide-y divide-gray-200">
                 {project.entries.map((entry: EntryWithRelationsLocal) => (
                   <tr key={entry.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(entry.createdAt).toLocaleDateString()}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         entry.result === 'WIN' ? 'bg-green-100 text-green-800' :
@@ -441,24 +378,19 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {entry.myDeck.name}
+                      {entry.myDeckName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {entry.oppDeck.name}
+                      {entry.oppDeckName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {entry.initiative === 'FIRST' ? '1st' : '2nd'}
+                      {entry.wonDiceRoll !== null && (
+                        <span className="ml-1 text-xs" title={entry.wonDiceRoll ? 'Won dice roll' : 'Lost dice roll'}>
+                          {entry.wonDiceRoll ? '🎲✓' : '🎲✗'}
+                        </span>
+                      )}
                     </td>
-                    {tcgSettings.contextLabel && (
-                      <>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                          {entry.myBattlefield?.name || entry.contextOption?.name || '-'}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                          {entry.oppBattlefield?.name || '-'}
-                        </td>
-                      </>
-                    )}
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {entry.category.name}
                     </td>
@@ -481,7 +413,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                       <DeleteButton
                         itemId={entry.id}
                         itemType="entry"
-                        itemName={`${entry.myDeck.name} vs ${entry.oppDeck.name}`}
+                        itemName={`${entry.myDeckName} vs ${entry.oppDeckName}`}
                       />
                     </td>
                   </tr>

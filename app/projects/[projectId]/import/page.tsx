@@ -72,9 +72,8 @@ export default async function ImportPage({ params }: { params: Promise<{ project
     const myDeckIdx = getIndex('My Deck');
     const oppDeckIdx = getIndex('Opponent Deck');
     const categoryIdx = getIndex('Category');
-    const myBattlefieldIdx = getIndex('My Battlefield');
-    const oppBattlefieldIdx = getIndex('Opponent Battlefield');
     const initiativeIdx = getIndex('Initiative');
+    const wonDiceRollIdx = getIndex('Won Dice Roll');
     const resultIdx = getIndex('Result');
     const myScoreIdx = getIndex('My Score');
     const oppScoreIdx = getIndex('Opponent Score');
@@ -86,13 +85,7 @@ export default async function ImportPage({ params }: { params: Promise<{ project
     const projectData = await prisma.project.findUnique({
       where: { id: projectId },
       include: {
-        decks: { where: { active: true } },
-        categories: { where: { active: true } },
-        tcg: {
-          include: {
-            contextOptions: { where: { active: true } },
-          },
-        },
+        categories: { where: { active: true } }
       },
     });
 
@@ -100,10 +93,8 @@ export default async function ImportPage({ params }: { params: Promise<{ project
       throw new Error("Project not found");
     }
 
-    // Create lookup maps
-    const deckMap = new Map(projectData.decks.map((d: Deck) => [d.name.toLowerCase(), d.id]));
+    // Create lookup map for categories only (decks are now free text)
     const categoryMap = new Map(projectData.categories.map((c: Category) => [c.name.toLowerCase(), c.id]));
-    const battlefieldMap = new Map(projectData.tcg.contextOptions.map((b: ContextOption) => [b.name.toLowerCase(), b.id]));
 
     // Parse and validate data rows
     const entries = [];
@@ -120,9 +111,8 @@ export default async function ImportPage({ params }: { params: Promise<{ project
         const myDeckName = values[myDeckIdx]?.trim();
         const oppDeckName = values[oppDeckIdx]?.trim();
         const categoryName = values[categoryIdx]?.trim();
-        const myBattlefieldName = values[myBattlefieldIdx]?.trim();
-        const oppBattlefieldName = values[oppBattlefieldIdx]?.trim();
         const initiative = values[initiativeIdx]?.trim() as Initiative;
+        const wonDiceRollStr = values[wonDiceRollIdx]?.trim();
         const result = values[resultIdx]?.trim() as MatchResult;
         const myScoreStr = values[myScoreIdx]?.trim();
         const oppScoreStr = values[oppScoreIdx]?.trim();
@@ -148,32 +138,22 @@ export default async function ImportPage({ params }: { params: Promise<{ project
           continue;
         }
 
-        // Look up IDs
-        const myDeckId = deckMap.get(myDeckName.toLowerCase());
-        const oppDeckId = deckMap.get(oppDeckName.toLowerCase());
+        // Look up category ID
         const categoryId = categoryMap.get(categoryName.toLowerCase());
-        const myBattlefieldId = myBattlefieldName ? battlefieldMap.get(myBattlefieldName.toLowerCase()) : null;
-        const oppBattlefieldId = oppBattlefieldName ? battlefieldMap.get(oppBattlefieldName.toLowerCase()) : null;
-
-        if (!myDeckId) {
-          errors.push(`Row ${i + 1}: Deck "${myDeckName}" not found in project`);
-          continue;
-        }
-        if (!oppDeckId) {
-          errors.push(`Row ${i + 1}: Deck "${oppDeckName}" not found in project`);
-          continue;
-        }
         if (!categoryId) {
           errors.push(`Row ${i + 1}: Category "${categoryName}" not found in project`);
           continue;
         }
-        if (myBattlefieldName && !myBattlefieldId) {
-          errors.push(`Row ${i + 1}: Battlefield "${myBattlefieldName}" not found`);
-          continue;
-        }
-        if (oppBattlefieldName && !oppBattlefieldId) {
-          errors.push(`Row ${i + 1}: Battlefield "${oppBattlefieldName}" not found`);
-          continue;
+
+        // Parse wonDiceRoll
+        let wonDiceRoll: boolean | null = null;
+        if (wonDiceRollStr) {
+          const normalized = wonDiceRollStr.toLowerCase();
+          if (normalized === 'yes' || normalized === 'true' || normalized === '1') {
+            wonDiceRoll = true;
+          } else if (normalized === 'no' || normalized === 'false' || normalized === '0') {
+            wonDiceRoll = false;
+          }
         }
 
         // Parse optional numeric fields
@@ -183,12 +163,11 @@ export default async function ImportPage({ params }: { params: Promise<{ project
 
         entries.push({
           projectId,
-          myDeckId,
-          oppDeckId,
+          myDeckName,
+          oppDeckName,
           categoryId,
-          myBattlefieldId,
-          oppBattlefieldId,
           initiative,
+          wonDiceRoll,
           result,
           myScore,
           oppScore,

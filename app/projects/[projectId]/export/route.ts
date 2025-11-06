@@ -20,11 +20,7 @@ export async function GET(
   const entries: EntryWithRelations[] = await prisma.entry.findMany({
     where: { projectId },
     include: {
-      myDeck: true,
-      oppDeck: true,
       category: true,
-      myBattlefield: true,
-      oppBattlefield: true,
     },
     orderBy: { createdAt: 'asc' },
   });
@@ -34,9 +30,8 @@ export async function GET(
     'My Deck',
     'Opponent Deck',
     'Category',
-    'My Battlefield',
-    'Opponent Battlefield',
     'Initiative',
+    'Won Dice Roll',
     'Result',
     'My Score',
     'Opponent Score',
@@ -48,12 +43,11 @@ export async function GET(
 
   // Convert entries to CSV rows
   const rows = entries.map((entry) => [
-    entry.myDeck.name,
-    entry.oppDeck.name,
+    entry.myDeckName,
+    entry.oppDeckName,
     entry.category.name,
-    entry.myBattlefield?.name || '',
-    entry.oppBattlefield?.name || '',
     entry.initiative,
+    entry.wonDiceRoll !== null ? (entry.wonDiceRoll ? 'Yes' : 'No') : '',
     entry.result,
     entry.myScore?.toString() || '',
     entry.oppScore?.toString() || '',

@@ -47,13 +47,12 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
   async function createEntry(formData: FormData) {
     "use server";
 
-    const myDeckId = formData.get("myDeckId") as string;
-    const oppDeckId = formData.get("oppDeckId") as string;
+    const myDeckName = formData.get("myDeckName") as string;
+    const oppDeckName = formData.get("oppDeckName") as string;
     const categoryId = formData.get("categoryId") as string;
-    const myBattlefieldId = formData.get("myBattlefieldId") as string;
-    const oppBattlefieldId = formData.get("oppBattlefieldId") as string;
     const result = formData.get("result") as MatchResult;
     const initiative = formData.get("initiative") as Initiative;
+    const wonDiceRoll = formData.get("wonDiceRoll") === "on";
     const notesShort = formData.get("notesShort") as string;
     const myScoreStr = formData.get("myScore") as string;
     const oppScoreStr = formData.get("oppScore") as string;
@@ -61,24 +60,19 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
     const seriesId = formData.get("seriesId") as string;
 
     // Validation
-    if (!myDeckId || !oppDeckId || !categoryId || !result || !initiative) {
+    if (!myDeckName || !oppDeckName || !categoryId || !result || !initiative) {
       throw new Error("Missing required fields");
-    }
-
-    if (tcgSettings.contextRequired && (!myBattlefieldId || !oppBattlefieldId)) {
-      throw new Error(`Both battlefields are required for ${project.tcg.name}`);
     }
 
     await prisma.entry.create({
       data: {
         projectId,
-        myDeckId,
-        oppDeckId,
+        myDeckName: myDeckName.trim(),
+        oppDeckName: oppDeckName.trim(),
         categoryId,
-        myBattlefieldId: myBattlefieldId || null,
-        oppBattlefieldId: oppBattlefieldId || null,
         result,
         initiative,
+        wonDiceRoll,
         notesShort: notesShort || null,
         myScore: myScoreStr ? Number(myScoreStr) : null,
         oppScore: oppScoreStr ? Number(oppScoreStr) : null,
@@ -114,32 +108,26 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
             <label className="block text-sm font-medium text-gray-700 mb-2">
               My Deck <span className="text-red-500">*</span>
             </label>
-            <select
-              name="myDeckId"
+            <input
+              type="text"
+              name="myDeckName"
               required
+              placeholder="e.g., Ahri, Yasuo, Control Deck"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Select a deck...</option>
-              {project.decks.map((deck: Deck) => (
-                <option key={deck.id} value={deck.id}>{deck.name}</option>
-              ))}
-            </select>
+            />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Opponent Deck <span className="text-red-500">*</span>
             </label>
-            <select
-              name="oppDeckId"
+            <input
+              type="text"
+              name="oppDeckName"
               required
+              placeholder="e.g., Darius, Jinx, Aggro Deck"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Select a deck...</option>
-              {project.decks.map((deck: Deck) => (
-                <option key={deck.id} value={deck.id}>{deck.name}</option>
-              ))}
-            </select>
+            />
           </div>
         </div>
 
@@ -160,50 +148,7 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
           </select>
         </div>
 
-        {/* Dual Battlefields */}
-        {tcgSettings.contextLabel && project.tcg.contextOptions.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                My {tcgSettings.contextLabel}
-                {tcgSettings.contextRequired && <span className="text-red-500"> *</span>}
-              </label>
-              <select
-                name="myBattlefieldId"
-                required={tcgSettings.contextRequired}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="">
-                  {tcgSettings.contextRequired ? 'Select...' : '(none)'}
-                </option>
-                {project.tcg.contextOptions.map((option: ContextOption) => (
-                  <option key={option.id} value={option.id}>{option.name}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Opponent {tcgSettings.contextLabel}
-                {tcgSettings.contextRequired && <span className="text-red-500"> *</span>}
-              </label>
-              <select
-                name="oppBattlefieldId"
-                required={tcgSettings.contextRequired}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="">
-                  {tcgSettings.contextRequired ? 'Select...' : '(none)'}
-                </option>
-                {project.tcg.contextOptions.map((option: ContextOption) => (
-                  <option key={option.id} value={option.id}>{option.name}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        )}
-
-        {/* Result and Initiative */}
+        {/* Result, Initiative, and Dice Roll */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -235,6 +180,19 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
               <option value="SECOND">Second (went second)</option>
             </select>
           </div>
+        </div>
+
+        {/* Dice Roll */}
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="wonDiceRoll"
+            name="wonDiceRoll"
+            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          />
+          <label htmlFor="wonDiceRoll" className="text-sm font-medium text-gray-700">
+            Won pre-game dice roll
+          </label>
         </div>
 
         {/* Scores */}

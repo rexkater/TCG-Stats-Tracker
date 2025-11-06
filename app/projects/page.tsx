@@ -7,8 +7,8 @@ export const dynamic = 'force-dynamic';
 
 type ProjectEntry = {
   id: string;
-  myDeckId: string;
-  oppDeckId: string;
+  myDeckName: string;
+  oppDeckName: string;
   categoryId: string;
 };
 
@@ -34,8 +34,8 @@ export default async function Projects() {
       entries: {
         select: {
           id: true,
-          myDeckId: true,
-          oppDeckId: true,
+          myDeckName: true,
+          oppDeckName: true,
           categoryId: true
         }
       }
@@ -55,11 +55,11 @@ export default async function Projects() {
     const totalEntries = project.entries.length;
 
     // Count unique decks used in entries (only myDeck)
-    const usedDeckIds = new Set<string>();
+    const usedDeckNames = new Set<string>();
     project.entries.forEach((entry: ProjectEntry) => {
-      usedDeckIds.add(entry.myDeckId);
+      usedDeckNames.add(entry.myDeckName);
     });
-    const decksUsed = usedDeckIds.size;
+    const decksUsed = usedDeckNames.size;
 
     // Count unique categories used in entries
     const usedCategoryIds = new Set(project.entries.map((e: ProjectEntry) => e.categoryId));

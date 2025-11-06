@@ -1,14 +1,11 @@
-import type { Entry, Deck, Category, ContextOption, MatchResult, Initiative } from '@prisma/client';
+import type { Entry, Category, MatchResult, Initiative } from '@prisma/client';
 
 // ============================================================================
 // Type Definitions
 // ============================================================================
 
 export interface EntryWithRelations extends Entry {
-  myDeck: Deck;
-  oppDeck: Deck;
   category: Category;
-  contextOption: ContextOption | null;
 }
 
 export interface WinRateStats {
@@ -21,9 +18,7 @@ export interface WinRateStats {
 }
 
 export interface MatchupStats extends WinRateStats {
-  myDeckId: string;
   myDeckName: string;
-  oppDeckId: string;
   oppDeckName: string;
   entries: EntryWithRelations[];
 }
@@ -33,13 +28,7 @@ export interface InitiativeStats {
   second: WinRateStats;
 }
 
-export interface ContextStats extends WinRateStats {
-  contextOptionId: string | null;
-  contextOptionName: string | null;
-}
-
 export interface DeckStats extends WinRateStats {
-  deckId: string;
   deckName: string;
   totalGames: number;
 }
@@ -53,7 +42,6 @@ export interface ProjectAnalytics {
   overall: WinRateStats;
   byMatchup: MatchupStats[];
   byInitiative: InitiativeStats;
-  byContext: ContextStats[];
   byDeck: DeckStats[];
   byCategory: CategoryStats[];
 }
@@ -89,11 +77,11 @@ export function calculateWinRate(entries: EntryWithRelations[]): WinRateStats {
  * Calculate matchup-specific statistics (myDeck vs oppDeck)
  */
 export function calculateMatchupStats(entries: EntryWithRelations[]): MatchupStats[] {
-  // Group entries by matchup (myDeckId + oppDeckId)
+  // Group entries by matchup (myDeckName + oppDeckName)
   const matchupMap = new Map<string, EntryWithRelations[]>();
 
   entries.forEach(entry => {
-    const key = `${entry.myDeckId}:${entry.oppDeckId}`;
+    const key = `${entry.myDeckName}:${entry.oppDeckName}`;
     if (!matchupMap.has(key)) {
       matchupMap.set(key, []);
     }
@@ -105,20 +93,15 @@ export function calculateMatchupStats(entries: EntryWithRelations[]): MatchupSta
 
   matchupMap.forEach((matchupEntries, key) => {
     const parts = key.split(':');
-    const myDeckId = parts[0] as string;
-    const oppDeckId = parts[1] as string;
-    const firstEntry = matchupEntries[0];
-
-    if (!firstEntry) return; // Skip if no entries (shouldn't happen)
+    const myDeckName = parts[0] as string;
+    const oppDeckName = parts[1] as string;
 
     const stats = calculateWinRate(matchupEntries);
 
     matchupStats.push({
       ...stats,
-      myDeckId,
-      myDeckName: firstEntry.myDeck.name,
-      oppDeckId,
-      oppDeckName: firstEntry.oppDeck.name,
+      myDeckName,
+      oppDeckName,
       entries: matchupEntries,
     });
   });
@@ -141,49 +124,14 @@ export function calculateInitiativeStats(entries: EntryWithRelations[]): Initiat
 }
 
 /**
- * Calculate context-based statistics (e.g., battlefield performance)
- */
-export function calculateContextStats(entries: EntryWithRelations[]): ContextStats[] {
-  // Group entries by context option
-  const contextMap = new Map<string | null, EntryWithRelations[]>();
-
-  entries.forEach(entry => {
-    const key = entry.contextOptionId;
-    if (!contextMap.has(key)) {
-      contextMap.set(key, []);
-    }
-    contextMap.get(key)!.push(entry);
-  });
-
-  // Calculate stats for each context
-  const contextStats: ContextStats[] = [];
-
-  contextMap.forEach((contextEntries, contextOptionId) => {
-    const firstEntry = contextEntries[0];
-    if (!firstEntry) return; // Skip if no entries (shouldn't happen)
-
-    const stats = calculateWinRate(contextEntries);
-
-    contextStats.push({
-      ...stats,
-      contextOptionId,
-      contextOptionName: firstEntry.contextOption?.name ?? null,
-    });
-  });
-
-  // Sort by total games
-  return contextStats.sort((a, b) => b.total - a.total);
-}
-
-/**
  * Calculate deck-based statistics (performance with each deck)
  */
 export function calculateDeckStats(entries: EntryWithRelations[]): DeckStats[] {
-  // Group entries by myDeck (only count games where we played this deck)
+  // Group entries by myDeckName (only count games where we played this deck)
   const deckMap = new Map<string, EntryWithRelations[]>();
 
   entries.forEach(entry => {
-    const key = entry.myDeckId;
+    const key = entry.myDeckName;
     if (!deckMap.has(key)) {
       deckMap.set(key, []);
     }
@@ -193,16 +141,12 @@ export function calculateDeckStats(entries: EntryWithRelations[]): DeckStats[] {
   // Calculate stats for each deck
   const deckStats: DeckStats[] = [];
 
-  deckMap.forEach((deckEntries, deckId) => {
-    const firstEntry = deckEntries[0];
-    if (!firstEntry) return; // Skip if no entries (shouldn't happen)
-
+  deckMap.forEach((deckEntries, deckName) => {
     const stats = calculateWinRate(deckEntries);
 
     deckStats.push({
       ...stats,
-      deckId,
-      deckName: firstEntry.myDeck.name,
+      deckName,
       totalGames: stats.total,
     });
   });
@@ -254,7 +198,6 @@ export function calculateProjectAnalytics(entries: EntryWithRelations[]): Projec
     overall: calculateWinRate(entries),
     byMatchup: calculateMatchupStats(entries),
     byInitiative: calculateInitiativeStats(entries),
-    byContext: calculateContextStats(entries),
     byDeck: calculateDeckStats(entries),
     byCategory: calculateCategoryStats(entries),
   };
