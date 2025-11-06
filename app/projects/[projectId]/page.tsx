@@ -10,6 +10,8 @@ export const dynamic = 'force-dynamic';
 
 type EntryWithRelationsLocal = Entry & {
   category: Category;
+  myBattlefield: ContextOption | null;
+  oppBattlefield: ContextOption | null;
 };
 
 export default async function ProjectPage({ params }: { params: Promise<{ projectId: string }> }) {
@@ -29,7 +31,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
       },
       entries: {
         include: {
-          category: true
+          category: true,
+          myBattlefield: true,
+          oppBattlefield: true
         },
         orderBy: { createdAt: 'desc' },
         take: 20
@@ -307,6 +311,59 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
               </div>
             </div>
           )}
+
+          {/* Context/Battlefield Performance */}
+          {tcgSettings.contextLabel && analytics.byContext.length > 0 && (
+            <div className="bg-white rounded-lg border border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h2 className="text-xl font-semibold text-gray-900">{tcgSettings.contextLabel} Performance</h2>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        {tcgSettings.contextLabel}
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Record
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Win Rate
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Games
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {analytics.byContext.map((context) => (
+                      <tr key={context.contextOptionId || 'none'} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {context.contextOptionName || 'None'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {formatRecord(context)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            context.winRate >= 60 ? 'bg-green-100 text-green-800' :
+                            context.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            {formatWinRate(context.winRate)}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {context.total}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </>
       )}
 
@@ -342,6 +399,16 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Opponent Deck
                   </th>
+                  {tcgSettings.contextLabel && (
+                    <>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        My {tcgSettings.contextLabel}
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Opp {tcgSettings.contextLabel}
+                      </th>
+                    </>
+                  )}
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Initiative
                   </th>
@@ -383,6 +450,16 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {entry.oppDeckName}
                     </td>
+                    {tcgSettings.contextLabel && (
+                      <>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                          {entry.myBattlefield?.name || '-'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                          {entry.oppBattlefield?.name || '-'}
+                        </td>
+                      </>
+                    )}
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {entry.initiative === 'FIRST' ? '1st' : '2nd'}
                       {entry.wonDiceRoll !== null && (

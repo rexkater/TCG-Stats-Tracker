@@ -1,4 +1,4 @@
-import type { Entry, Category, MatchResult, Initiative } from '@prisma/client';
+import type { Entry, Category, ContextOption, MatchResult, Initiative } from '@prisma/client';
 
 // ============================================================================
 // Type Definitions
@@ -6,6 +6,8 @@ import type { Entry, Category, MatchResult, Initiative } from '@prisma/client';
 
 export interface EntryWithRelations extends Entry {
   category: Category;
+  myBattlefield: ContextOption | null;
+  oppBattlefield: ContextOption | null;
 }
 
 export interface WinRateStats {
@@ -28,6 +30,11 @@ export interface InitiativeStats {
   second: WinRateStats;
 }
 
+export interface ContextStats extends WinRateStats {
+  contextOptionId: string | null;
+  contextOptionName: string | null;
+}
+
 export interface DeckStats extends WinRateStats {
   deckName: string;
   totalGames: number;
@@ -42,6 +49,7 @@ export interface ProjectAnalytics {
   overall: WinRateStats;
   byMatchup: MatchupStats[];
   byInitiative: InitiativeStats;
+  byContext: ContextStats[];
   byDeck: DeckStats[];
   byCategory: CategoryStats[];
 }
@@ -124,6 +132,41 @@ export function calculateInitiativeStats(entries: EntryWithRelations[]): Initiat
 }
 
 /**
+ * Calculate context-based statistics (e.g., battlefield performance)
+ */
+export function calculateContextStats(entries: EntryWithRelations[]): ContextStats[] {
+  // Group entries by my battlefield
+  const contextMap = new Map<string | null, EntryWithRelations[]>();
+
+  entries.forEach(entry => {
+    const key = entry.myBattlefieldId;
+    if (!contextMap.has(key)) {
+      contextMap.set(key, []);
+    }
+    contextMap.get(key)!.push(entry);
+  });
+
+  // Calculate stats for each context
+  const contextStats: ContextStats[] = [];
+
+  contextMap.forEach((contextEntries, contextOptionId) => {
+    const firstEntry = contextEntries[0];
+    if (!firstEntry) return; // Skip if no entries (shouldn't happen)
+
+    const stats = calculateWinRate(contextEntries);
+
+    contextStats.push({
+      ...stats,
+      contextOptionId,
+      contextOptionName: firstEntry.myBattlefield?.name ?? null,
+    });
+  });
+
+  // Sort by total games
+  return contextStats.sort((a, b) => b.total - a.total);
+}
+
+/**
  * Calculate deck-based statistics (performance with each deck)
  */
 export function calculateDeckStats(entries: EntryWithRelations[]): DeckStats[] {
@@ -198,6 +241,7 @@ export function calculateProjectAnalytics(entries: EntryWithRelations[]): Projec
     overall: calculateWinRate(entries),
     byMatchup: calculateMatchupStats(entries),
     byInitiative: calculateInitiativeStats(entries),
+    byContext: calculateContextStats(entries),
     byDeck: calculateDeckStats(entries),
     byCategory: calculateCategoryStats(entries),
   };

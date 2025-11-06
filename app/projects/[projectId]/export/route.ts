@@ -21,6 +21,8 @@ export async function GET(
     where: { projectId },
     include: {
       category: true,
+      myBattlefield: true,
+      oppBattlefield: true,
     },
     orderBy: { createdAt: 'asc' },
   });
@@ -29,6 +31,8 @@ export async function GET(
   const headers = [
     'My Deck',
     'Opponent Deck',
+    'My Battlefield',
+    'Opponent Battlefield',
     'Category',
     'Initiative',
     'Won Dice Roll',
@@ -45,6 +49,8 @@ export async function GET(
   const rows = entries.map((entry) => [
     entry.myDeckName,
     entry.oppDeckName,
+    entry.myBattlefield?.name || '',
+    entry.oppBattlefield?.name || '',
     entry.category.name,
     entry.initiative,
     entry.wonDiceRoll !== null ? (entry.wonDiceRoll ? 'Yes' : 'No') : '',

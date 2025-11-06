@@ -50,6 +50,8 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
     const myDeckName = formData.get("myDeckName") as string;
     const oppDeckName = formData.get("oppDeckName") as string;
     const categoryId = formData.get("categoryId") as string;
+    const myBattlefieldId = formData.get("myBattlefieldId") as string;
+    const oppBattlefieldId = formData.get("oppBattlefieldId") as string;
     const result = formData.get("result") as MatchResult;
     const initiative = formData.get("initiative") as Initiative;
     const wonDiceRoll = formData.get("wonDiceRoll") === "on";
@@ -70,6 +72,8 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
         myDeckName: myDeckName.trim(),
         oppDeckName: oppDeckName.trim(),
         categoryId,
+        myBattlefieldId: myBattlefieldId || null,
+        oppBattlefieldId: oppBattlefieldId || null,
         result,
         initiative,
         wonDiceRoll,
@@ -147,6 +151,41 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
             ))}
           </select>
         </div>
+
+        {/* Battlefields (if TCG has context options) */}
+        {tcgSettings.contextLabel && project.tcg.contextOptions.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                My {tcgSettings.contextLabel}
+              </label>
+              <select
+                name="myBattlefieldId"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">None</option>
+                {project.tcg.contextOptions.map((option: ContextOption) => (
+                  <option key={option.id} value={option.id}>{option.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Opponent {tcgSettings.contextLabel}
+              </label>
+              <select
+                name="oppBattlefieldId"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">None</option>
+                {project.tcg.contextOptions.map((option: ContextOption) => (
+                  <option key={option.id} value={option.id}>{option.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        )}
 
         {/* Result, Initiative, and Dice Roll */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

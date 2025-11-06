@@ -43,6 +43,10 @@ model ContextOption {
   name                  String
   active                Boolean  @default(true)
 
+  // Back-relations for Entry battlefields
+  myBattlefieldEntries  Entry[]  @relation("MyBattlefield")
+  oppBattlefieldEntries Entry[]  @relation("OppBattlefield")
+
   createdAt             DateTime @default(now())
 
   @@unique([tcgId, name])
@@ -116,6 +120,12 @@ model Entry {
 
   category            Category       @relation(fields: [categoryId], references: [id])
   categoryId          String
+
+  // Battlefields (context options) - optional
+  myBattlefield       ContextOption? @relation("MyBattlefield", fields: [myBattlefieldId], references: [id])
+  myBattlefieldId     String?
+  oppBattlefield      ContextOption? @relation("OppBattlefield", fields: [oppBattlefieldId], references: [id])
+  oppBattlefieldId    String?
 
   result              MatchResult
   initiative          Initiative

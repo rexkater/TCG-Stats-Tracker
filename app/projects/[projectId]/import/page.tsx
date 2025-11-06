@@ -71,6 +71,8 @@ export default async function ImportPage({ params }: { params: Promise<{ project
     const getIndex = (header: string) => headers.indexOf(header);
     const myDeckIdx = getIndex('My Deck');
     const oppDeckIdx = getIndex('Opponent Deck');
+    const myBattlefieldIdx = getIndex('My Battlefield');
+    const oppBattlefieldIdx = getIndex('Opponent Battlefield');
     const categoryIdx = getIndex('Category');
     const initiativeIdx = getIndex('Initiative');
     const wonDiceRollIdx = getIndex('Won Dice Roll');
@@ -85,7 +87,12 @@ export default async function ImportPage({ params }: { params: Promise<{ project
     const projectData = await prisma.project.findUnique({
       where: { id: projectId },
       include: {
-        categories: { where: { active: true } }
+        categories: { where: { active: true } },
+        tcg: {
+          include: {
+            contextOptions: { where: { active: true } }
+          }
+        }
       },
     });
 
@@ -93,8 +100,9 @@ export default async function ImportPage({ params }: { params: Promise<{ project
       throw new Error("Project not found");
     }
 
-    // Create lookup map for categories only (decks are now free text)
+    // Create lookup maps for categories and battlefields (decks are now free text)
     const categoryMap = new Map(projectData.categories.map((c: Category) => [c.name.toLowerCase(), c.id]));
+    const battlefieldMap = new Map(projectData.tcg.contextOptions.map((b: ContextOption) => [b.name.toLowerCase(), b.id]));
 
     // Parse and validate data rows
     const entries = [];
@@ -110,6 +118,8 @@ export default async function ImportPage({ params }: { params: Promise<{ project
         // Get values
         const myDeckName = values[myDeckIdx]?.trim();
         const oppDeckName = values[oppDeckIdx]?.trim();
+        const myBattlefieldName = values[myBattlefieldIdx]?.trim();
+        const oppBattlefieldName = values[oppBattlefieldIdx]?.trim();
         const categoryName = values[categoryIdx]?.trim();
         const initiative = values[initiativeIdx]?.trim() as Initiative;
         const wonDiceRollStr = values[wonDiceRollIdx]?.trim();
@@ -145,6 +155,20 @@ export default async function ImportPage({ params }: { params: Promise<{ project
           continue;
         }
 
+        // Look up battlefield IDs (optional)
+        const myBattlefieldId = myBattlefieldName ? battlefieldMap.get(myBattlefieldName.toLowerCase()) : null;
+        const oppBattlefieldId = oppBattlefieldName ? battlefieldMap.get(oppBattlefieldName.toLowerCase()) : null;
+
+        // Validate battlefields if provided
+        if (myBattlefieldName && !myBattlefieldId) {
+          errors.push(`Row ${i + 1}: Battlefield "${myBattlefieldName}" not found`);
+          continue;
+        }
+        if (oppBattlefieldName && !oppBattlefieldId) {
+          errors.push(`Row ${i + 1}: Battlefield "${oppBattlefieldName}" not found`);
+          continue;
+        }
+
         // Parse wonDiceRoll
         let wonDiceRoll: boolean | null = null;
         if (wonDiceRollStr) {
@@ -165,6 +189,8 @@ export default async function ImportPage({ params }: { params: Promise<{ project
           projectId,
           myDeckName,
           oppDeckName,
+          myBattlefieldId,
+          oppBattlefieldId,
           categoryId,
           initiative,
           wonDiceRoll,
