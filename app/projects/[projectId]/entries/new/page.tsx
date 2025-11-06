@@ -112,26 +112,56 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
             <label className="block text-sm font-medium text-gray-700 mb-2">
               My Deck <span className="text-red-500">*</span>
             </label>
-            <input
-              type="text"
-              name="myDeckName"
-              required
-              placeholder="e.g., Ahri, Yasuo, Control Deck"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
+            {project.decks.length > 0 ? (
+              <select
+                name="myDeckName"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">Select a deck...</option>
+                {project.decks.map((deck: Deck) => (
+                  <option key={deck.id} value={deck.name}>
+                    {deck.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                name="myDeckName"
+                required
+                placeholder="e.g., Control Deck, Aggro Build"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            )}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Opponent Deck <span className="text-red-500">*</span>
             </label>
-            <input
-              type="text"
-              name="oppDeckName"
-              required
-              placeholder="e.g., Darius, Jinx, Aggro Deck"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
+            {project.decks.length > 0 ? (
+              <select
+                name="oppDeckName"
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">Select a deck...</option>
+                {project.decks.map((deck: Deck) => (
+                  <option key={deck.id} value={deck.name}>
+                    {deck.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                name="oppDeckName"
+                required
+                placeholder="e.g., Midrange Deck, Combo Build"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            )}
           </div>
         </div>
 
