@@ -487,11 +487,19 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                       {entry.notesShort || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <DeleteButton
-                        itemId={entry.id}
-                        itemType="entry"
-                        itemName={`${entry.myDeckName} vs ${entry.oppDeckName}`}
-                      />
+                      <div className="flex items-center gap-3">
+                        <Link
+                          href={`/projects/${project.id}/entries/${entry.id}/edit`}
+                          className="text-blue-600 hover:text-blue-700 font-medium"
+                        >
+                          ✏️ Edit
+                        </Link>
+                        <DeleteButton
+                          itemId={entry.id}
+                          itemType="entry"
+                          itemName={`${entry.myDeckName} vs ${entry.oppDeckName}`}
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))}
