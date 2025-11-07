@@ -77,8 +77,6 @@ export default async function ImportPage({ params }: { params: Promise<{ project
     const initiativeIdx = getIndex('Initiative');
     const wonDiceRollIdx = getIndex('Won Dice Roll');
     const resultIdx = getIndex('Result');
-    const myScoreIdx = getIndex('My Score');
-    const oppScoreIdx = getIndex('Opponent Score');
     const gameNumberIdx = getIndex('Game Number');
     const seriesIdIdx = getIndex('Series ID');
     const notesIdx = getIndex('Notes');
@@ -124,8 +122,6 @@ export default async function ImportPage({ params }: { params: Promise<{ project
         const initiative = values[initiativeIdx]?.trim() as Initiative;
         const wonDiceRollStr = values[wonDiceRollIdx]?.trim();
         const result = values[resultIdx]?.trim() as MatchResult;
-        const myScoreStr = values[myScoreIdx]?.trim();
-        const oppScoreStr = values[oppScoreIdx]?.trim();
         const gameNumberStr = values[gameNumberIdx]?.trim();
         const seriesId = values[seriesIdIdx]?.trim();
         const notes = values[notesIdx]?.trim();
@@ -181,8 +177,6 @@ export default async function ImportPage({ params }: { params: Promise<{ project
         }
 
         // Parse optional numeric fields
-        const myScore = myScoreStr ? parseFloat(myScoreStr) : null;
-        const oppScore = oppScoreStr ? parseFloat(oppScoreStr) : null;
         const gameNumber = gameNumberStr ? parseInt(gameNumberStr) : null;
 
         entries.push({
@@ -195,8 +189,6 @@ export default async function ImportPage({ params }: { params: Promise<{ project
           initiative,
           wonDiceRoll,
           result,
-          myScore,
-          oppScore,
           gameNumber,
           seriesId: seriesId || null,
           notesShort: notes || null,
@@ -252,8 +244,7 @@ export default async function ImportPage({ params }: { params: Promise<{ project
           <ul className="list-disc list-inside ml-4 space-y-1">
             <li>My Battlefield</li>
             <li>Opponent Battlefield</li>
-            <li>My Score</li>
-            <li>Opponent Score</li>
+            <li>Won Dice Roll (Yes/No)</li>
             <li>Game Number (1, 2, or 3)</li>
             <li>Series ID</li>
             <li>Notes</li>

@@ -98,8 +98,6 @@ export default async function EditEntry({ params }: { params: Promise<{ projectI
           initiative: entry.initiative,
           wonDiceRoll: entry.wonDiceRoll,
           notesShort: entry.notesShort,
-          myScore: entry.myScore,
-          oppScore: entry.oppScore,
           gameNumber: entry.gameNumber,
           seriesId: entry.seriesId,
         }}

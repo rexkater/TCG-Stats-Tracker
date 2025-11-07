@@ -419,9 +419,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                     Game
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Match Score
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Notes
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -476,12 +473,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                       {entry.seriesId && (
                         <span className="text-xs text-gray-400 ml-1">({entry.seriesId})</span>
                       )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {entry.myScore !== null && entry.oppScore !== null
-                        ? `${entry.myScore} - ${entry.oppScore}`
-                        : '-'
-                      }
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
                       {entry.notesShort || '-'}

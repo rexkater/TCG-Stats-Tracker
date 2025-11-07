@@ -162,8 +162,6 @@ async function main() {
         result: "WIN",
         initiative: "FIRST",
         wonDiceRoll: true,
-        myScore: 2.0,
-        oppScore: 1.0,
         notesShort: "Close game; mull to 5 G2.",
       },
       {
@@ -176,8 +174,6 @@ async function main() {
         result: "LOSS",
         initiative: "SECOND",
         wonDiceRoll: false,
-        myScore: 0.0,
-        oppScore: 2.0,
         notesShort: "Flooded out, couldn't find answers.",
       },
       {
@@ -190,8 +186,6 @@ async function main() {
         result: "WIN",
         initiative: "FIRST",
         wonDiceRoll: true,
-        myScore: 2.0,
-        oppScore: 0.0,
         notesShort: "Perfect curve, opponent mulled to 4.",
       },
     ],

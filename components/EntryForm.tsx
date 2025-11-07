@@ -22,8 +22,6 @@ interface EntryFormProps {
     initiative: string;
     wonDiceRoll: boolean | null;
     notesShort: string | null;
-    myScore: number | null;
-    oppScore: number | null;
     gameNumber: number | null;
     seriesId: string | null;
   };
@@ -59,8 +57,6 @@ export default function EntryForm({
       initiative: formData.get('initiative') as string,
       wonDiceRoll: formData.get('wonDiceRoll') === 'on',
       notesShort: formData.get('notesShort') as string || null,
-      myScore: formData.get('myScore') ? Number(formData.get('myScore')) : null,
-      oppScore: formData.get('oppScore') ? Number(formData.get('oppScore')) : null,
       gameNumber: formData.get('gameNumber') ? Number(formData.get('gameNumber')) : null,
       seriesId: formData.get('seriesId') as string || null,
     };
@@ -274,39 +270,6 @@ export default function EntryForm({
             </div>
           </div>
         )}
-      </div>
-
-      {/* Scores */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            My Score
-          </label>
-          <input
-            type="number"
-            name="myScore"
-            step="0.5"
-            min="0"
-            defaultValue={defaultValues?.myScore || ''}
-            placeholder="e.g., 2"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Opponent Score
-          </label>
-          <input
-            type="number"
-            name="oppScore"
-            step="0.5"
-            min="0"
-            defaultValue={defaultValues?.oppScore || ''}
-            placeholder="e.g., 1"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
       </div>
 
       {/* Best-of-3 Tracking */}

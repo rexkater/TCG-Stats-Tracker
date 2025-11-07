@@ -132,9 +132,6 @@ model Entry {
   wonDiceRoll         Boolean?       // Did the player win the pre-game dice roll?
   notesShort          String?
 
-  myScore             Float?
-  oppScore            Float?
-
   // Best-of-3 tracking
   gameNumber          Int?           // 1, 2, or 3 for games in a series
   seriesId            String?        // Groups games in the same match

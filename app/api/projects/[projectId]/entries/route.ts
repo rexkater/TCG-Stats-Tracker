@@ -19,8 +19,6 @@ export async function POST(
       initiative,
       wonDiceRoll,
       notesShort,
-      myScore,
-      oppScore,
       gameNumber,
       seriesId,
     } = body;
@@ -45,8 +43,6 @@ export async function POST(
         initiative,
         wonDiceRoll: gameNumber === 1 ? wonDiceRoll : null,
         notesShort: notesShort || null,
-        myScore: myScore || null,
-        oppScore: oppScore || null,
         gameNumber: gameNumber || null,
         seriesId: seriesId || null,
       },
