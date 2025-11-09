@@ -7,23 +7,42 @@ export const dynamic = 'force-dynamic';
 
 export default async function NewEntry({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
+
+  // Optimized query: Only fetch fields needed for the form
   const project = await prisma.project.findUnique({
     where: { id: projectId },
-    include: {
+    select: {
+      id: true,
+      name: true,
       tcg: {
-        include: {
+        select: {
+          id: true,
+          name: true,
+          settingsJson: true,
           contextOptions: {
             where: { active: true },
+            select: {
+              id: true,
+              name: true
+            },
             orderBy: { name: 'asc' }
           }
         }
       },
       decks: {
         where: { active: true },
+        select: {
+          id: true,
+          name: true
+        },
         orderBy: { name: 'asc' }
       },
       categories: {
         where: { active: true },
+        select: {
+          id: true,
+          name: true
+        },
         orderBy: { name: 'asc' }
       }
     }

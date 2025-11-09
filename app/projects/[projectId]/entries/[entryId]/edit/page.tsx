@@ -7,14 +7,24 @@ export const dynamic = 'force-dynamic';
 
 export default async function EditEntry({ params }: { params: Promise<{ projectId: string; entryId: string }> }) {
   const { projectId, entryId } = await params;
-  
-  // Fetch the entry to edit
+
+  // Optimized query: Only fetch fields needed for editing
   const entry = await prisma.entry.findUnique({
     where: { id: entryId },
-    include: {
-      category: true,
-      myBattlefield: true,
-      oppBattlefield: true,
+    select: {
+      id: true,
+      projectId: true,
+      myDeckName: true,
+      oppDeckName: true,
+      result: true,
+      initiative: true,
+      wonDiceRoll: true,
+      notesShort: true,
+      gameNumber: true,
+      seriesId: true,
+      categoryId: true,
+      myBattlefieldId: true,
+      oppBattlefieldId: true
     }
   });
 
@@ -29,23 +39,41 @@ export default async function EditEntry({ params }: { params: Promise<{ projectI
     );
   }
 
+  // Optimized query: Only fetch fields needed for the form
   const project = await prisma.project.findUnique({
     where: { id: projectId },
-    include: {
+    select: {
+      id: true,
+      name: true,
       tcg: {
-        include: {
+        select: {
+          id: true,
+          name: true,
+          settingsJson: true,
           contextOptions: {
             where: { active: true },
+            select: {
+              id: true,
+              name: true
+            },
             orderBy: { name: 'asc' }
           }
         }
       },
       decks: {
         where: { active: true },
+        select: {
+          id: true,
+          name: true
+        },
         orderBy: { name: 'asc' }
       },
       categories: {
         where: { active: true },
+        select: {
+          id: true,
+          name: true
+        },
         orderBy: { name: 'asc' }
       }
     }

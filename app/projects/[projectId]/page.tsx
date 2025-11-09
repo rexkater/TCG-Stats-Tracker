@@ -18,26 +18,70 @@ type EntryWithRelationsLocal = Entry & {
 
 export default async function ProjectPage({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
+
+  // Optimized query: Only fetch fields we actually use
   const project = await prisma.project.findUnique({
     where: { id: projectId },
-    include: {
-      tcg: true,
+    select: {
+      id: true,
+      name: true,
+      createdAt: true,
+      tcg: {
+        select: {
+          id: true,
+          name: true,
+          settingsJson: true
+        }
+      },
       decks: {
         where: { active: true },
-        include: { images: true },
+        select: {
+          id: true,
+          name: true
+        },
         orderBy: { name: 'asc' }
       },
       categories: {
         where: { active: true },
+        select: {
+          id: true,
+          name: true
+        },
         orderBy: { name: 'asc' }
       },
       entries: {
-        include: {
-          category: true,
-          myBattlefield: true,
-          oppBattlefield: true
+        select: {
+          id: true,
+          myDeckName: true,
+          oppDeckName: true,
+          result: true,
+          initiative: true,
+          wonDiceRoll: true,
+          notesShort: true,
+          gameNumber: true,
+          seriesId: true,
+          createdAt: true,
+          category: {
+            select: {
+              id: true,
+              name: true
+            }
+          },
+          myBattlefield: {
+            select: {
+              id: true,
+              name: true
+            }
+          },
+          oppBattlefield: {
+            select: {
+              id: true,
+              name: true
+            }
+          }
         },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
+        take: 100 // Limit to most recent 100 entries for performance
       }
     }
   });
@@ -55,10 +99,16 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
 
   const tcgSettings = JSON.parse(project.tcg.settingsJson);
 
+  // Get total entry count (for display purposes)
+  const totalEntriesCount = await prisma.entry.count({
+    where: { projectId }
+  });
+
   // Calculate usage stats
   const totalDecks = project.decks.length;
   const totalCategories = project.categories.length;
   const totalEntries = project.entries.length;
+  const showingLimitedEntries = totalEntriesCount > 100;
 
   // Count unique decks used in entries (only myDeck)
   const usedDeckNames = new Set<string>();
@@ -441,7 +491,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
       {/* Recent Entries */}
       <div className="bg-white rounded-lg border border-gray-200">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">Recent Entries</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-gray-900">Recent Entries</h2>
+            {showingLimitedEntries && (
+              <span className="text-sm text-gray-500">
+                Showing 100 of {totalEntriesCount} entries
+              </span>
+            )}
+          </div>
         </div>
         {project.entries.length === 0 ? (
           <div className="px-6 py-12 text-center">
