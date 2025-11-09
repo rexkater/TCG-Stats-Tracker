@@ -25,6 +25,8 @@ yarn-error.log*
 # Local env files
 .env
 .env*.local
+.env.example
+.env.production.example
 
 # Vercel
 .vercel
@@ -45,3 +47,7 @@ prisma/dev.db-journal
 *.swp
 *.swo
 *~
+
+# Deployment and backlog files (keep local only)
+DEPLOYMENT.md
+V2_BACKLOG.md
