@@ -35,8 +35,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
           myBattlefield: true,
           oppBattlefield: true
         },
-        orderBy: { createdAt: 'desc' },
-        take: 20
+        orderBy: { createdAt: 'desc' }
       }
     }
   });
