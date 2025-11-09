@@ -100,7 +100,7 @@ export default function EntryForm({
   const showDiceRoll = gameNumber === '1';
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-6 space-y-6">
+    <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 space-y-6">
       {/* Decks */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
@@ -125,7 +125,7 @@ export default function EntryForm({
               required
               value={myDeckName}
               onChange={(e) => setMyDeckName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
             >
               <option value="">Select a deck...</option>
               {decks.map((deck) => (
@@ -141,7 +141,7 @@ export default function EntryForm({
               required
               defaultValue={defaultValues?.myDeckName || ''}
               placeholder="e.g., Control Deck, Aggro Build"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
             />
           )}
         </div>
@@ -169,7 +169,7 @@ export default function EntryForm({
               value={oppDeckName}
               onChange={(e) => setOppDeckName(e.target.value)}
               defaultValue={defaultValues?.oppDeckName || ''}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
             >
               <option value="">Select a deck...</option>
               {decks.map((deck) => (
@@ -185,7 +185,7 @@ export default function EntryForm({
               required
               defaultValue={defaultValues?.oppDeckName || ''}
               placeholder="e.g., Midrange Deck, Combo Build"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
             />
           )}
         </div>
@@ -201,7 +201,7 @@ export default function EntryForm({
             <select
               name="myBattlefieldId"
               defaultValue={defaultValues?.myBattlefieldId || ''}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
             >
               <option value="">None</option>
               {contextOptions.map((option) => (
@@ -217,7 +217,7 @@ export default function EntryForm({
             <select
               name="oppBattlefieldId"
               defaultValue={defaultValues?.oppBattlefieldId || ''}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
             >
               <option value="">None</option>
               {contextOptions.map((option) => (
@@ -237,7 +237,7 @@ export default function EntryForm({
           name="categoryId"
           required
           defaultValue={defaultValues?.categoryId || ''}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
         >
           <option value="">Select a category...</option>
           {categories.map((category) => (
@@ -258,7 +258,7 @@ export default function EntryForm({
             name="result"
             required
             defaultValue={defaultValues?.result || ''}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
           >
             <option value="">Select...</option>
             <option value="WIN">Win</option>
@@ -275,7 +275,7 @@ export default function EntryForm({
             name="initiative"
             required
             defaultValue={defaultValues?.initiative || ''}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
           >
             <option value="">Select...</option>
             <option value="FIRST">First</option>
@@ -288,14 +288,14 @@ export default function EntryForm({
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Dice Roll
             </label>
-            <div className="flex items-center h-10">
+            <div className="flex items-center min-h-[44px]">
               <input
                 type="checkbox"
                 name="wonDiceRoll"
                 defaultChecked={defaultValues?.wonDiceRoll || false}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded touch-manipulation"
               />
-              <label className="ml-2 text-sm text-gray-700">
+              <label className="ml-3 text-sm text-gray-700">
                 Won pre-game dice roll
               </label>
             </div>
@@ -317,7 +317,7 @@ export default function EntryForm({
             value={gameNumber}
             onChange={(e) => setGameNumber(e.target.value)}
             placeholder="1, 2, or 3"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
           />
           <p className="mt-1 text-xs text-gray-500">For best-of-3 matches (dice roll shown for game 1)</p>
         </div>
@@ -331,7 +331,7 @@ export default function EntryForm({
             name="seriesId"
             defaultValue={defaultValues?.seriesId || ''}
             placeholder="e.g., match-001"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
           />
           <p className="mt-1 text-xs text-gray-500">Groups games in the same match</p>
         </div>
@@ -347,23 +347,23 @@ export default function EntryForm({
           rows={3}
           defaultValue={defaultValues?.notesShort || ''}
           placeholder="Quick notes about the match..."
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation"
         />
       </div>
 
       {/* Submit Button */}
-      <div className="flex gap-3">
+      <div className="flex flex-col sm:flex-row gap-3">
         <button
           type="button"
           onClick={() => router.back()}
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-center hover:bg-gray-50 transition-colors"
+          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-center hover:bg-gray-50 transition-colors touch-manipulation min-h-[44px] font-medium"
           disabled={isSubmitting}
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation min-h-[44px] font-medium"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Saving...' : mode === 'create' ? 'Save Entry' : 'Update Entry'}

@@ -79,50 +79,51 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
   return (
     <main className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <Link href="/projects" className="text-sm text-blue-600 hover:text-blue-700 mb-2 inline-block">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex-1 min-w-0">
+          <Link href="/projects" className="text-sm text-blue-600 hover:text-blue-700 mb-2 inline-block touch-manipulation">
             ← Back to projects
           </Link>
           <RenameProject projectId={project.id} currentName={project.name} />
-          <p className="text-gray-600 mt-1">
+          <p className="text-gray-600 mt-1 flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
               {project.tcg.name}
             </span>
-            <span className="ml-2 text-sm text-gray-500">
+            <span className="text-sm text-gray-500">
               Created {new Date(project.createdAt).toLocaleDateString()}
             </span>
           </p>
         </div>
-        <div className="flex gap-3">
+        {/* Mobile: Stack buttons vertically, Desktop: Horizontal */}
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2 lg:gap-3">
           <DeleteButton
             itemId={project.id}
             itemType="project"
             itemName={project.name}
             redirectTo="/projects"
-            className="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
+            className="px-4 py-2.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium touch-manipulation min-h-[44px] flex items-center justify-center"
           />
           <Link
             href={`/projects/${project.id}/notes`}
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+            className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
           >
             📝 Notes
           </Link>
           <Link
             href={`/projects/${project.id}/export`}
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+            className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
           >
             📥 Export CSV
           </Link>
           <Link
             href={`/projects/${project.id}/import`}
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+            className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
           >
             📤 Import CSV
           </Link>
           <Link
             href={`/projects/${project.id}/entries/new`}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center sm:col-span-2 lg:col-span-1"
           >
             + New Entry
           </Link>

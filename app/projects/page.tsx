@@ -82,16 +82,16 @@ export default async function Projects() {
       <div className="mb-4">
         <Link
           href="/"
-          className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1"
+          className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1 touch-manipulation"
         >
           ← Back to Home
         </Link>
       </div>
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Projects</h1>
         <Link
           href="/projects/new"
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          className="w-full sm:w-auto px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
         >
           New Project
         </Link>
