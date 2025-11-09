@@ -1,8 +1,10 @@
 import { prisma } from '@/lib/prisma';
 import type { Entry, Deck, Category, ContextOption } from '@prisma/client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { calculateProjectAnalytics, formatWinRate, formatRecord, type EntryWithRelations } from '@/lib/analytics';
 import DeleteButton from '@/components/DeleteButton';
+import { getDeckImagePath } from '@/lib/deck-images';
 import RenameProject from '@/components/RenameProject';
 
 // Force dynamic rendering - don't try to statically generate this page
@@ -221,7 +223,16 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                     {analytics.byDeck.map((deck) => (
                       <tr key={deck.deckName} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {deck.deckName}
+                          <div className="flex items-center gap-3">
+                            <Image
+                              src={getDeckImagePath(deck.deckName)}
+                              alt={deck.deckName}
+                              width={40}
+                              height={56}
+                              className="rounded shadow-sm"
+                            />
+                            <span>{deck.deckName}</span>
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           {formatRecord(deck)}

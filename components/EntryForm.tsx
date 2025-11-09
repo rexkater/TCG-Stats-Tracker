@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import type { Deck, Category, ContextOption } from '@prisma/client';
+import { getDeckImagePath } from '@/lib/deck-images';
 
 interface EntryFormProps {
   projectId: string;
@@ -40,6 +42,8 @@ export default function EntryForm({
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [gameNumber, setGameNumber] = useState<string>(defaultValues?.gameNumber?.toString() || '');
+  const [myDeckName, setMyDeckName] = useState<string>(defaultValues?.myDeckName || '');
+  const [oppDeckName, setOppDeckName] = useState<string>(defaultValues?.oppDeckName || '');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -103,11 +107,24 @@ export default function EntryForm({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             My Deck <span className="text-red-500">*</span>
           </label>
+          {/* Deck image preview */}
+          {decks.length > 0 && myDeckName && (
+            <div className="mb-3 flex justify-center">
+              <Image
+                src={getDeckImagePath(myDeckName)}
+                alt={myDeckName}
+                width={100}
+                height={140}
+                className="rounded-lg shadow-md"
+              />
+            </div>
+          )}
           {decks.length > 0 ? (
             <select
               name="myDeckName"
               required
-              defaultValue={defaultValues?.myDeckName || ''}
+              value={myDeckName}
+              onChange={(e) => setMyDeckName(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Select a deck...</option>
@@ -133,10 +150,24 @@ export default function EntryForm({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Opponent Deck <span className="text-red-500">*</span>
           </label>
+          {/* Deck image preview */}
+          {decks.length > 0 && oppDeckName && (
+            <div className="mb-3 flex justify-center">
+              <Image
+                src={getDeckImagePath(oppDeckName)}
+                alt={oppDeckName}
+                width={100}
+                height={140}
+                className="rounded-lg shadow-md"
+              />
+            </div>
+          )}
           {decks.length > 0 ? (
             <select
               name="oppDeckName"
               required
+              value={oppDeckName}
+              onChange={(e) => setOppDeckName(e.target.value)}
               defaultValue={defaultValues?.oppDeckName || ''}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >

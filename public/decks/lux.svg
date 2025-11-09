@@ -1,0 +1,30 @@
+<svg width="200" height="280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="grad-lux" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFEB3B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b3a529;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Card background -->
+  <rect width="200" height="280" rx="12" fill="url(#grad-lux)"/>
+  
+  <!-- Border -->
+  <rect x="4" y="4" width="192" height="272" rx="10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  
+  <!-- Initial circle -->
+  <circle cx="100" cy="140" r="60" fill="rgba(255,255,255,0.2)" filter="url(#shadow)"/>
+  
+  <!-- Initial letter -->
+  <text x="100" y="165" font-family="Arial, sans-serif" font-size="72" font-weight="bold" 
+        fill="white" text-anchor="middle" filter="url(#shadow)">L</text>
+  
+  <!-- Legend name -->
+  <rect x="10" y="230" width="180" height="40" rx="6" fill="rgba(0,0,0,0.4)"/>
+  <text x="100" y="257" font-family="Arial, sans-serif" font-size="20" font-weight="600" 
+        fill="white" text-anchor="middle">Lux</text>
+</svg>
