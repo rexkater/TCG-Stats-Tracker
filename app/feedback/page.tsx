@@ -4,13 +4,13 @@ export default async function FeedbackPage() {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="mb-6">
-        <Link href="/" className="text-blue-600 hover:text-blue-800">
+        <Link href="/" className="text-accent-600 hover:text-accent-700">
           ← Back to Home
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200 p-8">
-        <h1 className="text-3xl font-bold mb-6">Beta Feedback</h1>
+      <div className="bg-white rounded-lg border border-primary-200 p-8">
+        <h1 className="text-3xl font-bold mb-6 text-primary-700">Beta Feedback</h1>
 
         <div className="mb-8">
           <p className="text-gray-700 mb-4">
@@ -21,25 +21,25 @@ export default async function FeedbackPage() {
           </p>
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4 text-blue-900">How to Provide Feedback</h2>
-          <div className="space-y-3 text-gray-700">
+        <div className="bg-background-100 border border-background-300 rounded-lg p-6 mb-8">
+          <h2 className="text-xl font-semibold mb-4 text-primary-700">How to Provide Feedback</h2>
+          <div className="space-y-3 text-primary-600">
             <p>
               <strong>GitHub Issues:</strong> Report bugs or request features at{' '}
-              <a 
-                href="https://github.com/rexkater/TCG-Stats-Tracker/issues" 
-                target="_blank" 
+              <a
+                href="https://github.com/rexkater/TCG-Stats-Tracker/issues"
+                target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 underline"
+                className="text-accent-600 hover:text-accent-700 underline"
               >
                 github.com/rexkater/TCG-Stats-Tracker/issues
               </a>
             </p>
             <p>
               <strong>Email:</strong> Send detailed feedback to{' '}
-              <a 
-                href="mailto:rex.reyes@upr.edu" 
-                className="text-blue-600 hover:text-blue-800 underline"
+              <a
+                href="mailto:rex.reyes@upr.edu"
+                className="text-accent-600 hover:text-accent-700 underline"
               >
                 rex.reyes@upr.edu
               </a>
@@ -90,13 +90,13 @@ export default async function FeedbackPage() {
             href="https://github.com/rexkater/TCG-Stats-Tracker/issues/new"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-block bg-accent-600 text-white px-6 py-3 rounded-lg hover:bg-accent-700 transition-colors"
           >
             Report an Issue on GitHub
           </a>
           <a
             href="mailto:rex.reyes@upr.edu?subject=TCG Stats Tracker Beta Feedback"
-            className="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
+            className="inline-block bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
           >
             Send Email Feedback
           </a>

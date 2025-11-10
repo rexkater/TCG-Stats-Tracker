@@ -82,27 +82,27 @@ export default async function Projects() {
       <div className="mb-4">
         <Link
           href="/"
-          className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1 touch-manipulation"
+          className="text-accent-600 hover:text-accent-700 font-medium inline-flex items-center gap-1 touch-manipulation"
         >
           ← Back to Home
         </Link>
       </div>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Projects</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-primary-700">Projects</h1>
         <Link
           href="/projects/new"
-          className="w-full sm:w-auto px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
+          className="w-full sm:w-auto px-4 py-2.5 bg-accent-600 text-white rounded-lg hover:bg-accent-700 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
         >
           New Project
         </Link>
       </div>
 
       {projectsWithStats.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-          <p className="text-gray-500 mb-4">No projects yet</p>
+        <div className="text-center py-12 bg-white rounded-lg border border-primary-200">
+          <p className="text-primary-500 mb-4">No projects yet</p>
           <Link
             href="/projects/new"
-            className="text-blue-600 hover:text-blue-700 font-medium"
+            className="text-accent-600 hover:text-accent-700 font-medium"
           >
             Create your first project
           </Link>
@@ -113,17 +113,17 @@ export default async function Projects() {
             <Link
               key={project.id}
               href={`/projects/${project.id}`}
-              className="block bg-white rounded-lg border border-gray-200 p-6 hover:shadow-lg transition-shadow"
+              className="block bg-white rounded-lg border border-primary-200 p-6 hover:shadow-lg transition-shadow"
             >
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              <h2 className="text-xl font-semibold text-primary-700 mb-2">
                 {project.name}
               </h2>
-              <div className="text-sm text-gray-600 mb-4">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              <div className="text-sm text-primary-600 mb-4">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-background-200 text-primary-700">
                   {project.tcg.name}
                 </span>
               </div>
-              <div className="flex flex-col gap-1 text-sm text-gray-500">
+              <div className="flex flex-col gap-1 text-sm text-primary-500">
                 <span>{project.stats.totalEntries} entries</span>
                 <span>{project.stats.decksUsed}/{project.stats.totalDecks} decks used</span>
                 <span>{project.stats.categoriesUsed}/{project.stats.totalCategories} categories used</span>
