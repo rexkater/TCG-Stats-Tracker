@@ -256,7 +256,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
               <div className="px-6 py-4 border-b border-gray-200">
                 <h2 className="text-xl font-semibold text-gray-900">Deck Performance</h2>
               </div>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto max-h-[520px] overflow-y-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
@@ -318,7 +318,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
               <div className="px-6 py-4 border-b border-gray-200">
                 <h2 className="text-xl font-semibold text-gray-900">Matchup Analysis</h2>
               </div>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto max-h-[440px] overflow-y-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
@@ -411,7 +411,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
             </Link>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>

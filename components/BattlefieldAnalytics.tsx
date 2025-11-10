@@ -48,7 +48,7 @@ export default function BattlefieldAnalytics({
       </div>
 
       {/* Tab Content */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto max-h-[440px] overflow-y-auto">
         {activeTab === 'performance' ? (
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
