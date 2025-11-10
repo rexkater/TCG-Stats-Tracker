@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import type { Entry, Deck, Category, ContextOption } from '@prisma/client';
+import type { Entry, Category, ContextOption } from '@prisma/client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { calculateProjectAnalytics, formatWinRate, formatRecord, type EntryWithRelations } from '@/lib/analytics';
@@ -61,6 +61,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
           gameNumber: true,
           seriesId: true,
           createdAt: true,
+          categoryId: true,
+          myBattlefieldId: true,
+          oppBattlefieldId: true,
           category: {
             select: {
               id: true,
