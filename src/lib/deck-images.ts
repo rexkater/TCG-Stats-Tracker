@@ -6,7 +6,7 @@
 export function getDeckImagePath(deckName: string): string {
   // Convert deck name to filename format (lowercase, no apostrophes, spaces to hyphens)
   const fileName = deckName.toLowerCase().replace(/'/g, '').replace(/ /g, '-');
-  return `/decks/${fileName}.svg`;
+  return `/decks/${fileName}.webp`;
 }
 
 /**
