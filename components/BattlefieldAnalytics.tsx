@@ -90,9 +90,9 @@ export default function BattlefieldAnalytics({
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      context.winRate >= 60 ? 'bg-secondary-100 text-secondary-700' :
-                      context.winRate >= 40 ? 'bg-background-200 text-primary-700' :
-                      'bg-accent-100 text-accent-700'
+                      context.winRate >= 60 ? 'bg-green-100 text-green-800' :
+                      context.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
                     }`}>
                       {formatWinRate(context.winRate)}
                     </span>
@@ -139,9 +139,9 @@ export default function BattlefieldAnalytics({
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      matchup.winRate >= 60 ? 'bg-secondary-100 text-secondary-700' :
-                      matchup.winRate >= 40 ? 'bg-background-200 text-primary-700' :
-                      'bg-accent-100 text-accent-700'
+                      matchup.winRate >= 60 ? 'bg-green-100 text-green-800' :
+                      matchup.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
                     }`}>
                       {formatWinRate(matchup.winRate)}
                     </span>
@@ -182,9 +182,9 @@ export default function BattlefieldAnalytics({
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      category.winRate >= 60 ? 'bg-secondary-100 text-secondary-700' :
-                      category.winRate >= 40 ? 'bg-background-200 text-primary-700' :
-                      'bg-accent-100 text-accent-700'
+                      category.winRate >= 60 ? 'bg-green-100 text-green-800' :
+                      category.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
                     }`}>
                       {formatWinRate(category.winRate)}
                     </span>

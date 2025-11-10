@@ -8,24 +8,6 @@ export default function Home() {
         <p className="text-primary-600 text-base sm:text-lg">Track your Trading Card Game statistics and improve your gameplay</p>
       </div>
 
-      <div className="bg-secondary-50 border border-secondary-200 rounded-lg p-4 sm:p-6">
-        <div className="flex items-start gap-3">
-          <span className="text-2xl flex-shrink-0">🧪</span>
-          <div className="flex-1 min-w-0">
-            <h2 className="font-semibold text-primary-700 mb-1">Beta Version</h2>
-            <p className="text-primary-600 mb-3 text-sm sm:text-base">
-              This is a beta release. We're actively collecting feedback to improve the application.
-            </p>
-            <Link
-              href="/feedback"
-              className="inline-block bg-accent-600 text-white px-4 py-2.5 rounded-lg hover:bg-accent-700 transition-colors touch-manipulation min-h-[44px] flex items-center justify-center font-medium"
-            >
-              Provide Feedback
-            </Link>
-          </div>
-        </div>
-      </div>
-
       <div className="grid gap-4 md:grid-cols-2">
         <Link
           href="/projects"
@@ -42,6 +24,24 @@ export default function Home() {
           <h2 className="text-xl font-semibold mb-2 text-primary-700">💬 Feedback</h2>
           <p className="text-primary-600">Share your thoughts and report issues</p>
         </Link>
+      </div>
+
+      <div className="bg-secondary-50 border border-secondary-200 rounded-lg p-4 sm:p-6">
+        <div className="flex items-start gap-3">
+          <span className="text-2xl flex-shrink-0">🧪</span>
+          <div className="flex-1 min-w-0">
+            <h2 className="font-semibold text-primary-700 mb-1">Beta Version</h2>
+            <p className="text-primary-600 mb-3 text-sm sm:text-base">
+              This is a beta release. We're actively collecting feedback to improve the application.
+            </p>
+            <Link
+              href="/feedback"
+              className="inline-block bg-accent-600 text-white px-4 py-2.5 rounded-lg hover:bg-accent-700 transition-colors touch-manipulation min-h-[44px] flex items-center justify-center font-medium"
+            >
+              Provide Feedback
+            </Link>
+          </div>
+        </div>
       </div>
 
       <div className="bg-background-100 border border-background-300 rounded-lg p-6">

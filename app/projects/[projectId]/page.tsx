@@ -294,9 +294,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            deck.winRate >= 60 ? 'bg-secondary-100 text-secondary-700' :
-                            deck.winRate >= 40 ? 'bg-background-200 text-primary-700' :
-                            'bg-accent-100 text-accent-700'
+                            deck.winRate >= 60 ? 'bg-green-100 text-green-800' :
+                            deck.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
                           }`}>
                             {formatWinRate(deck.winRate)}
                           </span>
@@ -359,9 +359,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            matchup.winRate >= 60 ? 'bg-secondary-100 text-secondary-700' :
-                            matchup.winRate >= 40 ? 'bg-background-200 text-primary-700' :
-                            'bg-accent-100 text-accent-700'
+                            matchup.winRate >= 60 ? 'bg-green-100 text-green-800' :
+                            matchup.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
                           }`}>
                             {formatWinRate(matchup.winRate)}
                           </span>
@@ -463,8 +463,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        entry.result === 'WIN' ? 'bg-secondary-100 text-secondary-700' :
-                        entry.result === 'LOSS' ? 'bg-accent-100 text-accent-700' :
+                        entry.result === 'WIN' ? 'bg-green-100 text-green-800' :
+                        entry.result === 'LOSS' ? 'bg-red-100 text-red-800' :
                         'bg-gray-100 text-gray-800'
                       }`}>
                         {entry.result}
