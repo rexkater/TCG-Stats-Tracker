@@ -1,37 +1,39 @@
 'use client';
 
 import { useState } from 'react';
-import { formatWinRate, formatRecord, type ContextStats, type ContextMatchupStats } from '@/lib/analytics';
+import { formatWinRate, formatRecord, type ContextStats, type ContextMatchupStats, type CategoryStats } from '@/lib/analytics';
 
 type BattlefieldAnalyticsProps = {
   contextLabel: string;
   byContext: ContextStats[];
   byContextMatchup: ContextMatchupStats[];
+  byCategory: CategoryStats[];
 };
 
 export default function BattlefieldAnalytics({
   contextLabel,
   byContext,
   byContextMatchup,
+  byCategory,
 }: BattlefieldAnalyticsProps) {
-  const [activeTab, setActiveTab] = useState<'performance' | 'matchups'>('performance');
+  const [activeTab, setActiveTab] = useState<'battlefield' | 'matchups' | 'category'>('battlefield');
 
   return (
     <div className="bg-white rounded-lg border border-gray-200">
       {/* Header with Tabs */}
       <div className="border-b border-gray-200">
         <div className="px-6 py-4">
-          <h2 className="text-xl font-semibold text-gray-900 mb-3">{contextLabel} Analytics</h2>
-          <div className="flex gap-2">
+          <h2 className="text-xl font-semibold text-gray-900 mb-3">Overall Performance</h2>
+          <div className="flex gap-2 flex-wrap">
             <button
-              onClick={() => setActiveTab('performance')}
+              onClick={() => setActiveTab('battlefield')}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                activeTab === 'performance'
+                activeTab === 'battlefield'
                   ? 'bg-blue-100 text-blue-700'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
               }`}
             >
-              Overall Performance
+              {contextLabel}
             </button>
             <button
               onClick={() => setActiveTab('matchups')}
@@ -41,7 +43,17 @@ export default function BattlefieldAnalytics({
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
               }`}
             >
-              Matchup Combinations
+              {contextLabel} Matchups
+            </button>
+            <button
+              onClick={() => setActiveTab('category')}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                activeTab === 'category'
+                  ? 'bg-blue-100 text-blue-700'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              Category
             </button>
           </div>
         </div>
@@ -49,7 +61,7 @@ export default function BattlefieldAnalytics({
 
       {/* Tab Content */}
       <div className="overflow-x-auto max-h-[440px] overflow-y-auto">
-        {activeTab === 'performance' ? (
+        {activeTab === 'battlefield' ? (
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
@@ -92,7 +104,7 @@ export default function BattlefieldAnalytics({
               ))}
             </tbody>
           </table>
-        ) : (
+        ) : activeTab === 'matchups' ? (
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
@@ -136,6 +148,49 @@ export default function BattlefieldAnalytics({
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
                     {matchup.total}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Category
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Record
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Win Rate
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Games
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {byCategory.map((category) => (
+                <tr key={category.categoryId} className="hover:bg-gray-50">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {category.categoryName}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                    {formatRecord(category)}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      category.winRate >= 60 ? 'bg-green-100 text-green-800' :
+                      category.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {formatWinRate(category.winRate)}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                    {category.total}
                   </td>
                 </tr>
               ))}

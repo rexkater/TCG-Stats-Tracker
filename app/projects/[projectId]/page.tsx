@@ -377,12 +377,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
             </div>
           )}
 
-          {/* Battlefield Analytics (Tabbed) */}
-          {tcgSettings.contextLabel && (analytics.byContext.length > 0 || analytics.byContextMatchup.length > 0) && (
+          {/* Overall Performance Analytics (Tabbed) */}
+          {tcgSettings.contextLabel && (analytics.byContext.length > 0 || analytics.byContextMatchup.length > 0 || analytics.byCategory.length > 0) && (
             <BattlefieldAnalytics
               contextLabel={tcgSettings.contextLabel}
               byContext={analytics.byContext}
               byContextMatchup={analytics.byContextMatchup}
+              byCategory={analytics.byCategory}
             />
           )}
         </>
