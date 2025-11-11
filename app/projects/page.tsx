@@ -1,6 +1,9 @@
 import { prisma } from '@/lib/prisma';
 import type { Project, TCG } from '@prisma/client';
 import Link from 'next/link';
+import Image from 'next/image';
+import { getDeckImagePath } from '@/lib/deck-images';
+import { formatWinRate, formatRecord } from '@/lib/analytics';
 
 // Force dynamic rendering - don't try to statically generate this page
 export const dynamic = 'force-dynamic';
@@ -10,6 +13,8 @@ type ProjectEntry = {
   myDeckName: string;
   oppDeckName: string;
   categoryId: string;
+  result: string;
+  createdAt: Date;
 };
 
 type ProjectWithData = Project & {
@@ -17,6 +22,17 @@ type ProjectWithData = Project & {
   decks: { id: string }[];
   categories: { id: string }[];
   entries: ProjectEntry[];
+};
+
+type ProjectWithStats = ProjectWithData & {
+  stats: {
+    totalEntries: number;
+    decksUsed: number;
+    totalDecks: number;
+    categoriesUsed: number;
+    totalCategories: number;
+    lastUpdated: Date;
+  };
 };
 
 export default async function Projects() {
@@ -36,8 +52,14 @@ export default async function Projects() {
           id: true,
           myDeckName: true,
           oppDeckName: true,
-          categoryId: true
-        }
+          categoryId: true,
+          result: true,
+          createdAt: true
+        },
+        orderBy: {
+          createdAt: 'desc'
+        },
+        take: 1 // Get most recent entry for last updated
       }
     },
     where: {
@@ -47,6 +69,39 @@ export default async function Projects() {
       createdAt: 'desc'
     }
   });
+
+  // Get all entries for deck performance aggregation
+  const allEntries = await prisma.entry.findMany({
+    where: {
+      project: {
+        archivedAt: null
+      }
+    },
+    select: {
+      myDeckName: true,
+      result: true
+    }
+  });
+
+  // Calculate deck performance across all projects
+  const deckPerformance = new Map<string, { wins: number; losses: number; draws: number; total: number }>();
+  allEntries.forEach((entry: { myDeckName: string; result: string }) => {
+    const stats = deckPerformance.get(entry.myDeckName) || { wins: 0, losses: 0, draws: 0, total: 0 };
+    stats.total++;
+    if (entry.result === 'WIN') stats.wins++;
+    else if (entry.result === 'LOSS') stats.losses++;
+    else if (entry.result === 'DRAW') stats.draws++;
+    deckPerformance.set(entry.myDeckName, stats);
+  });
+
+  // Convert to array and calculate win rates
+  const deckStats = Array.from(deckPerformance.entries())
+    .map(([deckName, stats]) => ({
+      deckName,
+      ...stats,
+      winRate: stats.total > 0 ? (stats.wins / stats.total) * 100 : 0
+    }))
+    .sort((a, b) => b.total - a.total);
 
   // Calculate usage stats for each project
   const projectsWithStats = projects.map((project: ProjectWithData) => {
@@ -65,6 +120,11 @@ export default async function Projects() {
     const usedCategoryIds = new Set(project.entries.map((e: ProjectEntry) => e.categoryId));
     const categoriesUsed = usedCategoryIds.size;
 
+    // Get last updated date (most recent entry or creation date)
+    const lastUpdated = project.entries.length > 0 && project.entries[0]
+      ? project.entries[0].createdAt
+      : project.createdAt;
+
     return {
       ...project,
       stats: {
@@ -72,10 +132,16 @@ export default async function Projects() {
         decksUsed,
         totalDecks,
         categoriesUsed,
-        totalCategories
+        totalCategories,
+        lastUpdated
       }
     };
   });
+
+  // Sort by last updated (most recent first)
+  projectsWithStats.sort((a: ProjectWithStats, b: ProjectWithStats) =>
+    new Date(b.stats.lastUpdated).getTime() - new Date(a.stats.lastUpdated).getTime()
+  );
 
   return (
     <main className="space-y-6">
@@ -96,6 +162,68 @@ export default async function Projects() {
           New Project
         </Link>
       </div>
+
+      {/* Deck Performance Across All Projects */}
+      {deckStats.length > 0 && (
+        <div className="bg-white rounded-lg border border-primary-200">
+          <div className="px-6 py-4 border-b border-primary-200">
+            <h2 className="text-xl font-semibold text-primary-700">Deck Performance (All Projects)</h2>
+          </div>
+          <div className="overflow-x-auto max-h-[520px] overflow-y-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Deck
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Record
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Win Rate
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Games
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {deckStats.map((deck) => (
+                  <tr key={deck.deckName} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <div className="flex items-center gap-3">
+                        <Image
+                          src={getDeckImagePath(deck.deckName)}
+                          alt={deck.deckName}
+                          width={40}
+                          height={56}
+                          className="rounded shadow-sm"
+                        />
+                        <span>{deck.deckName}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {deck.wins}-{deck.losses}-{deck.draws}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        deck.winRate >= 60 ? 'bg-green-100 text-green-800' :
+                        deck.winRate >= 40 ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {formatWinRate(deck.winRate)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {deck.total}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {projectsWithStats.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-lg border border-primary-200">
