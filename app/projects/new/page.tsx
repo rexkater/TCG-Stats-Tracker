@@ -132,15 +132,11 @@ export default async function NewProjectPage() {
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Select a TCG...</option>
-              {tcgs.map((tcg: TCG) => {
-                const settings = JSON.parse(tcg.settingsJson);
-                return (
-                  <option key={tcg.id} value={tcg.id}>
-                    {tcg.name}
-                    {settings.contextLabel && ` (with ${settings.contextLabel}s)`}
-                  </option>
-                );
-              })}
+              {tcgs.map((tcg: TCG) => (
+                <option key={tcg.id} value={tcg.id}>
+                  {tcg.name}
+                </option>
+              ))}
             </select>
             <p className="text-sm text-gray-500 mt-1">
               Select the card game you want to track
@@ -155,20 +151,29 @@ export default async function NewProjectPage() {
             <ul className="space-y-2 text-sm text-blue-800">
               {tcgs.map((tcg: TCG) => {
                 const settings = JSON.parse(tcg.settingsJson);
+                const features = [];
+
+                if (settings.bestOfFormat === 1) {
+                  features.push('Best of 1');
+                } else if (settings.bestOfFormat === 3) {
+                  features.push('Best of 3');
+                }
+
+                if (settings.contextLabel) {
+                  features.push(`Tracks ${settings.contextLabel}s`);
+                }
+
+                if (settings.allowDraws) {
+                  features.push('Allows draws');
+                }
+
                 return (
                   <li key={tcg.id} className="flex items-start gap-2">
                     <span className="text-blue-600">•</span>
                     <div>
                       <strong>{tcg.name}</strong>
-                      {settings.contextLabel && (
-                        <span className="text-blue-700">
-                          {' '}
-                          - Tracks {settings.contextLabel}s
-                          {settings.contextRequired && ' (required)'}
-                        </span>
-                      )}
-                      {settings.allowDraws && (
-                        <span className="text-blue-700"> - Allows draws</span>
+                      {features.length > 0 && (
+                        <span className="text-blue-700"> - {features.join(', ')}</span>
                       )}
                     </div>
                   </li>

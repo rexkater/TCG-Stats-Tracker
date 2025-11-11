@@ -83,6 +83,9 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
         categories={project.categories}
         contextOptions={project.tcg.contextOptions}
         contextLabel={tcgSettings.contextLabel}
+        tcgName={project.tcg.name}
+        bestOfFormat={tcgSettings.bestOfFormat || 3}
+        allowDraws={tcgSettings.allowDraws || false}
         mode="create"
       />
     </main>

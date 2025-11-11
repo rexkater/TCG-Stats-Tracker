@@ -14,6 +14,7 @@ async function main() {
         contextLabel: "Battlefield",
         contextRequired: true,
         allowDraws: false,
+        bestOfFormat: 3, // Best of 3 series
       }),
     },
   });
@@ -24,9 +25,10 @@ async function main() {
     create: {
       name: "One Piece",
       settingsJson: JSON.stringify({
-        contextLabel: "Leader",
+        contextLabel: null,
         contextRequired: false,
-        allowDraws: true,
+        allowDraws: false,
+        bestOfFormat: 1, // Best of 1 (single game)
       }),
     },
   });
@@ -37,9 +39,10 @@ async function main() {
     create: {
       name: "Other",
       settingsJson: JSON.stringify({
-        contextLabel: "Context",
+        contextLabel: null,
         contextRequired: false,
         allowDraws: true,
+        bestOfFormat: 3, // Default to best of 3
       }),
     },
   });

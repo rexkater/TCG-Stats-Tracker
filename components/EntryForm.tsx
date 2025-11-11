@@ -12,6 +12,9 @@ interface EntryFormProps {
   categories: Category[];
   contextOptions: ContextOption[];
   contextLabel?: string;
+  tcgName: string;
+  bestOfFormat: number;
+  allowDraws: boolean;
   mode: 'create' | 'edit';
   entryId?: string;
   defaultValues?: {
@@ -35,6 +38,9 @@ export default function EntryForm({
   categories,
   contextOptions,
   contextLabel,
+  tcgName,
+  bestOfFormat,
+  allowDraws,
   mode,
   entryId,
   defaultValues,
@@ -44,6 +50,11 @@ export default function EntryForm({
   const [gameNumber, setGameNumber] = useState<string>(defaultValues?.gameNumber?.toString() || '');
   const [myDeckName, setMyDeckName] = useState<string>(defaultValues?.myDeckName || '');
   const [oppDeckName, setOppDeckName] = useState<string>(defaultValues?.oppDeckName || '');
+
+  // Best of 1 games always show dice roll, best of 3 only on game 1
+  const isBestOfOne = bestOfFormat === 1;
+  const showDiceRoll = isBestOfOne || gameNumber === '1';
+  const showDeckImages = tcgName === 'Riftbound';
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -97,8 +108,6 @@ export default function EntryForm({
     }
   };
 
-  const showDiceRoll = gameNumber === '1';
-
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 space-y-6">
       {/* Decks */}
@@ -107,8 +116,8 @@ export default function EntryForm({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             My Deck <span className="text-red-500">*</span>
           </label>
-          {/* Deck image preview */}
-          {decks.length > 0 && myDeckName && (
+          {/* Deck image preview - only for Riftbound */}
+          {showDeckImages && decks.length > 0 && myDeckName && (
             <div className="mb-3 flex justify-center">
               <Image
                 src={getDeckImagePath(myDeckName)}
@@ -150,8 +159,8 @@ export default function EntryForm({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Opponent Deck <span className="text-red-500">*</span>
           </label>
-          {/* Deck image preview */}
-          {decks.length > 0 && oppDeckName && (
+          {/* Deck image preview - only for Riftbound */}
+          {showDeckImages && decks.length > 0 && oppDeckName && (
             <div className="mb-3 flex justify-center">
               <Image
                 src={getDeckImagePath(oppDeckName)}
@@ -263,7 +272,7 @@ export default function EntryForm({
             <option value="">Select...</option>
             <option value="WIN">Win</option>
             <option value="LOSS">Loss</option>
-            <option value="DRAW">Draw</option>
+            {allowDraws && <option value="DRAW">Draw</option>}
           </select>
         </div>
 
@@ -303,39 +312,41 @@ export default function EntryForm({
         )}
       </div>
 
-      {/* Best-of-3 Tracking */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Game Number
-          </label>
-          <input
-            type="number"
-            name="gameNumber"
-            min="1"
-            max="3"
-            value={gameNumber}
-            onChange={(e) => setGameNumber(e.target.value)}
-            placeholder="1, 2, or 3"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
-          />
-          <p className="mt-1 text-xs text-gray-500">For best-of-3 matches (dice roll shown for game 1)</p>
-        </div>
+      {/* Best-of-3 Tracking - only for best of 3 games */}
+      {!isBestOfOne && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Game Number
+            </label>
+            <input
+              type="number"
+              name="gameNumber"
+              min="1"
+              max="3"
+              value={gameNumber}
+              onChange={(e) => setGameNumber(e.target.value)}
+              placeholder="1, 2, or 3"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
+            />
+            <p className="mt-1 text-xs text-gray-500">For best-of-3 matches (dice roll shown for game 1)</p>
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Series ID
-          </label>
-          <input
-            type="text"
-            name="seriesId"
-            defaultValue={defaultValues?.seriesId || ''}
-            placeholder="e.g., match-001"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
-          />
-          <p className="mt-1 text-xs text-gray-500">Groups games in the same match</p>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Series ID
+            </label>
+            <input
+              type="text"
+              name="seriesId"
+              defaultValue={defaultValues?.seriesId || ''}
+              placeholder="e.g., match-001"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
+            />
+            <p className="mt-1 text-xs text-gray-500">Groups games in the same match</p>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Notes */}
       <div>

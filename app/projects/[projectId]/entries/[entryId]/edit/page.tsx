@@ -114,6 +114,9 @@ export default async function EditEntry({ params }: { params: Promise<{ projectI
         categories={project.categories}
         contextOptions={project.tcg.contextOptions}
         contextLabel={tcgSettings.contextLabel}
+        tcgName={project.tcg.name}
+        bestOfFormat={tcgSettings.bestOfFormat || 3}
+        allowDraws={tcgSettings.allowDraws || false}
         mode="edit"
         entryId={entryId}
         defaultValues={{
