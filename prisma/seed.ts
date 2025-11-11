@@ -4,10 +4,17 @@ const db = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding database...");
 
-  // Create TCGs
+  // Create TCGs - update existing records to ensure correct settings
   const riftboundTCG = await db.tCG.upsert({
     where: { name: "Riftbound" },
-    update: {},
+    update: {
+      settingsJson: JSON.stringify({
+        contextLabel: "Battlefield",
+        contextRequired: true,
+        allowDraws: false,
+        bestOfFormat: 3, // Best of 3 series
+      }),
+    },
     create: {
       name: "Riftbound",
       settingsJson: JSON.stringify({
@@ -21,7 +28,14 @@ async function main() {
 
   const onePieceTCG = await db.tCG.upsert({
     where: { name: "One Piece" },
-    update: {},
+    update: {
+      settingsJson: JSON.stringify({
+        contextLabel: null,
+        contextRequired: false,
+        allowDraws: false,
+        bestOfFormat: 1, // Best of 1 (single game)
+      }),
+    },
     create: {
       name: "One Piece",
       settingsJson: JSON.stringify({
@@ -35,7 +49,14 @@ async function main() {
 
   const otherTCG = await db.tCG.upsert({
     where: { name: "Other" },
-    update: {},
+    update: {
+      settingsJson: JSON.stringify({
+        contextLabel: null,
+        contextRequired: false,
+        allowDraws: true,
+        bestOfFormat: 3, // Default to best of 3
+      }),
+    },
     create: {
       name: "Other",
       settingsJson: JSON.stringify({
