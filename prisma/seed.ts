@@ -18,6 +18,19 @@ async function main() {
     },
   });
 
+  const onePieceTCG = await db.tCG.upsert({
+    where: { name: "One Piece" },
+    update: {},
+    create: {
+      name: "One Piece",
+      settingsJson: JSON.stringify({
+        contextLabel: "Leader",
+        contextRequired: false,
+        allowDraws: true,
+      }),
+    },
+  });
+
   const otherTCG = await db.tCG.upsert({
     where: { name: "Other" },
     update: {},

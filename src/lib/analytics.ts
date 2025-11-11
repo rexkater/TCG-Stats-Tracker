@@ -52,6 +52,14 @@ export interface CategoryStats extends WinRateStats {
   categoryName: string;
 }
 
+export interface DeckBattlefieldPairStats extends WinRateStats {
+  oppDeckName: string;
+  myContextId: string | null;
+  myContextName: string | null;
+  oppContextId: string | null;
+  oppContextName: string | null;
+}
+
 export interface ProjectAnalytics {
   overall: WinRateStats;
   byMatchup: MatchupStats[];
@@ -60,6 +68,7 @@ export interface ProjectAnalytics {
   byContextMatchup: ContextMatchupStats[];
   byDeck: DeckStats[];
   byCategory: CategoryStats[];
+  byDeckBattlefieldPair: DeckBattlefieldPairStats[];
 }
 
 // ============================================================================
@@ -303,6 +312,48 @@ export function calculateCategoryStats(entries: EntryWithRelations[]): CategoryS
 }
 
 /**
+ * Calculate deck-specific battlefield pair matchup statistics
+ * Shows win rate against opponent decks with specific battlefield pairs
+ */
+export function calculateDeckBattlefieldPairStats(entries: EntryWithRelations[]): DeckBattlefieldPairStats[] {
+  // Group entries by opponent deck + battlefield pair combination
+  const matchupMap = new Map<string, EntryWithRelations[]>();
+
+  entries.forEach(entry => {
+    const myBfId = entry.myBattlefieldId ?? 'null';
+    const oppBfId = entry.oppBattlefieldId ?? 'null';
+    const key = `${entry.oppDeckName}|${myBfId}|${oppBfId}`;
+
+    if (!matchupMap.has(key)) {
+      matchupMap.set(key, []);
+    }
+    matchupMap.get(key)!.push(entry);
+  });
+
+  // Calculate stats for each matchup
+  const matchupStats: DeckBattlefieldPairStats[] = [];
+
+  matchupMap.forEach((matchupEntries, key) => {
+    const firstEntry = matchupEntries[0];
+    if (!firstEntry) return;
+
+    const stats = calculateWinRate(matchupEntries);
+
+    matchupStats.push({
+      ...stats,
+      oppDeckName: firstEntry.oppDeckName,
+      myContextId: firstEntry.myBattlefieldId,
+      myContextName: firstEntry.myBattlefield?.name ?? null,
+      oppContextId: firstEntry.oppBattlefieldId,
+      oppContextName: firstEntry.oppBattlefield?.name ?? null,
+    });
+  });
+
+  // Sort by total games
+  return matchupStats.sort((a, b) => b.total - a.total);
+}
+
+/**
  * Calculate all analytics for a project
  */
 export function calculateProjectAnalytics(entries: EntryWithRelations[]): ProjectAnalytics {
@@ -314,6 +365,7 @@ export function calculateProjectAnalytics(entries: EntryWithRelations[]): Projec
     byContextMatchup: calculateContextMatchupStats(entries),
     byDeck: calculateDeckStats(entries),
     byCategory: calculateCategoryStats(entries),
+    byDeckBattlefieldPair: calculateDeckBattlefieldPairStats(entries),
   };
 }
 

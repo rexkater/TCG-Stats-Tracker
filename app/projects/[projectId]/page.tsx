@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { calculateProjectAnalytics, formatWinRate, formatRecord, type EntryWithRelations } from '@/lib/analytics';
 import BattlefieldAnalytics from '@/components/BattlefieldAnalytics';
+import DeckBattlefieldPairAnalytics from '@/components/DeckBattlefieldPairAnalytics';
 import DeleteButton from '@/components/DeleteButton';
 import { getDeckImagePath } from '@/lib/deck-images';
 import RenameProject from '@/components/RenameProject';
@@ -377,13 +378,21 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
             </div>
           )}
 
-          {/* Overall Performance Analytics (Tabbed) */}
+          {/* Context Performance Analytics (Tabbed) */}
           {tcgSettings.contextLabel && (analytics.byContext.length > 0 || analytics.byContextMatchup.length > 0 || analytics.byCategory.length > 0) && (
             <BattlefieldAnalytics
               contextLabel={tcgSettings.contextLabel}
               byContext={analytics.byContext}
               byContextMatchup={analytics.byContextMatchup}
               byCategory={analytics.byCategory}
+            />
+          )}
+
+          {/* Deck-Specific Battlefield Pair Matchups (Riftbound only) */}
+          {tcgSettings.contextLabel && analytics.byDeckBattlefieldPair.length > 0 && (
+            <DeckBattlefieldPairAnalytics
+              contextLabel={tcgSettings.contextLabel}
+              byDeckBattlefieldPair={analytics.byDeckBattlefieldPair}
             />
           )}
         </>
