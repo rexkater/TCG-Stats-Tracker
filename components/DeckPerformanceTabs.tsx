@@ -19,9 +19,21 @@ type DeckPerformanceTabsProps = {
 };
 
 export default function DeckPerformanceTabs({ deckStatsByTCG }: DeckPerformanceTabsProps) {
-  // Convert Map to array for easier handling
-  const tcgEntries = Array.from(deckStatsByTCG.entries());
-  
+  // Convert Map to array and sort by preferred order: Riftbound, One Piece, Other
+  const tcgOrder = ['Riftbound', 'One Piece', 'Other'];
+  const tcgEntries = Array.from(deckStatsByTCG.entries()).sort((a, b) => {
+    const indexA = tcgOrder.indexOf(a[0]);
+    const indexB = tcgOrder.indexOf(b[0]);
+    // If both are in the order list, sort by their position
+    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+    // If only A is in the list, it comes first
+    if (indexA !== -1) return -1;
+    // If only B is in the list, it comes first
+    if (indexB !== -1) return 1;
+    // Otherwise, sort alphabetically
+    return a[0].localeCompare(b[0]);
+  });
+
   // Set default tab to "Riftbound" if it exists, otherwise first TCG
   const defaultTab = tcgEntries.find(([tcgName]) => tcgName === 'Riftbound')?.[0] || tcgEntries[0]?.[0] || '';
   const [activeTab, setActiveTab] = useState<string>(defaultTab);

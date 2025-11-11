@@ -7,9 +7,22 @@ import type { TCG } from '@prisma/client';
 export const dynamic = 'force-dynamic';
 
 export default async function NewProjectPage() {
-  // Fetch available TCGs
-  const tcgs = await prisma.tCG.findMany({
-    orderBy: { name: 'asc' },
+  // Fetch available TCGs and sort by preferred order: Riftbound, One Piece, Other
+  const tcgs = await prisma.tCG.findMany();
+
+  // Custom sort order
+  const tcgOrder = ['Riftbound', 'One Piece', 'Other'];
+  tcgs.sort((a: TCG, b: TCG) => {
+    const indexA = tcgOrder.indexOf(a.name);
+    const indexB = tcgOrder.indexOf(b.name);
+    // If both are in the order list, sort by their position
+    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+    // If only A is in the list, it comes first
+    if (indexA !== -1) return -1;
+    // If only B is in the list, it comes first
+    if (indexB !== -1) return 1;
+    // Otherwise, sort alphabetically
+    return a.name.localeCompare(b.name);
   });
 
   async function createProject(formData: FormData) {

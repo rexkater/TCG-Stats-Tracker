@@ -18,9 +18,8 @@ export default function BattlefieldAnalytics({
 }: BattlefieldAnalyticsProps) {
   // If no contextLabel (One Piece, Other TCGs), only show category tab
   const hasContext = contextLabel !== null;
-  const [activeTab, setActiveTab] = useState<'battlefield' | 'matchups' | 'category'>(
-    hasContext ? 'battlefield' : 'category'
-  );
+  // Default to 'category' tab for all TCGs (Category first)
+  const [activeTab, setActiveTab] = useState<'battlefield' | 'matchups' | 'category'>('category');
 
   return (
     <div className="bg-white rounded-lg border border-gray-200">
@@ -31,6 +30,17 @@ export default function BattlefieldAnalytics({
             {hasContext ? 'Context Performance' : 'Category Performance'}
           </h2>
           <div className="flex gap-2 flex-wrap">
+            {/* Category tab first */}
+            <button
+              onClick={() => setActiveTab('category')}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                activeTab === 'category'
+                  ? 'bg-accent-100 text-accent-700'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              Category
+            </button>
             {/* Only show context tabs if contextLabel exists */}
             {hasContext && (
               <>
@@ -56,16 +66,6 @@ export default function BattlefieldAnalytics({
                 </button>
               </>
             )}
-            <button
-              onClick={() => setActiveTab('category')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                activeTab === 'category'
-                  ? 'bg-accent-100 text-accent-700'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
-            >
-              Category
-            </button>
           </div>
         </div>
       </div>
