@@ -87,13 +87,16 @@ export default function DeckPerformanceTabs({ deckStatsByTCG }: DeckPerformanceT
                 <tr key={deck.deckName} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     <div className="flex items-center gap-3">
-                      <Image
-                        src={getDeckImagePath(deck.deckName)}
-                        alt={deck.deckName}
-                        width={40}
-                        height={56}
-                        className="rounded shadow-sm"
-                      />
+                      {/* Only show images for Riftbound TCG */}
+                      {activeTab === 'Riftbound' && (
+                        <Image
+                          src={getDeckImagePath(deck.deckName)}
+                          alt={deck.deckName}
+                          width={40}
+                          height={56}
+                          className="rounded shadow-sm"
+                        />
+                      )}
                       <span>{deck.deckName}</span>
                     </div>
                   </td>

@@ -280,13 +280,16 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                       <tr key={deck.deckName} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           <div className="flex items-center gap-3">
-                            <Image
-                              src={getDeckImagePath(deck.deckName)}
-                              alt={deck.deckName}
-                              width={40}
-                              height={56}
-                              className="rounded shadow-sm"
-                            />
+                            {/* Only show images for Riftbound TCG */}
+                            {project.tcg.name === 'Riftbound' && (
+                              <Image
+                                src={getDeckImagePath(deck.deckName)}
+                                alt={deck.deckName}
+                                width={40}
+                                height={56}
+                                className="rounded shadow-sm"
+                              />
+                            )}
                             <span>{deck.deckName}</span>
                           </div>
                         </td>
@@ -453,9 +456,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Category
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Game
-                  </th>
+                  {/* Only show Game column for best of 3 games */}
+                  {tcgSettings.bestOfFormat !== 1 && (
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Game
+                    </th>
+                  )}
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Notes
                   </th>
@@ -506,12 +512,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {entry.category.name}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {entry.gameNumber ? `G${entry.gameNumber}` : '-'}
-                      {entry.seriesId && (
-                        <span className="text-xs text-gray-400 ml-1">({entry.seriesId})</span>
-                      )}
-                    </td>
+                    {/* Only show Game column for best of 3 games */}
+                    {tcgSettings.bestOfFormat !== 1 && (
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {entry.gameNumber ? `G${entry.gameNumber}` : '-'}
+                        {entry.seriesId && (
+                          <span className="text-xs text-gray-400 ml-1">({entry.seriesId})</span>
+                        )}
+                      </td>
+                    )}
                     <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
                       {entry.notesShort || '-'}
                     </td>
