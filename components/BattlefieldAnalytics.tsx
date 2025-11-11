@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { formatWinRate, formatRecord, type ContextStats, type ContextMatchupStats, type CategoryStats } from '@/lib/analytics';
 
 type BattlefieldAnalyticsProps = {
-  contextLabel: string;
+  contextLabel: string | null;
   byContext: ContextStats[];
   byContextMatchup: ContextMatchupStats[];
   byCategory: CategoryStats[];
@@ -16,35 +16,46 @@ export default function BattlefieldAnalytics({
   byContextMatchup,
   byCategory,
 }: BattlefieldAnalyticsProps) {
-  const [activeTab, setActiveTab] = useState<'battlefield' | 'matchups' | 'category'>('battlefield');
+  // If no contextLabel (One Piece, Other TCGs), only show category tab
+  const hasContext = contextLabel !== null;
+  const [activeTab, setActiveTab] = useState<'battlefield' | 'matchups' | 'category'>(
+    hasContext ? 'battlefield' : 'category'
+  );
 
   return (
     <div className="bg-white rounded-lg border border-gray-200">
       {/* Header with Tabs */}
       <div className="border-b border-gray-200">
         <div className="px-6 py-4">
-          <h2 className="text-xl font-semibold text-gray-900 mb-3">Context Performance</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-3">
+            {hasContext ? 'Context Performance' : 'Category Performance'}
+          </h2>
           <div className="flex gap-2 flex-wrap">
-            <button
-              onClick={() => setActiveTab('battlefield')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                activeTab === 'battlefield'
-                  ? 'bg-accent-100 text-accent-700'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
-            >
-              {contextLabel}
-            </button>
-            <button
-              onClick={() => setActiveTab('matchups')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                activeTab === 'matchups'
-                  ? 'bg-accent-100 text-accent-700'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
-            >
-              {contextLabel} Matchups
-            </button>
+            {/* Only show context tabs if contextLabel exists */}
+            {hasContext && (
+              <>
+                <button
+                  onClick={() => setActiveTab('battlefield')}
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                    activeTab === 'battlefield'
+                      ? 'bg-accent-100 text-accent-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  {contextLabel}
+                </button>
+                <button
+                  onClick={() => setActiveTab('matchups')}
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                    activeTab === 'matchups'
+                      ? 'bg-accent-100 text-accent-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  {contextLabel} Matchups
+                </button>
+              </>
+            )}
             <button
               onClick={() => setActiveTab('category')}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
