@@ -33,6 +33,9 @@ export default function DeckBattlefieldPairAnalytics({
           <thead className="bg-gray-50 sticky top-0">
             <tr>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                My Deck
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Opponent Deck
               </th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -54,7 +57,10 @@ export default function DeckBattlefieldPairAnalytics({
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {byDeckBattlefieldPair.map((matchup, idx) => (
-              <tr key={`${matchup.oppDeckName}-${matchup.myContextId}-${matchup.oppContextId}-${idx}`} className="hover:bg-gray-50">
+              <tr key={`${matchup.myDeckName}-${matchup.oppDeckName}-${matchup.myContextId}-${matchup.oppContextId}-${idx}`} className="hover:bg-gray-50">
+                <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {matchup.myDeckName}
+                </td>
                 <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
                   {matchup.oppDeckName}
                 </td>

@@ -56,6 +56,7 @@ export interface CategoryStats extends WinRateStats {
 }
 
 export interface DeckBattlefieldPairStats extends WinRateStats {
+  myDeckName: string;
   oppDeckName: string;
   myContextId: string | null;
   myContextName: string | null;
@@ -319,15 +320,17 @@ export function calculateCategoryStats(entries: EntryWithRelations[]): CategoryS
 /**
  * Calculate deck-specific battlefield pair matchup statistics
  * Shows win rate against opponent decks with specific battlefield pairs
+ * Groups by my deck + opponent deck + battlefield pair
  */
 export function calculateDeckBattlefieldPairStats(entries: EntryWithRelations[]): DeckBattlefieldPairStats[] {
-  // Group entries by opponent deck + battlefield pair combination
+  // Group entries by my deck + opponent deck + battlefield pair combination
   const matchupMap = new Map<string, EntryWithRelations[]>();
 
   entries.forEach(entry => {
+    const myDeckName = entry.myDeckName;
     const myBfId = entry.myBattlefieldId ?? 'null';
     const oppBfId = entry.oppBattlefieldId ?? 'null';
-    const key = `${entry.oppDeckName}|${myBfId}|${oppBfId}`;
+    const key = `${myDeckName}|${entry.oppDeckName}|${myBfId}|${oppBfId}`;
 
     if (!matchupMap.has(key)) {
       matchupMap.set(key, []);
@@ -346,6 +349,7 @@ export function calculateDeckBattlefieldPairStats(entries: EntryWithRelations[])
 
     matchupStats.push({
       ...stats,
+      myDeckName: firstEntry.myDeckName,
       oppDeckName: firstEntry.oppDeckName,
       myContextId: firstEntry.myBattlefieldId,
       myContextName: firstEntry.myBattlefield?.name ?? null,
@@ -354,8 +358,11 @@ export function calculateDeckBattlefieldPairStats(entries: EntryWithRelations[])
     });
   });
 
-  // Sort by total games
-  return matchupStats.sort((a, b) => b.total - a.total);
+  // Sort by my deck name, then by total games
+  return matchupStats.sort((a, b) => {
+    const deckCompare = a.myDeckName.localeCompare(b.myDeckName);
+    return deckCompare !== 0 ? deckCompare : b.total - a.total;
+  });
 }
 
 /**
