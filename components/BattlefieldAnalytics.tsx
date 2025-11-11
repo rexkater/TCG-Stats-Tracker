@@ -77,6 +77,9 @@ export default function BattlefieldAnalytics({
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Deck
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {contextLabel}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -91,9 +94,12 @@ export default function BattlefieldAnalytics({
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {byContext.map((context) => (
-                <tr key={context.contextOptionId || 'none'} className="hover:bg-gray-50">
+              {byContext.map((context, idx) => (
+                <tr key={`${context.deckName}-${context.contextOptionId || 'none'}-${idx}`} className="hover:bg-gray-50">
                   <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {context.deckName}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
                     {context.contextOptionName || 'None'}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
@@ -120,6 +126,9 @@ export default function BattlefieldAnalytics({
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Deck
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   My {contextLabel}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -138,11 +147,14 @@ export default function BattlefieldAnalytics({
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {byContextMatchup.map((matchup, idx) => (
-                <tr key={`${matchup.myContextId}-${matchup.oppContextId}-${idx}`} className="hover:bg-gray-50">
+                <tr key={`${matchup.deckName}-${matchup.myContextId}-${matchup.oppContextId}-${idx}`} className="hover:bg-gray-50">
                   <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {matchup.deckName}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
                     {matchup.myContextName || 'None'}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
                     {matchup.oppContextName || 'None'}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
@@ -169,6 +181,9 @@ export default function BattlefieldAnalytics({
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Deck
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Category
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -183,9 +198,12 @@ export default function BattlefieldAnalytics({
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {byCategory.map((category) => (
-                <tr key={category.categoryId} className="hover:bg-gray-50">
+              {byCategory.map((category, idx) => (
+                <tr key={`${category.deckName}-${category.categoryId}-${idx}`} className="hover:bg-gray-50">
                   <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {category.deckName}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
                     {category.categoryName}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">

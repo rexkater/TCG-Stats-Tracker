@@ -33,6 +33,7 @@ export interface InitiativeStats {
 export interface ContextStats extends WinRateStats {
   contextOptionId: string | null;
   contextOptionName: string | null;
+  deckName: string;
 }
 
 export interface ContextMatchupStats extends WinRateStats {
@@ -40,6 +41,7 @@ export interface ContextMatchupStats extends WinRateStats {
   myContextName: string | null;
   oppContextId: string | null;
   oppContextName: string | null;
+  deckName: string;
 }
 
 export interface DeckStats extends WinRateStats {
@@ -50,6 +52,7 @@ export interface DeckStats extends WinRateStats {
 export interface CategoryStats extends WinRateStats {
   categoryId: string;
   categoryName: string;
+  deckName: string;
 }
 
 export interface DeckBattlefieldPairStats extends WinRateStats {
@@ -150,71 +153,61 @@ export function calculateInitiativeStats(entries: EntryWithRelations[]): Initiat
 
 /**
  * Calculate context-based statistics (e.g., battlefield performance)
- * Counts both when you use a battlefield AND when opponent uses it
+ * Groups by deck + context to show performance per deck with each battlefield
  */
 export function calculateContextStats(entries: EntryWithRelations[]): ContextStats[] {
-  // Map to track all entries where a battlefield appears (either side)
-  const contextMap = new Map<string | null, EntryWithRelations[]>();
+  // Map to track entries by deck + battlefield combination
+  const contextMap = new Map<string, EntryWithRelations[]>();
 
   entries.forEach(entry => {
-    // Add entry for my battlefield
-    const myKey = entry.myBattlefieldId;
-    if (!contextMap.has(myKey)) {
-      contextMap.set(myKey, []);
-    }
-    contextMap.get(myKey)!.push(entry);
+    // Only track my battlefield (not opponent's) and group by my deck
+    const contextId = entry.myBattlefieldId ?? 'null';
+    const deckName = entry.myDeckName;
+    const key = `${deckName}|${contextId}`;
 
-    // Add entry for opponent's battlefield (if different from mine)
-    const oppKey = entry.oppBattlefieldId;
-    if (oppKey !== myKey) {
-      if (!contextMap.has(oppKey)) {
-        contextMap.set(oppKey, []);
-      }
-      contextMap.get(oppKey)!.push(entry);
+    if (!contextMap.has(key)) {
+      contextMap.set(key, []);
     }
+    contextMap.get(key)!.push(entry);
   });
 
-  // Calculate stats for each context
+  // Calculate stats for each deck + context combination
   const contextStats: ContextStats[] = [];
 
-  contextMap.forEach((contextEntries, contextOptionId) => {
-    const stats = calculateWinRate(contextEntries);
+  contextMap.forEach((contextEntries, key) => {
+    const firstEntry = contextEntries[0];
+    if (!firstEntry) return;
 
-    // Find the battlefield name from any entry that has this battlefield
-    let contextOptionName: string | null = null;
-    for (const entry of contextEntries) {
-      if (entry.myBattlefieldId === contextOptionId && entry.myBattlefield) {
-        contextOptionName = entry.myBattlefield.name;
-        break;
-      }
-      if (entry.oppBattlefieldId === contextOptionId && entry.oppBattlefield) {
-        contextOptionName = entry.oppBattlefield.name;
-        break;
-      }
-    }
+    const stats = calculateWinRate(contextEntries);
 
     contextStats.push({
       ...stats,
-      contextOptionId,
-      contextOptionName,
+      contextOptionId: firstEntry.myBattlefieldId,
+      contextOptionName: firstEntry.myBattlefield?.name ?? null,
+      deckName: firstEntry.myDeckName,
     });
   });
 
-  // Sort by total games
-  return contextStats.sort((a, b) => b.total - a.total);
+  // Sort by deck name, then by total games
+  return contextStats.sort((a, b) => {
+    const deckCompare = a.deckName.localeCompare(b.deckName);
+    return deckCompare !== 0 ? deckCompare : b.total - a.total;
+  });
 }
 
 /**
  * Calculate battlefield matchup statistics (combinations of my battlefield vs opponent's battlefield)
+ * Groups by deck + battlefield matchup to show performance per deck with each battlefield pair
  */
 export function calculateContextMatchupStats(entries: EntryWithRelations[]): ContextMatchupStats[] {
-  // Group entries by battlefield matchup (my battlefield + opponent's battlefield)
+  // Group entries by deck + battlefield matchup (my battlefield + opponent's battlefield)
   const matchupMap = new Map<string, EntryWithRelations[]>();
 
   entries.forEach(entry => {
+    const deckName = entry.myDeckName;
     const myId = entry.myBattlefieldId ?? 'null';
     const oppId = entry.oppBattlefieldId ?? 'null';
-    const key = `${myId}|${oppId}`;
+    const key = `${deckName}|${myId}|${oppId}`;
 
     if (!matchupMap.has(key)) {
       matchupMap.set(key, []);
@@ -237,11 +230,15 @@ export function calculateContextMatchupStats(entries: EntryWithRelations[]): Con
       myContextName: firstEntry.myBattlefield?.name ?? null,
       oppContextId: firstEntry.oppBattlefieldId,
       oppContextName: firstEntry.oppBattlefield?.name ?? null,
+      deckName: firstEntry.myDeckName,
     });
   });
 
-  // Sort by total games
-  return matchupStats.sort((a, b) => b.total - a.total);
+  // Sort by deck name, then by total games
+  return matchupStats.sort((a, b) => {
+    const deckCompare = a.deckName.localeCompare(b.deckName);
+    return deckCompare !== 0 ? deckCompare : b.total - a.total;
+  });
 }
 
 /**
@@ -278,23 +275,27 @@ export function calculateDeckStats(entries: EntryWithRelations[]): DeckStats[] {
 
 /**
  * Calculate category-based statistics
+ * Groups by deck + category to show performance per deck in each category
  */
 export function calculateCategoryStats(entries: EntryWithRelations[]): CategoryStats[] {
-  // Group entries by category
+  // Group entries by deck + category
   const categoryMap = new Map<string, EntryWithRelations[]>();
 
   entries.forEach(entry => {
-    const key = entry.categoryId;
+    const deckName = entry.myDeckName;
+    const categoryId = entry.categoryId;
+    const key = `${deckName}|${categoryId}`;
+
     if (!categoryMap.has(key)) {
       categoryMap.set(key, []);
     }
     categoryMap.get(key)!.push(entry);
   });
 
-  // Calculate stats for each category
+  // Calculate stats for each deck + category combination
   const categoryStats: CategoryStats[] = [];
 
-  categoryMap.forEach((categoryEntries, categoryId) => {
+  categoryMap.forEach((categoryEntries, key) => {
     const firstEntry = categoryEntries[0];
     if (!firstEntry) return; // Skip if no entries (shouldn't happen)
 
@@ -302,13 +303,17 @@ export function calculateCategoryStats(entries: EntryWithRelations[]): CategoryS
 
     categoryStats.push({
       ...stats,
-      categoryId,
+      categoryId: firstEntry.categoryId,
       categoryName: firstEntry.category.name,
+      deckName: firstEntry.myDeckName,
     });
   });
 
-  // Sort by total games
-  return categoryStats.sort((a, b) => b.total - a.total);
+  // Sort by deck name, then by total games
+  return categoryStats.sort((a, b) => {
+    const deckCompare = a.deckName.localeCompare(b.deckName);
+    return deckCompare !== 0 ? deckCompare : b.total - a.total;
+  });
 }
 
 /**
