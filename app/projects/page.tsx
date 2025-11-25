@@ -53,11 +53,7 @@ export default async function Projects() {
           categoryId: true,
           result: true,
           createdAt: true
-        },
-        orderBy: {
-          createdAt: 'desc'
-        },
-        take: 1 // Get most recent entry for last updated
+        }
       }
     },
     where: {
@@ -149,8 +145,12 @@ export default async function Projects() {
     const categoriesUsed = usedCategoryIds.size;
 
     // Get last updated date (most recent entry or creation date)
-    const lastUpdated = project.entries.length > 0 && project.entries[0]
-      ? project.entries[0].createdAt
+    // Sort entries by createdAt desc to get the most recent one
+    const sortedEntries = [...project.entries].sort((a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+    const lastUpdated = sortedEntries.length > 0 && sortedEntries[0]
+      ? sortedEntries[0].createdAt
       : project.createdAt;
 
     return {
