@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import type { Deck } from '@prisma/client';
+import { createNote } from '../actions';
 
 // Force dynamic rendering - don't try to statically generate this page
 export const dynamic = 'force-dynamic';
@@ -47,36 +47,7 @@ export default async function NewNotePage({ params }: PageProps) {
     );
   }
 
-  async function createNote(formData: FormData) {
-    'use server';
-
-    const deckAId = formData.get('deckAId') as string;
-    const deckBId = formData.get('deckBId') as string;
-    const contentMarkdown = formData.get('contentMarkdown') as string;
-    const pinned = formData.get('pinned') === 'on';
-
-    if (!deckAId || !deckBId || !contentMarkdown) {
-      throw new Error('Missing required fields');
-    }
-
-    if (deckAId === deckBId) {
-      throw new Error('Deck A and Deck B must be different');
-    }
-
-    await prisma.matchupNotesLog.create({
-      data: {
-        projectId,
-        tcgId: project.tcg.id,
-        deckAId,
-        deckBId,
-        authorUserId: user.id,
-        contentMarkdown,
-        pinned
-      }
-    });
-
-    redirect(`/projects/${projectId}/notes`);
-  }
+  const createNoteWithData = createNote.bind(null, projectId, project.tcg.id, user.id);
 
   return (
     <main className="space-y-6">
@@ -93,7 +64,7 @@ export default async function NewNotePage({ params }: PageProps) {
       <h1 className="text-3xl font-bold text-gray-900">New Matchup Note</h1>
 
       {/* Form */}
-      <form action={createNote} className="bg-white rounded-lg border border-gray-200 p-6 space-y-6">
+      <form action={createNoteWithData} className="bg-white rounded-lg border border-gray-200 p-6 space-y-6">
         {/* Deck A */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">

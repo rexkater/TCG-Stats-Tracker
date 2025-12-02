@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import type { Deck } from '@prisma/client';
+import { updateNote, toggleNotePin } from '../../actions';
 
 // Force dynamic rendering - don't try to statically generate this page
 export const dynamic = 'force-dynamic';
@@ -43,47 +43,8 @@ export default async function EditNotePage({ params }: PageProps) {
     );
   }
 
-  async function updateNote(formData: FormData) {
-    'use server';
-
-    const deckAId = formData.get('deckAId') as string;
-    const deckBId = formData.get('deckBId') as string;
-    const contentMarkdown = formData.get('contentMarkdown') as string;
-    const pinned = formData.get('pinned') === 'on';
-
-    if (!deckAId || !deckBId || !contentMarkdown) {
-      throw new Error('Missing required fields');
-    }
-
-    if (deckAId === deckBId) {
-      throw new Error('Deck A and Deck B must be different');
-    }
-
-    await prisma.matchupNotesLog.update({
-      where: { id: noteId },
-      data: {
-        deckAId,
-        deckBId,
-        contentMarkdown,
-        pinned
-      }
-    });
-
-    redirect(`/projects/${projectId}/notes`);
-  }
-
-  async function togglePin() {
-    'use server';
-
-    await prisma.matchupNotesLog.update({
-      where: { id: noteId },
-      data: {
-        pinned: !note.pinned
-      }
-    });
-
-    redirect(`/projects/${projectId}/notes`);
-  }
+  const updateNoteWithData = updateNote.bind(null, projectId, noteId);
+  const togglePinWithData = toggleNotePin.bind(null, projectId, noteId, note.pinned);
 
   return (
     <main className="space-y-6">
@@ -99,7 +60,7 @@ export default async function EditNotePage({ params }: PageProps) {
 
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Edit Matchup Note</h1>
-        <form action={togglePin}>
+        <form action={togglePinWithData}>
           <button
             type="submit"
             className="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors font-medium"
@@ -110,7 +71,7 @@ export default async function EditNotePage({ params }: PageProps) {
       </div>
 
       {/* Form */}
-      <form action={updateNote} className="bg-white rounded-lg border border-gray-200 p-6 space-y-6">
+      <form action={updateNoteWithData} className="bg-white rounded-lg border border-gray-200 p-6 space-y-6">
         {/* Deck A */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
