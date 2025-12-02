@@ -13,10 +13,6 @@ export async function createNote(projectId: string, tcgId: string, authorUserId:
     throw new Error('Missing required fields');
   }
 
-  if (deckAId === deckBId) {
-    throw new Error('Deck A and Deck B must be different');
-  }
-
   await prisma.matchupNotesLog.create({
     data: {
       projectId,
@@ -40,10 +36,6 @@ export async function updateNote(projectId: string, noteId: string, formData: Fo
 
   if (!deckAId || !deckBId || !contentMarkdown) {
     throw new Error('Missing required fields');
-  }
-
-  if (deckAId === deckBId) {
-    throw new Error('Deck A and Deck B must be different');
   }
 
   await prisma.matchupNotesLog.update({
