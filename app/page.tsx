@@ -36,7 +36,7 @@ export default async function Home() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold text-green-900 mb-1">
-                Welcome back, {session.user.username}!
+                Welcome back{session?.user?.username ? `, ${session.user.username}` : ''}!
               </h2>
               <p className="text-green-700">Ready to track your matches?</p>
             </div>
