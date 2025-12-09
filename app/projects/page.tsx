@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma';
 import type { Project, TCG } from '@prisma/client';
 import Link from 'next/link';
 import DeckPerformanceTabs from '@/components/DeckPerformanceTabs';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
 // Force dynamic rendering - don't try to statically generate this page
 export const dynamic = 'force-dynamic';
@@ -34,6 +36,21 @@ type ProjectWithStats = ProjectWithData & {
 };
 
 export default async function Projects() {
+  // Check authentication
+  const session = await auth();
+  if (!session?.user?.username) {
+    redirect('/auth/signin');
+  }
+
+  // Get the user
+  const user = await prisma.user.findUnique({
+    where: { username: session.user.username },
+  });
+
+  if (!user) {
+    redirect('/auth/signin');
+  }
+
   const projects = await prisma.project.findMany({
     include: {
       tcg: true,
@@ -57,18 +74,28 @@ export default async function Projects() {
       }
     },
     where: {
-      archivedAt: null
+      archivedAt: null,
+      owners: {
+        some: {
+          id: user.id
+        }
+      }
     },
     orderBy: {
       createdAt: 'desc'
     }
   });
 
-  // Get all entries for deck performance aggregation with TCG info
+  // Get all entries for deck performance aggregation with TCG info (only for user's projects)
   const allEntries = await prisma.entry.findMany({
     where: {
       project: {
-        archivedAt: null
+        archivedAt: null,
+        owners: {
+          some: {
+            id: user.id
+          }
+        }
       }
     },
     select: {

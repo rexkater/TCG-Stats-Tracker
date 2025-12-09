@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 
 export async function PATCH(
   req: NextRequest,
@@ -64,26 +65,45 @@ export async function DELETE(
 ) {
   try {
     const { entryId } = await params;
-    const body = await req.json();
-    const { passcode } = body;
 
-    // Validate passcode
-    const adminPasscode = process.env.ADMIN_PASSCODE;
-    if (!adminPasscode || passcode !== adminPasscode) {
+    // Check authentication
+    const session = await auth();
+    if (!session?.user?.username) {
       return NextResponse.json(
-        { error: "Invalid passcode" },
+        { error: "Unauthorized" },
         { status: 401 }
       );
     }
 
-    // Check if entry exists
-    const entry = await prisma.entry.findUnique({
-      where: { id: entryId },
+    // Get the user
+    const user = await prisma.user.findUnique({
+      where: { username: session.user.username },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "User not found" },
+        { status: 404 }
+      );
+    }
+
+    // Check if entry exists and user owns the project
+    const entry = await prisma.entry.findFirst({
+      where: {
+        id: entryId,
+        project: {
+          owners: {
+            some: {
+              id: user.id
+            }
+          }
+        }
+      },
     });
 
     if (!entry) {
       return NextResponse.json(
-        { error: "Entry not found" },
+        { error: "Entry not found or you don't have permission to delete it" },
         { status: 404 }
       );
     }

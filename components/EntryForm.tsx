@@ -125,6 +125,7 @@ export default function EntryForm({
                 width={100}
                 height={140}
                 className="rounded-lg shadow-md"
+                unoptimized
               />
             </div>
           )}
@@ -168,6 +169,7 @@ export default function EntryForm({
                 width={100}
                 height={140}
                 className="rounded-lg shadow-md"
+                unoptimized
               />
             </div>
           )}
@@ -177,7 +179,6 @@ export default function EntryForm({
               required
               value={oppDeckName}
               onChange={(e) => setOppDeckName(e.target.value)}
-              defaultValue={defaultValues?.oppDeckName || ''}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base touch-manipulation min-h-[44px]"
             >
               <option value="">Select a deck...</option>

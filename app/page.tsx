@@ -1,6 +1,9 @@
 import Link from 'next/link';
+import { auth } from '@/auth';
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+
   return (
     <main className="space-y-8">
       <div>
@@ -8,13 +11,54 @@ export default function Home() {
         <p className="text-primary-600 text-base sm:text-lg">Track your Trading Card Game statistics and improve your gameplay</p>
       </div>
 
+      {/* Auth CTAs */}
+      {!session ? (
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-6 sm:p-8 text-white">
+          <h2 className="text-2xl font-bold mb-2">Get Started Today</h2>
+          <p className="mb-6 text-blue-100">Create an account to start tracking your TCG statistics</p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              href="/auth/signup"
+              className="inline-block bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors font-semibold text-center"
+            >
+              Sign Up Free
+            </Link>
+            <Link
+              href="/auth/signin"
+              className="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-400 transition-colors font-semibold text-center border border-blue-400"
+            >
+              Sign In
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-green-900 mb-1">
+                Welcome back, {session.user.username}!
+              </h2>
+              <p className="text-green-700">Ready to track your matches?</p>
+            </div>
+            <Link
+              href="/projects"
+              className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold"
+            >
+              Go to Projects
+            </Link>
+          </div>
+        </div>
+      )}
+
       <div className="grid gap-4 md:grid-cols-2">
         <Link
-          href="/projects"
+          href={session ? "/projects" : "/auth/signup"}
           className="block bg-white border border-primary-200 rounded-lg p-6 hover:border-accent-500 hover:shadow-md transition-all touch-manipulation min-h-[100px]"
         >
           <h2 className="text-xl font-semibold mb-2 text-primary-700">📊 Projects</h2>
-          <p className="text-primary-600">View and manage your TCG projects</p>
+          <p className="text-primary-600">
+            {session ? "View and manage your TCG projects" : "Sign up to create and manage projects"}
+          </p>
         </Link>
 
         <Link

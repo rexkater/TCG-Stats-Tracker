@@ -2,11 +2,18 @@ import { prisma } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import type { TCG } from '@prisma/client';
+import { auth } from '@/auth';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
 
 export default async function NewProjectPage() {
+  // Check authentication
+  const session = await auth();
+  if (!session?.user?.username) {
+    redirect('/auth/signin');
+  }
+
   // Fetch available TCGs and sort by preferred order: Riftbound, One Piece, Other
   const tcgs = await prisma.tCG.findMany();
 
@@ -27,6 +34,21 @@ export default async function NewProjectPage() {
 
   async function createProject(formData: FormData) {
     'use server';
+
+    // Check authentication in server action
+    const session = await auth();
+    if (!session?.user?.username) {
+      redirect('/auth/signin');
+    }
+
+    // Get the user
+    const user = await prisma.user.findUnique({
+      where: { username: session.user.username },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
 
     const name = formData.get('name') as string;
     const tcgId = formData.get('tcgId') as string;
@@ -67,11 +89,14 @@ export default async function NewProjectPage() {
       { name: "Testing", active: true },
     ];
 
-    // Create the project with categories and decks if Riftbound
+    // Create the project with categories, decks if Riftbound, and associate with user
     const project = await prisma.project.create({
       data: {
         name,
         tcgId,
+        owners: {
+          connect: { id: user.id },
+        },
         categories: {
           create: defaultCategories,
         },

@@ -21,17 +21,11 @@ export default function DeleteButton({
   className = "",
 }: DeleteButtonProps) {
   const [showConfirm, setShowConfirm] = useState(false);
-  const [passcode, setPasscode] = useState("");
   const [error, setError] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
 
   const handleDelete = async () => {
-    if (!passcode) {
-      setError("Please enter the admin passcode");
-      return;
-    }
-
     setIsDeleting(true);
     setError("");
 
@@ -46,7 +40,6 @@ export default function DeleteButton({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ passcode }),
       });
 
       const data = await response.json();
@@ -88,42 +81,24 @@ export default function DeleteButton({
 
       {showConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 border-2 border-primary-300">
+            <h2 className="text-xl font-bold text-primary-700 mb-4">
               Delete {itemType === "entry" ? "Entry" : "Project"}
             </h2>
 
-            <div className="mb-4">
-              <p className="text-gray-700 mb-2">
+            <div className="mb-6">
+              <p className="text-primary-600 mb-2">
                 Are you sure you want to delete{" "}
-                <span className="font-semibold">{itemName}</span>?
+                <span className="font-semibold text-primary-700">{itemName}</span>?
               </p>
               {itemType === "project" && (
-                <p className="text-red-600 text-sm font-medium">
+                <p className="text-accent-600 text-sm font-medium mt-3">
                   ⚠️ This will also delete all entries, decks, categories, and
                   notes associated with this project.
                 </p>
               )}
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="passcode"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Admin Passcode
-              </label>
-              <input
-                type="password"
-                id="passcode"
-                value={passcode}
-                onChange={(e) => setPasscode(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                placeholder="Enter admin passcode"
-                autoFocus
-              />
               {error && (
-                <p className="text-red-600 text-sm mt-2">❌ {error}</p>
+                <p className="text-accent-600 text-sm mt-3">❌ {error}</p>
               )}
             </div>
 
@@ -131,17 +106,16 @@ export default function DeleteButton({
               <button
                 onClick={() => {
                   setShowConfirm(false);
-                  setPasscode("");
                   setError("");
                 }}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex-1 px-4 py-2 border-2 border-primary-300 text-primary-700 rounded-lg hover:bg-primary-50 transition-colors font-medium"
                 disabled={isDeleting}
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2 bg-accent-600 text-white rounded-lg hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                 disabled={isDeleting}
               >
                 {isDeleting ? "Deleting..." : "Delete"}

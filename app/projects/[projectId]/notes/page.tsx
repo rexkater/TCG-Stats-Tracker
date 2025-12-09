@@ -180,7 +180,7 @@ export default async function MatchupNotesPage({ params, searchParams }: PagePro
                 </span>
                 <span>•</span>
                 <span>
-                  By {note.author.email}
+                  Created by {note.author.username}
                 </span>
               </div>
             </div>

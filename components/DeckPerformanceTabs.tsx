@@ -107,6 +107,7 @@ export default function DeckPerformanceTabs({ deckStatsByTCG }: DeckPerformanceT
                           width={40}
                           height={56}
                           className="rounded shadow-sm"
+                          unoptimized
                         />
                       )}
                       <span>{deck.deckName}</span>

@@ -9,6 +9,8 @@ import MatchupAnalysisTabs from '@/components/MatchupAnalysisTabs';
 import DeleteButton from '@/components/DeleteButton';
 import { getDeckImagePath } from '@/lib/deck-images';
 import RenameProject from '@/components/RenameProject';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
 // Force dynamic rendering - don't try to statically generate this page
 export const dynamic = 'force-dynamic';
@@ -22,9 +24,31 @@ type EntryWithRelationsLocal = Entry & {
 export default async function ProjectPage({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
 
-  // Optimized query: Only fetch fields we actually use
-  const project = await prisma.project.findUnique({
-    where: { id: projectId },
+  // Check authentication
+  const session = await auth();
+  if (!session?.user?.username) {
+    redirect('/auth/signin');
+  }
+
+  // Get the user
+  const user = await prisma.user.findUnique({
+    where: { username: session.user.username },
+  });
+
+  if (!user) {
+    redirect('/auth/signin');
+  }
+
+  // Optimized query: Only fetch fields we actually use and check ownership
+  const project = await prisma.project.findFirst({
+    where: {
+      id: projectId,
+      owners: {
+        some: {
+          id: user.id
+        }
+      }
+    },
     select: {
       id: true,
       name: true,
@@ -289,6 +313,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                                 width={40}
                                 height={56}
                                 className="rounded shadow-sm"
+                                unoptimized
                               />
                             )}
                             <span>{deck.deckName}</span>
