@@ -14,7 +14,10 @@ export default function Header() {
             <a href="/" className="hover:text-primary-800">TCG Stats Tracker</a>
           </h1>
           {session?.user?.username && (
-            <UserNav username={session.user.username} />
+            <UserNav
+              username={session.user.username}
+              isPremium={session.user.isPremium || false}
+            />
           )}
         </div>
       </div>

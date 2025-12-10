@@ -37,9 +37,15 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/lib/*": ["src/lib/*"],
-      "@/components/*": ["components/*"],
-      "@/*": ["./*"]
+      "@/lib/*": [
+        "src/lib/*"
+      ],
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/*": [
+        "./*"
+      ]
     },
     "lib": [
       "dom",
@@ -62,7 +68,8 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

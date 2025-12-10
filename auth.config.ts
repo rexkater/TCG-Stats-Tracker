@@ -46,6 +46,13 @@ providers.push(
 
         const user = await prisma.user.findUnique({
           where: { username },
+          select: {
+            id: true,
+            username: true,
+            email: true,
+            password: true,
+            isPremium: true,
+          },
         });
 
         if (!user || !user.password) {
@@ -62,6 +69,7 @@ providers.push(
           id: user.id,
           username: user.username,
           email: user.email,
+          isPremium: user.isPremium,
         };
       },
     })
@@ -75,17 +83,31 @@ export const authConfig = {
     error: '/auth/error',
   },
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, trigger }) {
       if (user) {
         token.id = user.id;
         token.username = (user as any).username;
+        token.isPremium = (user as any).isPremium;
       }
+
+      // Refresh isPremium from database on session update
+      if (trigger === 'update' && token.id) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { isPremium: true }
+        });
+        if (dbUser) {
+          token.isPremium = dbUser.isPremium;
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
         session.user.username = token.username as string;
+        session.user.isPremium = token.isPremium as boolean;
       }
       return session;
     },
