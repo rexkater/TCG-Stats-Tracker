@@ -29,59 +29,63 @@ export default function UserNav({ username }: UserNavProps) {
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="flex items-center gap-3">
+      {/* Sign Out Button - Always Visible */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-primary-100 transition-colors"
-        aria-expanded={isOpen}
-        aria-haspopup="true"
+        onClick={handleSignOut}
+        className="px-4 py-2 text-sm font-medium text-white bg-accent-600 hover:bg-accent-700 rounded-lg transition-colors"
       >
-        <div className="w-8 h-8 rounded-full bg-accent-600 text-white flex items-center justify-center font-semibold">
-          {username.charAt(0).toUpperCase()}
-        </div>
-        <span className="hidden sm:inline text-sm font-medium text-primary-700">
-          {username}
-        </span>
-        <svg
-          className={`w-4 h-4 text-primary-600 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        Sign Out
       </button>
 
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-primary-200 py-1 z-50">
-          <div className="px-4 py-2 border-b border-primary-100">
-            <p className="text-sm font-medium text-primary-700">{username}</p>
+      {/* User Dropdown */}
+      <div className="relative" ref={dropdownRef}>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-primary-100 transition-colors"
+          aria-expanded={isOpen}
+          aria-haspopup="true"
+        >
+          <div className="w-8 h-8 rounded-full bg-accent-600 text-white flex items-center justify-center font-semibold">
+            {username.charAt(0).toUpperCase()}
           </div>
-          
-          <Link
-            href="/projects"
-            className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
-            onClick={() => setIsOpen(false)}
+          <span className="hidden sm:inline text-sm font-medium text-primary-700">
+            {username}
+          </span>
+          <svg
+            className={`w-4 h-4 text-primary-600 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            📊 Projects
-          </Link>
-          
-          <Link
-            href="/auth/reset-password"
-            className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
-            onClick={() => setIsOpen(false)}
-          >
-            🔑 Reset Password
-          </Link>
-          
-          <button
-            onClick={handleSignOut}
-            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
-          >
-            🚪 Sign Out
-          </button>
-        </div>
-      )}
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        {isOpen && (
+          <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-primary-200 py-1 z-50">
+            <div className="px-4 py-2 border-b border-primary-100">
+              <p className="text-sm font-medium text-primary-700">{username}</p>
+            </div>
+
+            <Link
+              href="/projects"
+              className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              📊 Projects
+            </Link>
+
+            <Link
+              href="/auth/reset-password"
+              className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              🔑 Reset Password
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
