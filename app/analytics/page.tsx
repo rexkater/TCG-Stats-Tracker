@@ -120,14 +120,19 @@ export default async function AnalyticsPage() {
 
   // User has premium access - show the analytics dashboard
   // Get all TCGs
-  const tcgs = await prisma.tCG.findMany({
+  const allTcgs = await prisma.tCG.findMany({
     select: {
       id: true,
       name: true,
     },
-    orderBy: {
-      name: 'asc',
-    },
+  });
+
+  // Sort TCGs in custom order: Riftbound, One Piece, Other
+  const tcgOrder = ['Riftbound', 'One Piece', 'Other'];
+  const tcgs = allTcgs.sort((a: { name: string }, b: { name: string }) => {
+    const aIndex = tcgOrder.indexOf(a.name);
+    const bIndex = tcgOrder.indexOf(b.name);
+    return (aIndex === -1 ? 999 : aIndex) - (bIndex === -1 ? 999 : bIndex);
   });
 
   return (
