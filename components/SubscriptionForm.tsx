@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 interface SubscriptionFormProps {
   userId: string;
@@ -9,6 +10,7 @@ interface SubscriptionFormProps {
 
 export default function SubscriptionForm({ userId }: SubscriptionFormProps) {
   const router = useRouter();
+  const { update } = useSession();
   const [code, setCode] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -33,7 +35,8 @@ export default function SubscriptionForm({ userId }: SubscriptionFormProps) {
         return;
       }
 
-      // Success! Refresh the page to show premium status
+      // Success! Update session and refresh the page to show premium status
+      await update();
       router.refresh();
     } catch (err) {
       setError('An error occurred. Please try again.');

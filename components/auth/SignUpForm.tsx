@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import { signUpAction } from '@/app/auth/actions';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export function SignUpForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { update } = useSession();
 
   async function handleSubmit(formData: FormData) {
     setError(null);
@@ -15,12 +17,13 @@ export function SignUpForm() {
 
     try {
       const result = await signUpAction(formData);
-      
+
       if (result?.error) {
         setError(result.error);
         setLoading(false);
       } else if (result?.success) {
-        // Success - redirect to projects
+        // Success - update session and redirect
+        await update();
         router.push('/projects');
         router.refresh();
       }

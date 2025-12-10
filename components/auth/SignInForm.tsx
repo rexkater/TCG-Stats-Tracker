@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { signInAction } from '@/app/auth/actions';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 export function SignInForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { update } = useSession();
 
   async function handleSubmit(formData: FormData) {
     setError(null);
@@ -21,7 +23,8 @@ export function SignInForm() {
         setError(result.error);
         setLoading(false);
       } else {
-        // Success - redirect will happen automatically
+        // Success - update session and redirect
+        await update();
         router.push('/projects');
         router.refresh();
       }
