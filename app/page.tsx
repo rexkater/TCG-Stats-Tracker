@@ -21,7 +21,7 @@ export default async function Home() {
               href="/auth/signup"
               className="inline-block bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors font-semibold text-center"
             >
-              Sign Up Free
+              Sign Up
             </Link>
             <Link
               href="/auth/signin"
@@ -75,15 +75,9 @@ export default async function Home() {
           <span className="text-2xl flex-shrink-0">🧪</span>
           <div className="flex-1 min-w-0">
             <h2 className="font-semibold text-primary-700 mb-1">Beta Version</h2>
-            <p className="text-primary-600 mb-3 text-sm sm:text-base">
+            <p className="text-primary-600 text-sm sm:text-base">
               This is a beta release. We're actively collecting feedback to improve the application.
             </p>
-            <Link
-              href="/feedback"
-              className="inline-block bg-accent-600 text-white px-4 py-2.5 rounded-lg hover:bg-accent-700 transition-colors touch-manipulation min-h-[44px] flex items-center justify-center font-medium"
-            >
-              Provide Feedback
-            </Link>
           </div>
         </div>
       </div>

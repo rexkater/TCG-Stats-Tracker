@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
             </main>
             <footer className="mt-16 pt-8 border-t border-primary-200 text-center text-sm text-primary-600">
-              <p>TCG Stats Tracker v1.0.0-beta</p>
+              <p>TCG Stats Tracker v1.0.0 beta, developed by Rex Reyes</p>
               <p className="mt-1">
                 <a href="/feedback" className="text-accent-600 hover:text-accent-700 underline">
                   Provide Feedback
