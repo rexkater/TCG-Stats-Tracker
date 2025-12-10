@@ -13,19 +13,19 @@ export default async function Home() {
 
       {/* Auth CTAs */}
       {!session ? (
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-6 sm:p-8 text-white">
-          <h2 className="text-2xl font-bold mb-2">Get Started Today</h2>
-          <p className="mb-6 text-blue-100">Create an account to start tracking your TCG statistics</p>
+        <div className="bg-background-100 border border-background-300 rounded-lg p-6 sm:p-8">
+          <h2 className="text-2xl font-bold mb-2 text-primary-700">Get Started Today</h2>
+          <p className="mb-6 text-primary-600">Create an account to start tracking your TCG statistics</p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/auth/signup"
-              className="inline-block bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors font-semibold text-center"
+              className="inline-block bg-accent-600 text-white px-6 py-3 rounded-lg hover:bg-accent-700 transition-colors font-semibold text-center"
             >
               Sign Up
             </Link>
             <Link
               href="/auth/signin"
-              className="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-400 transition-colors font-semibold text-center border border-blue-400"
+              className="inline-block bg-primary-700 text-white px-6 py-3 rounded-lg hover:bg-primary-800 transition-colors font-semibold text-center"
             >
               Sign In
             </Link>
