@@ -79,7 +79,7 @@ export async function signInAction(formData: FormData) {
     await signIn('credentials', {
       username,
       password,
-      redirectTo: '/projects',
+      redirect: false,
     });
     return { success: true };
   } catch (error) {
@@ -91,7 +91,7 @@ export async function signInAction(formData: FormData) {
           return { error: 'Something went wrong. Please try again.' };
       }
     }
-    throw error;
+    return { error: 'Something went wrong. Please try again.' };
   }
 }
 

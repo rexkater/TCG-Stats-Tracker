@@ -22,7 +22,7 @@ export function SignInForm() {
       if (result?.error) {
         setError(result.error);
         setLoading(false);
-      } else {
+      } else if (result?.success) {
         // Success - update session and redirect
         await update();
         router.push('/projects');
