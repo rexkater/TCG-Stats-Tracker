@@ -5,8 +5,15 @@ import EntryForm from '@/components/EntryForm';
 // Force dynamic rendering - don't try to statically generate this page
 export const dynamic = 'force-dynamic';
 
-export default async function NewEntry({ params }: { params: Promise<{ projectId: string }> }) {
+export default async function NewEntry({
+  params,
+  searchParams
+}: {
+  params: Promise<{ projectId: string }>;
+  searchParams: Promise<{ copyLast?: string }>;
+}) {
   const { projectId } = await params;
+  const { copyLast } = await searchParams;
 
   // Optimized query: Only fetch fields needed for the form
   const project = await prisma.project.findUnique({
@@ -59,6 +66,37 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
     );
   }
 
+  // Fetch the last entry if copyLast is true
+  let defaultValues = undefined;
+  if (copyLast === 'true') {
+    const lastEntry = await prisma.entry.findFirst({
+      where: { projectId },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        myDeckName: true,
+        oppDeckName: true,
+        categoryId: true,
+        seriesId: true,
+      }
+    });
+
+    if (lastEntry) {
+      defaultValues = {
+        myDeckName: lastEntry.myDeckName,
+        oppDeckName: lastEntry.oppDeckName,
+        categoryId: lastEntry.categoryId,
+        myBattlefieldId: null,
+        oppBattlefieldId: null,
+        result: '',
+        initiative: '',
+        wonDiceRoll: null,
+        notesShort: null,
+        gameNumber: null,
+        seriesId: lastEntry.seriesId,
+      };
+    }
+  }
+
   const tcgSettings = JSON.parse(project.tcg.settingsJson);
 
   return (
@@ -74,6 +112,11 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
         <h1 className="text-3xl font-bold text-gray-900">New Entry</h1>
         <p className="text-gray-600 mt-1">
           Record a match for <span className="font-medium">{project.name}</span>
+          {copyLast === 'true' && defaultValues && (
+            <span className="ml-2 text-sm text-blue-600">
+              (Copied from last entry)
+            </span>
+          )}
         </p>
       </div>
 
@@ -87,6 +130,7 @@ export default async function NewEntry({ params }: { params: Promise<{ projectId
         bestOfFormat={tcgSettings.bestOfFormat || 3}
         allowDraws={tcgSettings.allowDraws || false}
         mode="create"
+        {...(defaultValues && { defaultValues })}
       />
     </main>
   );
