@@ -77,26 +77,29 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
               📊 Projects
             </Link>
 
-            <Link
-              href="/analytics"
-              className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              📈 Analytics
-              {isPremium && (
-                <span className="ml-2 text-xs bg-accent-100 text-accent-700 px-2 py-0.5 rounded-full">
-                  Premium
-                </span>
-              )}
-            </Link>
+            {/* Only show Analytics and Premium/Upgrade for premium users */}
+            {isPremium && (
+              <>
+                <Link
+                  href="/analytics"
+                  className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  📈 Analytics
+                  <span className="ml-2 text-xs bg-accent-100 text-accent-700 px-2 py-0.5 rounded-full">
+                    Premium
+                  </span>
+                </Link>
 
-            <Link
-              href="/subscription"
-              className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              {isPremium ? '⭐ Premium' : '⬆️ Upgrade'}
-            </Link>
+                <Link
+                  href="/subscription"
+                  className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  ⭐ Premium
+                </Link>
+              </>
+            )}
 
             <Link
               href="/auth/reset-password"
