@@ -161,7 +161,7 @@ These limitations will be addressed in Version 2.
 3. **Provide Feedback**
    - Visit `/feedback` in the app
    - Report issues on [GitHub](https://github.com/rexkater/TCG-Stats-Tracker/issues)
-   - Email: rex.reyes@upr.edu
+   - Email: rex.reyes.rodriguez@gmail.com
 
 ### For Developers
 
@@ -203,7 +203,7 @@ We're actively seeking feedback from beta testers!
 
 - **Feedback Page**: Visit `/feedback` in the app
 - **GitHub Issues**: https://github.com/rexkater/TCG-Stats-Tracker/issues
-- **Email**: rex.reyes@upr.edu
+- **Email**: rex.reyes.rodriguez@gmail.com
 
 ### What We're Looking For
 
@@ -259,7 +259,7 @@ ISC
 ## 📞 Contact
 
 - **Developer**: Rex J. Reyes
-- **Email**: rex.reyes@upr.edu
+- **Email**: rex.reyes.rodriguez@gmail.com
 - **GitHub**: https://github.com/rexkater/TCG-Stats-Tracker
 
 ---

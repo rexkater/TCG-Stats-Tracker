@@ -146,7 +146,7 @@ We're actively seeking feedback from beta testers!
 
 - **Feedback Page**: Visit `/feedback` in the app or click "Provide Feedback" on the home page
 - **GitHub Issues**: Report bugs or request features at [github.com/rexkater/TCG-Stats-Tracker/issues](https://github.com/rexkater/TCG-Stats-Tracker/issues)
-- **Email**: Send detailed feedback to rex.reyes@upr.edu
+- **Email**: Send detailed feedback to rex.reyes.rodriguez@gmail.com
 
 ### What We're Looking For
 

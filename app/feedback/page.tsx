@@ -38,10 +38,10 @@ export default async function FeedbackPage() {
             <p>
               <strong>Email:</strong> Send detailed feedback to{' '}
               <a
-                href="mailto:rex.reyes@upr.edu"
+                href="mailto:rex.reyes.rodriguez@gmail.com"
                 className="text-accent-600 hover:text-accent-700 underline"
               >
-                rex.reyes@upr.edu
+                rex.reyes.rodriguez@gmail.com
               </a>
             </p>
           </div>
@@ -111,7 +111,7 @@ export default async function FeedbackPage() {
             Report an Issue on GitHub
           </a>
           <a
-            href="mailto:rex.reyes@upr.edu?subject=TCG Stats Tracker Beta Feedback"
+            href="mailto:rex.reyes.rodriguez@gmail.com?subject=TCG Stats Tracker Beta Feedback"
             className="inline-block bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
           >
             Send Email Feedback

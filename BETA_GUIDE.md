@@ -154,7 +154,7 @@ Your feedback is crucial! Please report:
 
 **How to Report:**
 - **GitHub Issues**: https://github.com/rexkater/TCG-Stats-Tracker/issues
-- **Email**: rex.reyes@upr.edu
+- **Email**: rex.reyes.rodriguez@gmail.com
 - **Feedback Page**: Click "Provide Feedback" on the home page
 
 **Include in Your Report:**
