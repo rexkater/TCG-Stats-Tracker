@@ -73,15 +73,31 @@ export default async function FeedbackPage() {
           </ul>
         </div>
 
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4 text-yellow-900">Known Limitations (Beta)</h2>
+        <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
+          <h2 className="text-xl font-semibold mb-4 text-green-900">✅ Implemented Features</h2>
           <ul className="list-disc list-inside space-y-2 text-gray-700">
-            <li>Currently using SQLite database (will migrate to PostgreSQL for production)</li>
-            <li>No user authentication yet (single-user mode)</li>
-            <li>No data backup/restore functionality</li>
-            <li>Limited mobile optimization</li>
-            <li>No offline support yet</li>
-            <li>Analytics calculations are client-side (may be slow with large datasets)</li>
+            <li><strong>User Authentication</strong> - Username/password login with session management</li>
+            <li><strong>PostgreSQL Database</strong> - Production-ready database hosted on Railway</li>
+            <li><strong>Mobile Optimization</strong> - Responsive design with touch-friendly controls</li>
+            <li><strong>Multi-Project Support</strong> - Create and manage multiple TCG projects</li>
+            <li><strong>Real-time Analytics</strong> - Win rates, matchup analysis, deck performance</li>
+            <li><strong>CSV Export/Import</strong> - Full data portability with validation</li>
+            <li><strong>Matchup Notes</strong> - Track strategic notes for specific matchups</li>
+            <li><strong>Premium Subscription</strong> - Global analytics dashboard (premium feature)</li>
+            <li><strong>Copy Last Entry</strong> - Quick data entry by copying previous match info</li>
+            <li><strong>Multi-TCG Support</strong> - Riftbound, One Piece, and custom TCGs</li>
+          </ul>
+        </div>
+
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+          <h2 className="text-xl font-semibold mb-4 text-yellow-900">🚧 Known Limitations & Planned Features</h2>
+          <ul className="list-disc list-inside space-y-2 text-gray-700">
+            <li>No offline support yet (PWA features planned)</li>
+            <li>No automatic data backups (manual CSV export available)</li>
+            <li>Analytics calculations are client-side (may be slow with very large datasets)</li>
+            <li>No OAuth providers yet (Google/GitHub login planned)</li>
+            <li>No project sharing/collaboration features</li>
+            <li>No advanced charting/visualization (basic tables only)</li>
           </ul>
         </div>
 
