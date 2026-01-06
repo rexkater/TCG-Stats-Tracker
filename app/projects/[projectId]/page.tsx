@@ -111,8 +111,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
             }
           }
         },
-        orderBy: { createdAt: 'desc' },
-        take: 100 // Limit to most recent 100 entries for performance
+        orderBy: { createdAt: 'desc' }
       }
     }
   });
