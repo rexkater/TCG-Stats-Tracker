@@ -11,7 +11,7 @@ async function main() {
       settingsJson: JSON.stringify({
         contextLabel: "Battlefield",
         contextRequired: true,
-        allowDraws: false,
+        allowDraws: true,
         bestOfFormat: 3, // Best of 3 series
       }),
     },
@@ -20,7 +20,7 @@ async function main() {
       settingsJson: JSON.stringify({
         contextLabel: "Battlefield",
         contextRequired: true,
-        allowDraws: false,
+        allowDraws: true,
         bestOfFormat: 3, // Best of 3 series
       }),
     },
@@ -32,7 +32,7 @@ async function main() {
       settingsJson: JSON.stringify({
         contextLabel: null,
         contextRequired: false,
-        allowDraws: false,
+        allowDraws: true,
         bestOfFormat: 1, // Best of 1 (single game)
       }),
     },
@@ -41,7 +41,7 @@ async function main() {
       settingsJson: JSON.stringify({
         contextLabel: null,
         contextRequired: false,
-        allowDraws: false,
+        allowDraws: true,
         bestOfFormat: 1, // Best of 1 (single game)
       }),
     },

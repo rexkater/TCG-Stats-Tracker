@@ -14,42 +14,63 @@ TCG Stats Tracker allows users to maintain multiple projects, each tracking comp
 
 ### Key Features
 
-- **Multi-project workspace**: Create, rename, and archive projects with isolated data and settings
-- **Game support**: Initial support for Riftbound TCG, extensible to other TCGs
-- **Entry tracking**: Record matchup statistics with deck names, results, initiative, battlefield, and categories
-- **Real-time analytics**: Auto-calculated win rates, matchup analysis, and battlefield-specific splits
-- **Offline-first PWA**: Capture data offline with automatic sync when online
-- **Export/Import**: CSV export and import with validation
+- **User Authentication**: Secure username/password authentication with session management
+- **Multi-project workspace**: Create, rename, and manage multiple TCG projects with isolated data
+- **Multi-TCG support**: Built-in support for Riftbound, One Piece, and custom TCGs
+- **Comprehensive entry tracking**: Record matches with deck names, results (Win/Loss/Draw), initiative, battlefields, and categories
+- **Real-time analytics**: Auto-calculated win rates, matchup analysis, deck performance, and battlefield-specific statistics
+- **Premium features**: Global analytics dashboard showing community-wide statistics (premium subscription)
+- **Matchup notes**: Track strategic notes for specific deck matchups
+- **Best-of-3 series tracking**: Record individual games in match series with game numbers and series IDs
+- **CSV Export/Import**: Full data portability with validation and error handling
+- **Mobile-optimized**: Responsive design with touch-friendly controls for on-the-go tracking
+- **Copy last entry**: Quick data entry by copying information from your previous match
 
 ## Tech Stack
 
-- **Frontend**: Next.js 15 + React 18 + TypeScript
+- **Frontend**: Next.js 15 + React 19 + TypeScript
 - **Database**: PostgreSQL (Railway) via Prisma ORM
+- **Authentication**: NextAuth.js with credentials provider (username/password)
 - **Styling**: Tailwind CSS v4
 - **Testing**: Playwright (E2E & Accessibility)
 - **Deployment**: Vercel
-- **Authentication**: Planned for V2
-- **Storage**: Planned for V2 (deck images)
+- **Email**: Resend (for password reset emails)
 
 ## Project Structure
 
 ```
 tcg-stats-tracker/
 ├── app/                    # Next.js App Router pages
-│   ├── api/               # API routes
-│   ├── projects/          # Project-related pages
-│   ├── layout.tsx         # Root layout
-│   └── globals.css        # Global styles with Tailwind
+│   ├── api/               # API routes (entries, projects, analytics, subscription)
+│   ├── auth/              # Authentication pages (signin, signup, reset password)
+│   ├── projects/          # Project management and entry tracking
+│   ├── analytics/         # Global analytics dashboard (premium)
+│   ├── subscription/      # Premium subscription management
+│   ├── feedback/          # Beta feedback page
+│   ├── layout.tsx         # Root layout with header and footer
+│   └── globals.css        # Global styles with Tailwind CSS v4
+├── components/            # React components
+│   ├── EntryForm.tsx      # Match entry form
+│   ├── Header.tsx         # Navigation header
+│   ├── UserNav.tsx        # User navigation dropdown
+│   └── *Analytics.tsx     # Analytics dashboard components
 ├── src/
 │   └── lib/               # Shared utilities
 │       ├── prisma.ts      # Prisma client singleton
+│       ├── analytics.ts   # Analytics calculation functions
+│       ├── global-analytics.ts  # Global analytics for premium users
 │       └── validators.ts  # Zod validation schemas
 ├── prisma/
-│   ├── schema.prisma      # Database schema
+│   ├── schema.prisma      # Database schema (User, Project, Entry, TCG, etc.)
 │   ├── migrations/        # Database migrations
-│   └── seed.ts            # Seed data script
-├── public/                # Static assets
-└── package.json           # Dependencies and scripts
+│   └── seed.ts            # Seed data (TCGs, battlefields)
+├── scripts/               # Utility scripts
+│   ├── set-premium.ts     # Set user premium status
+│   └── generate-favicons.js  # Generate app icons from logo
+├── public/                # Static assets (logo, favicons, deck images)
+├── auth.ts                # NextAuth configuration
+├── auth.config.ts         # NextAuth providers and callbacks
+└── middleware.ts          # Auth middleware for protected routes
 ```
 
 ## Getting Started
@@ -120,23 +141,28 @@ Following the specification milestones:
 - [x] **M6**: Hardening & A11y - Error handling, accessibility, E2E tests
 - [x] **M7**: Beta Cut & Feedback - User feedback and v2 backlog
 
-## Database Schema (Current)
+## Database Schema
 
 ### Core Models
 
-- **User**: User accounts
-- **Project**: TCG tracking projects (per user)
-- **Deck**: Deck definitions (per project)
-- **Category**: Custom categories (per project)
-- **Entry**: Match results with deck matchups
-- **Note**: Notes attached to entries
+- **User**: User accounts with authentication and premium status
+- **TCG**: Trading card game definitions with settings (Riftbound, One Piece, Other)
+- **ContextOption**: Battlefield/context options per TCG (e.g., Riftbound battlefields)
+- **Project**: TCG tracking projects owned by users
+- **Category**: Match categories per project (Ranked, Casual, Tournament, etc.)
+- **Entry**: Match results with comprehensive tracking:
+  - Deck matchups (my deck vs opponent deck)
+  - Result (WIN, LOSS, DRAW)
+  - Initiative (FIRST, SECOND)
+  - Battlefields (my battlefield, opponent battlefield)
+  - Best-of-3 tracking (game number, series ID, dice roll winner)
+  - Quick notes
+- **MatchupNote**: Strategic notes for specific deck matchups
 
-### Planned Schema Updates (M1)
+### Enums
 
-- Add `initiative` enum (FIRST/SECOND)
-- Add `tcg_context_options` table (battlefields)
-- Restructure notes to `matchup_notes_log` (timestamped, per matchup)
-- Add TCG configuration with `settings_json`
+- **MatchResult**: WIN, LOSS, DRAW
+- **Initiative**: FIRST, SECOND
 
 ## Beta Testing & Feedback
 
@@ -170,26 +196,52 @@ This project follows the specification in `Spec-1-Tcg Stats Tracker.pdf`. Please
 
 ISC
 
-## Roadmap
+## Features Implemented ✅
 
-### MVP (Must Have)
-- Multi-project workspace
-- Entry model with all required fields
-- Auto-calculated statistics with filters
-- Simple, fast data entry UX
-- PWA with offline support
-- Email/password and social auth
-- CSV export/import
+### Authentication & User Management
+- ✅ Username/password authentication
+- ✅ Session management with NextAuth.js
+- ✅ Password reset via email
+- ✅ Premium subscription system
 
-### Future (Should Have)
-- Tagging system
-- Saved filters and views
-- Charting dashboards
-- Per-TCG configuration
-- Project sharing and collaboration
+### Project & Entry Management
+- ✅ Multi-project workspace
+- ✅ Multi-TCG support (Riftbound, One Piece, Other)
+- ✅ Comprehensive match entry tracking
+- ✅ Best-of-3 series support
+- ✅ Copy last entry for quick data input
+- ✅ Edit and delete entries
 
-### Later (Could Have)
-- Opponent directory
-- Event mode
-- Google Sheets import
-- API access tokens
+### Analytics
+- ✅ Overall win rate statistics
+- ✅ Matchup analysis (deck vs deck)
+- ✅ Initiative statistics (first vs second)
+- ✅ Battlefield performance analysis
+- ✅ Deck performance tracking
+- ✅ Category-based statistics
+- ✅ Global analytics dashboard (premium)
+
+### Data Management
+- ✅ CSV export with all match data
+- ✅ CSV import with validation
+- ✅ Matchup notes system
+
+### UI/UX
+- ✅ Mobile-responsive design
+- ✅ Touch-friendly controls
+- ✅ Accessible navigation
+- ✅ App icon/favicon support
+
+## Planned Features (V2)
+
+See [V2_BACKLOG.md](./V2_BACKLOG.md) for the complete roadmap. Key planned features:
+
+- 🔮 OAuth providers (Google, GitHub)
+- 🔮 PWA with offline support
+- 🔮 Advanced charting and visualizations
+- 🔮 Project sharing and collaboration
+- 🔮 Tagging system for entries
+- 🔮 Saved filters and custom views
+- 🔮 Tournament mode
+- 🔮 Opponent directory
+- 🔮 Deck builder integration
