@@ -47,7 +47,7 @@ export default function SubscriptionForm({ userId }: SubscriptionFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="code" className="block text-sm font-medium text-primary-800 mb-2">
           Activation Code
         </label>
         <input
@@ -57,7 +57,7 @@ export default function SubscriptionForm({ userId }: SubscriptionFormProps) {
           onChange={(e) => setCode(e.target.value)}
           placeholder="Enter your premium code"
           required
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500"
+          className="w-full px-4 py-3 border border-background-400 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500"
         />
       </div>
 
@@ -70,12 +70,12 @@ export default function SubscriptionForm({ userId }: SubscriptionFormProps) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full bg-accent-600 text-white px-6 py-3 rounded-lg hover:bg-accent-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-accent-300 text-white px-6 py-3 rounded-lg hover:bg-accent-400 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? 'Activating...' : 'Activate Premium'}
       </button>
 
-      <p className="text-xs text-gray-500 text-center">
+      <p className="text-xs text-primary-600 text-center">
         Enter the activation code to unlock premium features
       </p>
     </form>

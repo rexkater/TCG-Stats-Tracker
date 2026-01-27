@@ -44,7 +44,7 @@ export function SignInForm() {
       )}
 
       {/* Credentials Form */}
-      <form action={handleSubmit} className="space-y-6 bg-white border border-primary-200 rounded-lg p-6 shadow-sm">
+      <form action={handleSubmit} className="space-y-6 bg-background-200 border border-primary-200 rounded-lg p-6 shadow-sm">
         <div>
           <label htmlFor="username" className="block text-sm font-medium text-primary-700">
             Username
@@ -67,7 +67,7 @@ export function SignInForm() {
             </label>
             <Link
               href="/auth/reset-password"
-              className="text-sm text-accent-600 hover:text-accent-700"
+              className="text-sm text-accent-500 hover:text-accent-600"
             >
               Forgot password?
             </Link>
@@ -86,7 +86,7 @@ export function SignInForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-accent-600 hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 disabled:bg-primary-400 disabled:cursor-not-allowed"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-accent-300 hover:bg-accent-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 disabled:bg-primary-400 disabled:cursor-not-allowed"
         >
           {loading ? 'Signing in...' : 'Sign in'}
         </button>

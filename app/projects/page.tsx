@@ -203,7 +203,7 @@ export default async function Projects() {
       <div className="mb-4">
         <Link
           href="/"
-          className="text-accent-600 hover:text-accent-700 font-medium inline-flex items-center gap-1 touch-manipulation"
+          className="text-accent-500 hover:text-accent-600 font-medium inline-flex items-center gap-1 touch-manipulation"
         >
           ← Back to Home
         </Link>
@@ -212,7 +212,7 @@ export default async function Projects() {
         <h1 className="text-2xl sm:text-3xl font-bold text-primary-700">Projects</h1>
         <Link
           href="/projects/new"
-          className="w-full sm:w-auto px-4 py-2.5 bg-accent-600 text-white rounded-lg hover:bg-accent-700 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
+          className="w-full sm:w-auto px-4 py-2.5 bg-accent-300 text-white rounded-lg hover:bg-accent-400 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
         >
           New Project
         </Link>
@@ -224,11 +224,11 @@ export default async function Projects() {
       )}
 
       {projectsWithStats.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg border border-primary-200">
+        <div className="text-center py-12 bg-background-200 rounded-lg border border-primary-200">
           <p className="text-primary-500 mb-4">No projects yet</p>
           <Link
             href="/projects/new"
-            className="text-accent-600 hover:text-accent-700 font-medium"
+            className="text-accent-500 hover:text-accent-600 font-medium"
           >
             Create your first project
           </Link>
@@ -239,7 +239,7 @@ export default async function Projects() {
             <Link
               key={project.id}
               href={`/projects/${project.id}`}
-              className="block bg-white rounded-lg border border-primary-200 p-6 hover:shadow-lg transition-shadow"
+              className="block bg-background-200 rounded-lg border border-primary-200 p-6 hover:shadow-lg transition-shadow"
             >
               <h2 className="text-xl font-semibold text-primary-700 mb-2">
                 {project.name}

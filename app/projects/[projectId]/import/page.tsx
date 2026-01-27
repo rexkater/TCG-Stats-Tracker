@@ -30,8 +30,8 @@ export default async function ImportPage({ params }: { params: Promise<{ project
   if (!project) {
     return (
       <div className="text-center py-12">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Project not found</h1>
-        <Link href="/projects" className="text-blue-600 hover:text-blue-700">
+        <h1 className="text-2xl font-bold text-primary-900 mb-2">Project not found</h1>
+        <Link href="/projects" className="text-accent-500 hover:text-accent-600">
           Back to projects
         </Link>
       </div>
@@ -219,19 +219,19 @@ export default async function ImportPage({ params }: { params: Promise<{ project
       <div className="mb-8">
         <Link
           href={`/projects/${projectId}`}
-          className="text-blue-600 hover:text-blue-700 mb-4 inline-block"
+          className="text-accent-500 hover:text-accent-600 mb-4 inline-block"
         >
           ← Back to project
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">Import Entries from CSV</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-bold text-primary-900">Import Entries from CSV</h1>
+        <p className="text-primary-700 mt-2">
           Upload a CSV file to import multiple entries at once
         </p>
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">CSV Format Requirements</h2>
-        <div className="space-y-2 text-sm text-gray-600">
+      <div className="bg-background-200 rounded-lg border border-background-400 p-6 mb-6">
+        <h2 className="text-lg font-semibold text-primary-900 mb-4">CSV Format Requirements</h2>
+        <div className="space-y-2 text-sm text-primary-700">
           <p><strong>Required columns:</strong></p>
           <ul className="list-disc list-inside ml-4 space-y-1">
             <li>My Deck</li>
@@ -255,9 +255,9 @@ export default async function ImportPage({ params }: { params: Promise<{ project
         </div>
       </div>
 
-      <form action={importCsv} className="bg-white rounded-lg border border-gray-200 p-6">
+      <form action={importCsv} className="bg-background-200 rounded-lg border border-background-400 p-6">
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-primary-800 mb-2">
             CSV File <span className="text-red-500">*</span>
           </label>
           <input
@@ -265,20 +265,20 @@ export default async function ImportPage({ params }: { params: Promise<{ project
             name="file"
             accept=".csv"
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-background-400 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
 
         <div className="flex gap-3">
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            className="px-6 py-2 bg-secondary-300 text-white rounded-lg hover:bg-secondary-400 transition-colors font-medium"
           >
             Import Entries
           </button>
           <Link
             href={`/projects/${projectId}`}
-            className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+            className="px-6 py-2 bg-background-200 text-primary-800 rounded-lg hover:bg-background-300 transition-colors font-medium"
           >
             Cancel
           </Link>

@@ -34,7 +34,7 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
       {/* Sign Out Button - Always Visible */}
       <button
         onClick={handleSignOut}
-        className="px-4 py-2 text-sm font-medium text-white bg-accent-600 hover:bg-accent-700 rounded-lg transition-colors"
+        className="px-4 py-2 text-sm font-medium text-white bg-accent-300 hover:bg-accent-400 rounded-lg transition-colors"
       >
         Sign Out
       </button>
@@ -43,18 +43,18 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-primary-100 transition-colors"
+          className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-background-300 transition-colors"
           aria-expanded={isOpen}
           aria-haspopup="true"
         >
-          <div className="w-8 h-8 rounded-full bg-accent-600 text-white flex items-center justify-center font-semibold">
+          <div className="w-8 h-8 rounded-full bg-accent-300 text-white flex items-center justify-center font-semibold">
             {username.charAt(0).toUpperCase()}
           </div>
-          <span className="hidden sm:inline text-sm font-medium text-primary-700">
+          <span className="hidden sm:inline text-sm font-medium text-primary-900">
             {username}
           </span>
           <svg
-            className={`w-4 h-4 text-primary-600 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            className={`w-4 h-4 text-primary-800 transition-transform ${isOpen ? 'rotate-180' : ''}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -64,14 +64,14 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
         </button>
 
         {isOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-primary-200 py-1 z-50">
-            <div className="px-4 py-2 border-b border-primary-100">
-              <p className="text-sm font-medium text-primary-700">{username}</p>
+          <div className="absolute right-0 mt-2 w-48 bg-background-200 rounded-lg shadow-lg border border-background-400 py-1 z-50">
+            <div className="px-4 py-2 border-b border-background-400">
+              <p className="text-sm font-medium text-primary-900">{username}</p>
             </div>
 
             <Link
               href="/projects"
-              className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
+              className="block px-4 py-2 text-sm text-primary-800 hover:bg-background-300 transition-colors"
               onClick={() => setIsOpen(false)}
             >
               📊 Projects
@@ -82,18 +82,18 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
               <>
                 <Link
                   href="/analytics"
-                  className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
+                  className="block px-4 py-2 text-sm text-primary-800 hover:bg-background-300 transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   📈 Analytics
-                  <span className="ml-2 text-xs bg-accent-100 text-accent-700 px-2 py-0.5 rounded-full">
+                  <span className="ml-2 text-xs bg-accent-200 text-accent-900 px-2 py-0.5 rounded-full">
                     Premium
                   </span>
                 </Link>
 
                 <Link
                   href="/subscription"
-                  className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
+                  className="block px-4 py-2 text-sm text-primary-800 hover:bg-background-300 transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   ⭐ Premium
@@ -103,7 +103,7 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
 
             <Link
               href="/auth/reset-password"
-              className="block px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 transition-colors"
+              className="block px-4 py-2 text-sm text-primary-800 hover:bg-background-300 transition-colors"
               onClick={() => setIsOpen(false)}
             >
               🔑 Reset Password

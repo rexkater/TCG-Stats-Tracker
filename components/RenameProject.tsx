@@ -63,21 +63,21 @@ export default function RenameProject({ projectId, currentName }: RenameProjectP
               if (e.key === "Enter") handleSave();
               if (e.key === "Escape") handleCancel();
             }}
-            className="text-3xl font-bold text-gray-900 border-2 border-blue-500 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="text-3xl font-bold text-primary-900 border-2 border-blue-500 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
             autoFocus
             disabled={isSaving}
           />
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 text-sm font-medium"
+            className="px-3 py-1 bg-secondary-300 text-white rounded hover:bg-secondary-400 disabled:opacity-50 text-sm font-medium"
           >
             {isSaving ? "Saving..." : "Save"}
           </button>
           <button
             onClick={handleCancel}
             disabled={isSaving}
-            className="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50 text-sm font-medium"
+            className="px-3 py-1 bg-background-300 text-primary-800 rounded hover:bg-gray-300 disabled:opacity-50 text-sm font-medium"
           >
             Cancel
           </button>
@@ -89,10 +89,10 @@ export default function RenameProject({ projectId, currentName }: RenameProjectP
 
   return (
     <div className="flex items-center gap-2">
-      <h1 className="text-3xl font-bold text-gray-900">{currentName}</h1>
+      <h1 className="text-3xl font-bold text-primary-900">{currentName}</h1>
       <button
         onClick={() => setIsEditing(true)}
-        className="text-gray-400 hover:text-gray-600 transition-colors"
+        className="text-gray-400 hover:text-primary-700 transition-colors"
         title="Rename project"
       >
         <svg

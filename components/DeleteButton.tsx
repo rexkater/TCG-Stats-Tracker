@@ -81,7 +81,7 @@ export default function DeleteButton({
 
       {showConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 border-2 border-primary-300">
+          <div className="bg-background-200 rounded-lg shadow-xl max-w-md w-full p-6 border-2 border-primary-300">
             <h2 className="text-xl font-bold text-primary-700 mb-4">
               Delete {itemType === "entry" ? "Entry" : "Project"}
             </h2>
@@ -92,13 +92,13 @@ export default function DeleteButton({
                 <span className="font-semibold text-primary-700">{itemName}</span>?
               </p>
               {itemType === "project" && (
-                <p className="text-accent-600 text-sm font-medium mt-3">
+                <p className="text-accent-500 text-sm font-medium mt-3">
                   ⚠️ This will also delete all entries, decks, categories, and
                   notes associated with this project.
                 </p>
               )}
               {error && (
-                <p className="text-accent-600 text-sm mt-3">❌ {error}</p>
+                <p className="text-accent-500 text-sm mt-3">❌ {error}</p>
               )}
             </div>
 
@@ -115,7 +115,7 @@ export default function DeleteButton({
               </button>
               <button
                 onClick={handleDelete}
-                className="flex-1 px-4 py-2 bg-accent-600 text-white rounded-lg hover:bg-accent-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                className="flex-1 px-4 py-2 bg-accent-300 text-white rounded-lg hover:bg-accent-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                 disabled={isDeleting}
               >
                 {isDeleting ? "Deleting..." : "Delete"}

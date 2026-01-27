@@ -4,19 +4,19 @@ export default async function FeedbackPage() {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="mb-6">
-        <Link href="/" className="text-accent-600 hover:text-accent-700">
+        <Link href="/" className="text-accent-500 hover:text-accent-600">
           ← Back to Home
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg border border-primary-200 p-8">
+      <div className="bg-background-200 rounded-lg border border-primary-200 p-8">
         <h1 className="text-3xl font-bold mb-6 text-primary-700">Beta Feedback</h1>
 
         <div className="mb-8">
-          <p className="text-gray-700 mb-4">
+          <p className="text-primary-800 mb-4">
             Thank you for testing the TCG Stats Tracker! Your feedback is invaluable in helping us improve the application.
           </p>
-          <p className="text-gray-700 mb-4">
+          <p className="text-primary-800 mb-4">
             This is a <strong>beta version</strong> of the application. We're actively collecting feedback to prioritize features and improvements for version 2.
           </p>
         </div>
@@ -30,7 +30,7 @@ export default async function FeedbackPage() {
                 href="https://github.com/rexkater/TCG-Stats-Tracker/issues"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-accent-600 hover:text-accent-700 underline"
+                className="text-accent-500 hover:text-accent-600 underline"
               >
                 github.com/rexkater/TCG-Stats-Tracker/issues
               </a>
@@ -39,7 +39,7 @@ export default async function FeedbackPage() {
               <strong>Email:</strong> Send detailed feedback to{' '}
               <a
                 href="mailto:rex.reyes.rodriguez@gmail.com"
-                className="text-accent-600 hover:text-accent-700 underline"
+                className="text-accent-500 hover:text-accent-600 underline"
               >
                 rex.reyes.rodriguez@gmail.com
               </a>
@@ -49,7 +49,7 @@ export default async function FeedbackPage() {
 
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">What We're Looking For</h2>
-          <ul className="list-disc list-inside space-y-2 text-gray-700">
+          <ul className="list-disc list-inside space-y-2 text-primary-800">
             <li>Bugs or unexpected behavior</li>
             <li>Confusing UI or unclear workflows</li>
             <li>Missing features that would improve your experience</li>
@@ -63,7 +63,7 @@ export default async function FeedbackPage() {
 
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Helpful Information to Include</h2>
-          <ul className="list-disc list-inside space-y-2 text-gray-700">
+          <ul className="list-disc list-inside space-y-2 text-primary-800">
             <li>What you were trying to do</li>
             <li>What you expected to happen</li>
             <li>What actually happened</li>
@@ -75,7 +75,7 @@ export default async function FeedbackPage() {
 
         <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
           <h2 className="text-xl font-semibold mb-4 text-green-900">✅ Implemented Features</h2>
-          <ul className="list-disc list-inside space-y-2 text-gray-700">
+          <ul className="list-disc list-inside space-y-2 text-primary-800">
             <li><strong>User Authentication</strong> - Username/password login with session management</li>
             <li><strong>PostgreSQL Database</strong> - Production-ready database hosted on Railway</li>
             <li><strong>Mobile Optimization</strong> - Responsive design with touch-friendly controls</li>
@@ -91,7 +91,7 @@ export default async function FeedbackPage() {
 
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4 text-yellow-900">🚧 Known Limitations & Planned Features</h2>
-          <ul className="list-disc list-inside space-y-2 text-gray-700">
+          <ul className="list-disc list-inside space-y-2 text-primary-800">
             <li>No offline support yet (PWA features planned)</li>
             <li>No automatic data backups (manual CSV export available)</li>
             <li>Analytics calculations are client-side (may be slow with very large datasets)</li>
@@ -106,7 +106,7 @@ export default async function FeedbackPage() {
             href="https://github.com/rexkater/TCG-Stats-Tracker/issues/new"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-accent-600 text-white px-6 py-3 rounded-lg hover:bg-accent-700 transition-colors"
+            className="inline-block bg-accent-300 text-white px-6 py-3 rounded-lg hover:bg-accent-400 transition-colors"
           >
             Report an Issue on GitHub
           </a>

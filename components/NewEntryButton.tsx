@@ -26,7 +26,7 @@ export default function NewEntryButton({ projectId, hasEntries }: NewEntryButton
     <>
       <button
         onClick={handleClick}
-        className="px-4 py-2.5 bg-accent-600 text-white rounded-lg hover:bg-accent-700 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center sm:col-span-2 lg:col-span-1"
+        className="px-4 py-2.5 bg-accent-300 text-white rounded-lg hover:bg-accent-400 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center sm:col-span-2 lg:col-span-1"
       >
         + New Entry
       </button>

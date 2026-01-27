@@ -24,24 +24,24 @@ export default async function AnalyticsPage() {
   // Check if user has premium access
   if (!user.isPremium) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-background-100 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-accent-100 rounded-full mb-4">
-              <svg className="w-10 h-10 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-10 h-10 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
             <h1 className="text-3xl font-bold text-primary-700 mb-2">
               Premium Feature
             </h1>
-            <p className="text-gray-600 mb-8">
+            <p className="text-primary-700 mb-8">
               The Global Analytics Dashboard is available to premium subscribers only.
             </p>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 p-8 shadow-sm mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          <div className="bg-background-200 rounded-lg border border-background-400 p-8 shadow-sm mb-6">
+            <h2 className="text-xl font-semibold text-primary-900 mb-4">
               What You'll Get with Premium:
             </h2>
             <ul className="space-y-3 mb-8">
@@ -50,8 +50,8 @@ export default async function AnalyticsPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <div>
-                  <span className="font-semibold text-gray-900">Global Deck Performance</span>
-                  <p className="text-sm text-gray-600">See win rates and statistics for all decks across the community</p>
+                  <span className="font-semibold text-primary-900">Global Deck Performance</span>
+                  <p className="text-sm text-primary-700">See win rates and statistics for all decks across the community</p>
                 </div>
               </li>
               <li className="flex items-start">
@@ -59,8 +59,8 @@ export default async function AnalyticsPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <div>
-                  <span className="font-semibold text-gray-900">Matchup Analysis</span>
-                  <p className="text-sm text-gray-600">Discover which decks perform best against each other</p>
+                  <span className="font-semibold text-primary-900">Matchup Analysis</span>
+                  <p className="text-sm text-primary-700">Discover which decks perform best against each other</p>
                 </div>
               </li>
               <li className="flex items-start">
@@ -68,8 +68,8 @@ export default async function AnalyticsPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <div>
-                  <span className="font-semibold text-gray-900">Meta Snapshots</span>
-                  <p className="text-sm text-gray-600">Track the most played decks and trending strategies</p>
+                  <span className="font-semibold text-primary-900">Meta Snapshots</span>
+                  <p className="text-sm text-primary-700">Track the most played decks and trending strategies</p>
                 </div>
               </li>
               <li className="flex items-start">
@@ -77,8 +77,8 @@ export default async function AnalyticsPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <div>
-                  <span className="font-semibold text-gray-900">Performance Trends</span>
-                  <p className="text-sm text-gray-600">View deck performance over time with historical data</p>
+                  <span className="font-semibold text-primary-900">Performance Trends</span>
+                  <p className="text-sm text-primary-700">View deck performance over time with historical data</p>
                 </div>
               </li>
               <li className="flex items-start">
@@ -86,8 +86,8 @@ export default async function AnalyticsPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <div>
-                  <span className="font-semibold text-gray-900">Multi-TCG Support</span>
-                  <p className="text-sm text-gray-600">Separate analytics for Riftbound, One Piece, and other TCGs</p>
+                  <span className="font-semibold text-primary-900">Multi-TCG Support</span>
+                  <p className="text-sm text-primary-700">Separate analytics for Riftbound, One Piece, and other TCGs</p>
                 </div>
               </li>
             </ul>
@@ -95,11 +95,11 @@ export default async function AnalyticsPage() {
             <div className="text-center">
               <Link
                 href="/subscription"
-                className="inline-block bg-accent-600 text-white px-8 py-4 rounded-lg hover:bg-accent-700 transition-colors font-semibold text-lg"
+                className="inline-block bg-accent-300 text-white px-8 py-4 rounded-lg hover:bg-accent-400 transition-colors font-semibold text-lg"
               >
                 ⬆️ Upgrade to Premium
               </Link>
-              <p className="mt-4 text-sm text-gray-500">
+              <p className="mt-4 text-sm text-primary-600">
                 Unlock global analytics and support the development of TCG Stats Tracker
               </p>
             </div>
@@ -108,7 +108,7 @@ export default async function AnalyticsPage() {
           <div className="text-center">
             <Link
               href="/projects"
-              className="text-accent-600 hover:text-accent-700 font-medium"
+              className="text-accent-500 hover:text-accent-600 font-medium"
             >
               ← Back to Projects
             </Link>
@@ -136,13 +136,13 @@ export default async function AnalyticsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-primary-700 mb-2">
             📊 Global Analytics Dashboard
           </h1>
-          <p className="text-gray-600">
+          <p className="text-primary-700">
             Aggregated statistics from all users across the community
           </p>
         </div>

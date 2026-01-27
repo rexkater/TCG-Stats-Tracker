@@ -120,7 +120,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
     return (
       <div className="text-center py-12">
         <h1 className="text-2xl font-bold text-primary-700 mb-2">Project not found</h1>
-        <Link href="/projects" className="text-accent-600 hover:text-accent-700">
+        <Link href="/projects" className="text-accent-500 hover:text-accent-600">
           Back to projects
         </Link>
       </div>
@@ -161,15 +161,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
       {/* Header */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex-1 min-w-0">
-          <Link href="/projects" className="text-sm text-accent-600 hover:text-accent-700 mb-2 inline-block touch-manipulation">
+          <Link href="/projects" className="text-sm text-accent-500 hover:text-accent-600 mb-2 inline-block touch-manipulation">
             ← Back to projects
           </Link>
           <RenameProject projectId={project.id} currentName={project.name} />
-          <p className="text-gray-600 mt-1 flex flex-wrap items-center gap-2">
+          <p className="text-primary-700 mt-1 flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-background-200 text-primary-700">
               {project.tcg.name}
             </span>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-primary-600">
               Created {new Date(project.createdAt).toLocaleDateString()}
             </span>
           </p>
@@ -185,19 +185,19 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
           />
           <Link
             href={`/projects/${project.id}/notes`}
-            className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
+            className="px-4 py-2.5 bg-background-200 text-primary-800 rounded-lg hover:bg-background-300 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
           >
             📝 Notes
           </Link>
           <Link
             href={`/projects/${project.id}/export`}
-            className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
+            className="px-4 py-2.5 bg-background-200 text-primary-800 rounded-lg hover:bg-background-300 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
           >
             📥 Export CSV
           </Link>
           <Link
             href={`/projects/${project.id}/import`}
-            className="px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
+            className="px-4 py-2.5 bg-background-200 text-primary-800 rounded-lg hover:bg-background-300 transition-colors font-medium text-center touch-manipulation min-h-[44px] flex items-center justify-center"
           >
             📤 Import CSV
           </Link>
@@ -207,20 +207,20 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="text-sm text-gray-600 mb-1">Total Entries</div>
-          <div className="text-3xl font-bold text-gray-900">{totalEntries}</div>
+        <div className="bg-background-200 rounded-lg border border-background-400 p-6">
+          <div className="text-sm text-primary-700 mb-1">Total Entries</div>
+          <div className="text-3xl font-bold text-primary-900">{totalEntries}</div>
         </div>
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="text-sm text-gray-600 mb-1">Decks Used</div>
-          <div className="text-3xl font-bold text-gray-900">
-            {decksUsed}<span className="text-lg text-gray-500">/{totalDecks}</span>
+        <div className="bg-background-200 rounded-lg border border-background-400 p-6">
+          <div className="text-sm text-primary-700 mb-1">Decks Used</div>
+          <div className="text-3xl font-bold text-primary-900">
+            {decksUsed}<span className="text-lg text-primary-600">/{totalDecks}</span>
           </div>
         </div>
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="text-sm text-gray-600 mb-1">Categories Used</div>
-          <div className="text-3xl font-bold text-gray-900">
-            {categoriesUsed}<span className="text-lg text-gray-500">/{totalCategories}</span>
+        <div className="bg-background-200 rounded-lg border border-background-400 p-6">
+          <div className="text-sm text-primary-700 mb-1">Categories Used</div>
+          <div className="text-3xl font-bold text-primary-900">
+            {categoriesUsed}<span className="text-lg text-primary-600">/{totalCategories}</span>
           </div>
         </div>
       </div>
@@ -229,42 +229,42 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
       {analytics && (
         <>
           {/* Overall Win Rate */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Overall Performance</h2>
+          <div className="bg-background-200 rounded-lg border border-background-400 p-6">
+            <h2 className="text-xl font-semibold text-primary-900 mb-4">Overall Performance</h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
-                <div className="text-sm text-gray-600 mb-1">Win Rate</div>
-                <div className="text-3xl font-bold text-gray-900">
+                <div className="text-sm text-primary-700 mb-1">Win Rate</div>
+                <div className="text-3xl font-bold text-primary-900">
                   {formatWinRate(analytics.overall.winRate)}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-primary-600 mt-1">
                   {formatWinRate(analytics.overall.winRateExcludingDraws)} excl. draws
                 </div>
               </div>
               <div>
-                <div className="text-sm text-gray-600 mb-1">Record</div>
-                <div className="text-2xl font-bold text-gray-900">
+                <div className="text-sm text-primary-700 mb-1">Record</div>
+                <div className="text-2xl font-bold text-primary-900">
                   {formatRecord(analytics.overall)}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-primary-600 mt-1">
                   {analytics.overall.wins}W {analytics.overall.losses}L {analytics.overall.draws}D
                 </div>
               </div>
               <div>
-                <div className="text-sm text-gray-600 mb-1">Going First</div>
-                <div className="text-2xl font-bold text-gray-900">
+                <div className="text-sm text-primary-700 mb-1">Going First</div>
+                <div className="text-2xl font-bold text-primary-900">
                   {formatWinRate(analytics.byInitiative.first.winRate)}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-primary-600 mt-1">
                   {formatRecord(analytics.byInitiative.first)}
                 </div>
               </div>
               <div>
-                <div className="text-sm text-gray-600 mb-1">Going Second</div>
-                <div className="text-2xl font-bold text-gray-900">
+                <div className="text-sm text-primary-700 mb-1">Going Second</div>
+                <div className="text-2xl font-bold text-primary-900">
                   {formatWinRate(analytics.byInitiative.second.winRate)}
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-primary-600 mt-1">
                   {formatRecord(analytics.byInitiative.second)}
                 </div>
               </div>
@@ -273,32 +273,32 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
 
           {/* Deck Performance */}
           {analytics.byDeck.length > 0 && (
-            <div className="bg-white rounded-lg border border-gray-200">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900">Deck Performance</h2>
+            <div className="bg-background-200 rounded-lg border border-background-400">
+              <div className="px-6 py-4 border-b border-background-400">
+                <h2 className="text-xl font-semibold text-primary-900">Deck Performance</h2>
               </div>
               <div className="overflow-x-auto max-h-[520px] overflow-y-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-background-400">
+                  <thead className="bg-background-100">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Deck
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Record
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Win Rate
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Games
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-background-200 divide-y divide-background-400">
                     {analytics.byDeck.map((deck) => (
-                      <tr key={deck.deckName} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <tr key={deck.deckName} className="hover:bg-background-100">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-900">
                           <div className="flex items-center gap-3">
                             {/* Only show images for Riftbound TCG */}
                             {project.tcg.name === 'Riftbound' && (
@@ -314,7 +314,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                             <span>{deck.deckName}</span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-900">
                           {formatRecord(deck)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -326,7 +326,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                             {formatWinRate(deck.winRate)}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                           {deck.totalGames}
                         </td>
                       </tr>
@@ -363,12 +363,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
       )}
 
       {/* Recent Entries */}
-      <div className="bg-white rounded-lg border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200">
+      <div className="bg-background-200 rounded-lg border border-background-400">
+        <div className="px-6 py-4 border-b border-background-400">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-900">Recent Entries</h2>
+            <h2 className="text-xl font-semibold text-primary-900">Recent Entries</h2>
             {showingLimitedEntries && (
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-primary-600">
                 Showing 100 of {totalEntriesCount} entries
               </span>
             )}
@@ -376,93 +376,93 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
         </div>
         {project.entries.length === 0 ? (
           <div className="px-6 py-12 text-center">
-            <p className="text-gray-500 mb-4">No entries yet</p>
+            <p className="text-primary-600 mb-4">No entries yet</p>
             <Link
               href={`/projects/${project.id}/entries/new`}
-              className="text-accent-600 hover:text-accent-700 font-medium"
+              className="text-accent-500 hover:text-accent-600 font-medium"
             >
               Add your first entry
             </Link>
           </div>
         ) : (
           <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-background-400">
+              <thead className="bg-background-100">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                     Date
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                     Result
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                     My Deck
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                     Opponent Deck
                   </th>
                   {tcgSettings.contextLabel && (
                     <>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         My {tcgSettings.contextLabel}
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Opp {tcgSettings.contextLabel}
                       </th>
                     </>
                   )}
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                     Initiative
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                     Category
                   </th>
                   {/* Only show Game column for best of 3 games */}
                   {tcgSettings.bestOfFormat !== 1 && (
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                       Game
                     </th>
                   )}
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                     Notes
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-background-200 divide-y divide-background-400">
                 {project.entries.map((entry: EntryWithRelationsLocal) => (
-                  <tr key={entry.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <tr key={entry.id} className="hover:bg-background-100">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                       {new Date(entry.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         entry.result === 'WIN' ? 'bg-green-100 text-green-800' :
                         entry.result === 'LOSS' ? 'bg-red-100 text-red-800' :
-                        'bg-gray-100 text-gray-800'
+                        'bg-background-200 text-primary-800'
                       }`}>
                         {entry.result}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-900">
                       {entry.myDeckName}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-900">
                       {entry.oppDeckName}
                     </td>
                     {tcgSettings.contextLabel && (
                       <>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                           {entry.myBattlefield?.name || '-'}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                           {entry.oppBattlefield?.name || '-'}
                         </td>
                       </>
                     )}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                       {entry.initiative === 'FIRST' ? '1st' : '2nd'}
                       {entry.wonDiceRoll !== null && (
                         <span className="ml-1 text-xs" title={entry.wonDiceRoll ? 'Won dice roll' : 'Lost dice roll'}>
@@ -470,26 +470,26 @@ export default async function ProjectPage({ params }: { params: Promise<{ projec
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                       {entry.category.name}
                     </td>
                     {/* Only show Game column for best of 3 games */}
                     {tcgSettings.bestOfFormat !== 1 && (
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                         {entry.gameNumber ? `G${entry.gameNumber}` : '-'}
                         {entry.seriesId && (
                           <span className="text-xs text-gray-400 ml-1">({entry.seriesId})</span>
                         )}
                       </td>
                     )}
-                    <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                    <td className="px-6 py-4 text-sm text-primary-700 max-w-xs truncate">
                       {entry.notesShort || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <div className="flex items-center gap-3">
                         <Link
                           href={`/projects/${project.id}/entries/${entry.id}/edit`}
-                          className="text-accent-600 hover:text-accent-700 font-medium"
+                          className="text-accent-500 hover:text-accent-600 font-medium"
                         >
                           ✏️ Edit
                         </Link>

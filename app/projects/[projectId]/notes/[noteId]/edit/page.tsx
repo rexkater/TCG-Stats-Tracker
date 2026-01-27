@@ -37,7 +37,7 @@ export default async function EditNotePage({ params }: PageProps) {
     return (
       <main className="space-y-6">
         <div className="text-center py-12">
-          <p className="text-gray-500">Project or note not found</p>
+          <p className="text-primary-600">Project or note not found</p>
         </div>
       </main>
     );
@@ -52,14 +52,14 @@ export default async function EditNotePage({ params }: PageProps) {
       <div className="mb-4">
         <Link
           href={`/projects/${projectId}/notes`}
-          className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1"
+          className="text-accent-500 hover:text-accent-600 font-medium inline-flex items-center gap-1"
         >
           ← Back to Notes
         </Link>
       </div>
 
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Edit Matchup Note</h1>
+        <h1 className="text-3xl font-bold text-primary-900">Edit Matchup Note</h1>
         <form action={togglePinWithData}>
           <button
             type="submit"
@@ -71,17 +71,17 @@ export default async function EditNotePage({ params }: PageProps) {
       </div>
 
       {/* Form */}
-      <form action={updateNoteWithData} className="bg-white rounded-lg border border-gray-200 p-6 space-y-6">
+      <form action={updateNoteWithData} className="bg-background-200 rounded-lg border border-background-400 p-6 space-y-6">
         {/* Deck A */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-primary-800 mb-2">
             Deck A <span className="text-red-500">*</span>
           </label>
           <select
             name="deckAId"
             required
             defaultValue={note.deckAId}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-background-400 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Select Deck A...</option>
             {project.decks.map((deck: Deck) => (
@@ -94,14 +94,14 @@ export default async function EditNotePage({ params }: PageProps) {
 
         {/* Deck B */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-primary-800 mb-2">
             Deck B <span className="text-red-500">*</span>
           </label>
           <select
             name="deckBId"
             required
             defaultValue={note.deckBId}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-background-400 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Select Deck B...</option>
             {project.decks.map((deck: Deck) => (
@@ -114,7 +114,7 @@ export default async function EditNotePage({ params }: PageProps) {
 
         {/* Content */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-primary-800 mb-2">
             Notes <span className="text-red-500">*</span>
           </label>
           <textarea
@@ -122,7 +122,7 @@ export default async function EditNotePage({ params }: PageProps) {
             required
             rows={10}
             defaultValue={note.contentMarkdown}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+            className="w-full px-3 py-2 border border-background-400 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
           />
         </div>
 
@@ -133,9 +133,9 @@ export default async function EditNotePage({ params }: PageProps) {
             name="pinned"
             id="pinned"
             defaultChecked={note.pinned}
-            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            className="w-4 h-4 text-accent-500 border-background-400 rounded focus:ring-blue-500"
           />
-          <label htmlFor="pinned" className="text-sm font-medium text-gray-700">
+          <label htmlFor="pinned" className="text-sm font-medium text-primary-800">
             📌 Pin this note to the top
           </label>
         </div>
@@ -144,13 +144,13 @@ export default async function EditNotePage({ params }: PageProps) {
         <div className="flex gap-3 pt-4">
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            className="px-6 py-2 bg-secondary-300 text-white rounded-lg hover:bg-secondary-400 transition-colors font-medium"
           >
             Update Note
           </button>
           <Link
             href={`/projects/${projectId}/notes`}
-            className="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+            className="px-6 py-2 bg-background-200 text-primary-800 rounded-lg hover:bg-background-300 transition-colors font-medium"
           >
             Cancel
           </Link>

@@ -58,8 +58,8 @@ export default async function NewEntry({
   if (!project) {
     return (
       <div className="text-center py-12">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Project not found</h1>
-        <Link href="/projects" className="text-blue-600 hover:text-blue-700">
+        <h1 className="text-2xl font-bold text-primary-900 mb-2">Project not found</h1>
+        <Link href="/projects" className="text-accent-500 hover:text-accent-600">
           Back to projects
         </Link>
       </div>
@@ -105,15 +105,15 @@ export default async function NewEntry({
       <div>
         <Link
           href={`/projects/${projectId}`}
-          className="text-sm text-blue-600 hover:text-blue-700 mb-2 inline-block"
+          className="text-sm text-accent-500 hover:text-accent-600 mb-2 inline-block"
         >
           ← Back to project
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">New Entry</h1>
-        <p className="text-gray-600 mt-1">
+        <h1 className="text-3xl font-bold text-primary-900">New Entry</h1>
+        <p className="text-primary-700 mt-1">
           Record a match for <span className="font-medium">{project.name}</span>
           {copyLast === 'true' && defaultValues && (
-            <span className="ml-2 text-sm text-blue-600">
+            <span className="ml-2 text-sm text-accent-500">
               (Copied from last entry)
             </span>
           )}

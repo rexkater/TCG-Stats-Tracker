@@ -31,8 +31,8 @@ export default async function EditEntry({ params }: { params: Promise<{ projectI
   if (!entry || entry.projectId !== projectId) {
     return (
       <div className="text-center py-12">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Entry not found</h1>
-        <Link href={`/projects/${projectId}`} className="text-blue-600 hover:text-blue-700">
+        <h1 className="text-2xl font-bold text-primary-900 mb-2">Entry not found</h1>
+        <Link href={`/projects/${projectId}`} className="text-accent-500 hover:text-accent-600">
           Back to project
         </Link>
       </div>
@@ -82,8 +82,8 @@ export default async function EditEntry({ params }: { params: Promise<{ projectI
   if (!project) {
     return (
       <div className="text-center py-12">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Project not found</h1>
-        <Link href="/projects" className="text-blue-600 hover:text-blue-700">
+        <h1 className="text-2xl font-bold text-primary-900 mb-2">Project not found</h1>
+        <Link href="/projects" className="text-accent-500 hover:text-accent-600">
           Back to projects
         </Link>
       </div>
@@ -98,12 +98,12 @@ export default async function EditEntry({ params }: { params: Promise<{ projectI
       <div>
         <Link
           href={`/projects/${projectId}`}
-          className="text-sm text-blue-600 hover:text-blue-700 mb-2 inline-block"
+          className="text-sm text-accent-500 hover:text-accent-600 mb-2 inline-block"
         >
           ← Back to project
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">Edit Entry</h1>
-        <p className="text-gray-600 mt-1">
+        <h1 className="text-3xl font-bold text-primary-900">Edit Entry</h1>
+        <p className="text-primary-700 mt-1">
           Update match details for <span className="font-medium">{project.name}</span>
         </p>
       </div>

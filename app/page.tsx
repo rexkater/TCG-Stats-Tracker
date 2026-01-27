@@ -19,7 +19,7 @@ export default async function Home() {
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
               href="/auth/signup"
-              className="inline-block bg-accent-600 text-white px-6 py-3 rounded-lg hover:bg-accent-700 transition-colors font-semibold text-center"
+              className="inline-block bg-accent-300 text-white px-6 py-3 rounded-lg hover:bg-accent-400 transition-colors font-semibold text-center"
             >
               Sign Up
             </Link>
@@ -53,7 +53,7 @@ export default async function Home() {
       <div className="grid gap-4 md:grid-cols-2">
         <Link
           href={session ? "/projects" : "/auth/signup"}
-          className="block bg-white border border-primary-200 rounded-lg p-6 hover:border-accent-500 hover:shadow-md transition-all touch-manipulation min-h-[100px]"
+          className="block bg-background-200 border border-primary-200 rounded-lg p-6 hover:border-accent-500 hover:shadow-md transition-all touch-manipulation min-h-[100px]"
         >
           <h2 className="text-xl font-semibold mb-2 text-primary-700">📊 Projects</h2>
           <p className="text-primary-600">
@@ -63,7 +63,7 @@ export default async function Home() {
 
         <Link
           href="/feedback"
-          className="block bg-white border border-primary-200 rounded-lg p-6 hover:border-accent-500 hover:shadow-md transition-all touch-manipulation min-h-[100px]"
+          className="block bg-background-200 border border-primary-200 rounded-lg p-6 hover:border-accent-500 hover:shadow-md transition-all touch-manipulation min-h-[100px]"
         >
           <h2 className="text-xl font-semibold mb-2 text-primary-700">💬 Feedback</h2>
           <p className="text-primary-600">Share your thoughts and report issues</p>
@@ -86,27 +86,27 @@ export default async function Home() {
         <h2 className="text-lg font-semibold mb-3 text-primary-700">Features</h2>
         <ul className="grid gap-2 md:grid-cols-2 text-primary-600">
           <li className="flex items-start gap-2">
-            <span className="text-accent-600">✓</span>
+            <span className="text-accent-500">✓</span>
             <span>Track match results and statistics</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-accent-600">✓</span>
+            <span className="text-accent-500">✓</span>
             <span>Analyze win rates and matchups</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-accent-600">✓</span>
+            <span className="text-accent-500">✓</span>
             <span>Matchup notes and strategy tracking</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-accent-600">✓</span>
+            <span className="text-accent-500">✓</span>
             <span>CSV export and import</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-accent-600">✓</span>
+            <span className="text-accent-500">✓</span>
             <span>Battlefield and initiative tracking</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-accent-600">✓</span>
+            <span className="text-accent-500">✓</span>
             <span>Best-of-3 series tracking</span>
           </li>
         </ul>

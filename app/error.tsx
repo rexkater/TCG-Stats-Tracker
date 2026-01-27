@@ -16,14 +16,14 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md w-full bg-white rounded-lg border border-gray-200 p-8 text-center">
+    <div className="min-h-screen flex items-center justify-center bg-background-100 px-4">
+      <div className="max-w-md w-full bg-background-200 rounded-lg border border-background-400 p-8 text-center">
         <div className="mb-4">
           <div className="text-6xl mb-4">⚠️</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold text-primary-900 mb-2">
             Something went wrong
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-primary-700 mb-6">
             {error.message || 'An unexpected error occurred. Please try again.'}
           </p>
         </div>
@@ -31,13 +31,13 @@ export default function Error({
         <div className="flex flex-col gap-3">
           <button
             onClick={reset}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            className="px-6 py-3 bg-secondary-300 text-white rounded-lg hover:bg-secondary-400 transition-colors font-medium"
           >
             Try again
           </button>
           <Link
             href="/"
-            className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+            className="px-6 py-3 bg-background-200 text-primary-800 rounded-lg hover:bg-background-300 transition-colors font-medium"
           >
             Go to home
           </Link>

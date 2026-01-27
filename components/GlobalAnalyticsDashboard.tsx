@@ -54,8 +54,8 @@ export default function GlobalAnalyticsDashboard({ tcgs }: GlobalAnalyticsDashbo
   return (
     <div>
       {/* TCG Tabs */}
-      <div className="bg-white rounded-lg border border-gray-200 mb-6">
-        <div className="border-b border-gray-200">
+      <div className="bg-background-200 rounded-lg border border-background-400 mb-6">
+        <div className="border-b border-background-400">
           <nav className="flex -mb-px">
             {tcgs.map((tcg) => (
               <button
@@ -63,8 +63,8 @@ export default function GlobalAnalyticsDashboard({ tcgs }: GlobalAnalyticsDashbo
                 onClick={() => setActiveTab(tcg.id)}
                 className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === tcg.id
-                    ? 'border-accent-600 text-accent-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-accent-600 text-accent-500'
+                    : 'border-transparent text-primary-600 hover:text-primary-800 hover:border-background-400'
                 }`}
               >
                 {tcg.name}
@@ -76,9 +76,9 @@ export default function GlobalAnalyticsDashboard({ tcgs }: GlobalAnalyticsDashbo
 
       {/* Loading State */}
       {loading && (
-        <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
+        <div className="bg-background-200 rounded-lg border border-background-400 p-12 text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent-600 mb-4"></div>
-          <p className="text-gray-600">Loading analytics...</p>
+          <p className="text-primary-700">Loading analytics...</p>
         </div>
       )}
 
@@ -94,23 +94,23 @@ export default function GlobalAnalyticsDashboard({ tcgs }: GlobalAnalyticsDashbo
         <div className="space-y-6">
           {/* Overview Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <div className="text-sm text-gray-600 mb-1">Total Games</div>
+            <div className="bg-background-200 rounded-lg border border-background-400 p-6">
+              <div className="text-sm text-primary-700 mb-1">Total Games</div>
               <div className="text-3xl font-bold text-primary-700">{analytics.totalGames.toLocaleString()}</div>
             </div>
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <div className="text-sm text-gray-600 mb-1">Total Projects</div>
+            <div className="bg-background-200 rounded-lg border border-background-400 p-6">
+              <div className="text-sm text-primary-700 mb-1">Total Projects</div>
               <div className="text-3xl font-bold text-primary-700">{analytics.totalProjects.toLocaleString()}</div>
             </div>
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <div className="text-sm text-gray-600 mb-1">Active Users</div>
+            <div className="bg-background-200 rounded-lg border border-background-400 p-6">
+              <div className="text-sm text-primary-700 mb-1">Active Users</div>
               <div className="text-3xl font-bold text-primary-700">{analytics.totalUsers.toLocaleString()}</div>
             </div>
           </div>
 
           {/* Most Played Decks */}
           {analytics.mostPlayedDecks.length > 0 && (
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="bg-background-200 rounded-lg border border-background-400 p-6">
               <h2 className="text-xl font-semibold text-primary-700 mb-4">📈 Most Played Decks</h2>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 {analytics.mostPlayedDecks.slice(0, 10).map((deck, index) => (
@@ -125,9 +125,9 @@ export default function GlobalAnalyticsDashboard({ tcgs }: GlobalAnalyticsDashbo
                         unoptimized
                       />
                     )}
-                    <div className="font-semibold text-sm text-gray-900">{deck.deckName}</div>
-                    <div className="text-xs text-gray-600">{deck.count.toLocaleString()} games</div>
-                    {index === 0 && <div className="text-xs text-accent-600 font-semibold mt-1">🏆 Most Popular</div>}
+                    <div className="font-semibold text-sm text-primary-900">{deck.deckName}</div>
+                    <div className="text-xs text-primary-700">{deck.count.toLocaleString()} games</div>
+                    {index === 0 && <div className="text-xs text-accent-500 font-semibold mt-1">🏆 Most Popular</div>}
                   </div>
                 ))}
               </div>
@@ -136,31 +136,31 @@ export default function GlobalAnalyticsDashboard({ tcgs }: GlobalAnalyticsDashbo
 
           {/* Deck Performance */}
           {analytics.deckStats.length > 0 && (
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="bg-background-200 rounded-lg border border-background-400 p-6">
               <h2 className="text-xl font-semibold text-primary-700 mb-4">🎯 Deck Performance</h2>
-              <p className="text-sm text-gray-600 mb-4">Minimum {10} games required</p>
+              <p className="text-sm text-primary-700 mb-4">Minimum {10} games required</p>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-background-400">
+                  <thead className="bg-background-100">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Deck
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Win Rate
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Record
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Games
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-background-200 divide-y divide-background-400">
                     {analytics.deckStats.map((deck) => (
-                      <tr key={deck.deckName} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <tr key={deck.deckName} className="hover:bg-background-100">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-900">
                           <div className="flex items-center gap-3">
                             {activeTCG?.name === 'Riftbound' && (
                               <Image
@@ -175,13 +175,13 @@ export default function GlobalAnalyticsDashboard({ tcgs }: GlobalAnalyticsDashbo
                             {deck.deckName}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-900">
                           {formatWinRate(deck.winRate)}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                           {deck.wins}W - {deck.losses}L{deck.draws > 0 ? ` - ${deck.draws}D` : ''}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                           {deck.total}
                         </td>
                       </tr>
@@ -194,52 +194,52 @@ export default function GlobalAnalyticsDashboard({ tcgs }: GlobalAnalyticsDashbo
 
           {/* Matchup Analysis */}
           {analytics.matchupStats.length > 0 && (
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="bg-background-200 rounded-lg border border-background-400 p-6">
               <h2 className="text-xl font-semibold text-primary-700 mb-4">⚔️ Matchup Analysis</h2>
-              <p className="text-sm text-gray-600 mb-4">Top matchups by games played (minimum {10} games)</p>
+              <p className="text-sm text-primary-700 mb-4">Top matchups by games played (minimum {10} games)</p>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-background-400">
+                  <thead className="bg-background-100">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         My Deck
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         vs
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Opponent Deck
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Win Rate
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Record
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Games
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-background-200 divide-y divide-background-400">
                     {analytics.matchupStats.slice(0, 20).map((matchup, index) => (
-                      <tr key={`${matchup.myDeck}-${matchup.oppDeck}-${index}`} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <tr key={`${matchup.myDeck}-${matchup.oppDeck}-${index}`} className="hover:bg-background-100">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-900">
                           {matchup.myDeck}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                           vs
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-900">
                           {matchup.oppDeck}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-900">
                           {formatWinRate(matchup.winRate)}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                           {matchup.wins}W - {matchup.losses}L{matchup.draws > 0 ? ` - ${matchup.draws}D` : ''}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                           {matchup.total}
                         </td>
                       </tr>
@@ -252,40 +252,40 @@ export default function GlobalAnalyticsDashboard({ tcgs }: GlobalAnalyticsDashbo
 
           {/* Battlefield Performance */}
           {analytics.battlefieldStats.length > 0 && (
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="bg-background-200 rounded-lg border border-background-400 p-6">
               <h2 className="text-xl font-semibold text-primary-700 mb-4">🗺️ Battlefield Performance</h2>
-              <p className="text-sm text-gray-600 mb-4">Minimum {10} games required</p>
+              <p className="text-sm text-primary-700 mb-4">Minimum {10} games required</p>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-background-400">
+                  <thead className="bg-background-100">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Battlefield
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Win Rate
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Record
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Games
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-background-200 divide-y divide-background-400">
                     {analytics.battlefieldStats.map((battlefield) => (
-                      <tr key={battlefield.battlefieldName} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <tr key={battlefield.battlefieldName} className="hover:bg-background-100">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-900">
                           {battlefield.battlefieldName}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-900">
                           {formatWinRate(battlefield.winRate)}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                           {battlefield.wins}W - {battlefield.losses}L{battlefield.draws > 0 ? ` - ${battlefield.draws}D` : ''}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                           {battlefield.total}
                         </td>
                       </tr>
@@ -298,40 +298,40 @@ export default function GlobalAnalyticsDashboard({ tcgs }: GlobalAnalyticsDashbo
 
           {/* Category Performance */}
           {analytics.categoryStats.length > 0 && (
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="bg-background-200 rounded-lg border border-background-400 p-6">
               <h2 className="text-xl font-semibold text-primary-700 mb-4">📂 Category Performance</h2>
-              <p className="text-sm text-gray-600 mb-4">Minimum {10} games required</p>
+              <p className="text-sm text-primary-700 mb-4">Minimum {10} games required</p>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                <table className="min-w-full divide-y divide-background-400">
+                  <thead className="bg-background-100">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Category
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Win Rate
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Record
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                         Games
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-background-200 divide-y divide-background-400">
                     {analytics.categoryStats.map((category) => (
-                      <tr key={category.categoryName} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <tr key={category.categoryName} className="hover:bg-background-100">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-900">
                           {category.categoryName}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-900">
                           {formatWinRate(category.winRate)}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                           {category.wins}W - {category.losses}L{category.draws > 0 ? ` - ${category.draws}D` : ''}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-700">
                           {category.total}
                         </td>
                       </tr>
@@ -344,9 +344,9 @@ export default function GlobalAnalyticsDashboard({ tcgs }: GlobalAnalyticsDashbo
 
           {/* No Data Message */}
           {analytics.totalGames === 0 && (
-            <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-              <p className="text-gray-600">No data available for {activeTCG?.name} yet.</p>
-              <p className="text-sm text-gray-500 mt-2">Start tracking games to see analytics!</p>
+            <div className="bg-background-200 rounded-lg border border-background-400 p-12 text-center">
+              <p className="text-primary-700">No data available for {activeTCG?.name} yet.</p>
+              <p className="text-sm text-primary-600 mt-2">Start tracking games to see analytics!</p>
             </div>
           )}
         </div>

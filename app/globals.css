@@ -1,53 +1,53 @@
 @import "tailwindcss";
 
 @theme {
-  /* Custom Color Palette */
-  /* Primary: Dark Brown (#351f12) - Headers, text, navigation */
-  --color-primary-50: #faf8f7;
-  --color-primary-100: #f0ebe7;
-  --color-primary-200: #ddd3cb;
-  --color-primary-300: #c4b3a5;
-  --color-primary-400: #a38876;
-  --color-primary-500: #6b4d3a;
-  --color-primary-600: #4d3525;
-  --color-primary-700: #351f12;
-  --color-primary-800: #2a1a0e;
-  --color-primary-900: #1f140a;
+  /* Dark Mode Color Palette */
+  /* Primary: Warm Browns - For text and accents on dark backgrounds */
+  --color-primary-50: #1f140a;
+  --color-primary-100: #2a1a0e;
+  --color-primary-200: #351f12;
+  --color-primary-300: #4d3525;
+  --color-primary-400: #6b4d3a;
+  --color-primary-500: #a38876;
+  --color-primary-600: #c4b3a5;
+  --color-primary-700: #ddd3cb;
+  --color-primary-800: #f0ebe7;
+  --color-primary-900: #faf8f7;
 
-  /* Secondary: Light Coral/Pink (#f79da0) - Highlights, hover states */
-  --color-secondary-50: #fef5f5;
-  --color-secondary-100: #fde8e9;
-  --color-secondary-200: #fcd4d6;
-  --color-secondary-300: #fab8bb;
-  --color-secondary-400: #f79da0;
-  --color-secondary-500: #f47b7f;
-  --color-secondary-600: #ef5459;
-  --color-secondary-700: #e63940;
-  --color-secondary-800: #c22d33;
-  --color-secondary-900: #a1262b;
+  /* Secondary: Coral/Pink - Highlights and interactive elements */
+  --color-secondary-50: #a1262b;
+  --color-secondary-100: #c22d33;
+  --color-secondary-200: #e63940;
+  --color-secondary-300: #ef5459;
+  --color-secondary-400: #f47b7f;
+  --color-secondary-500: #f79da0;
+  --color-secondary-600: #fab8bb;
+  --color-secondary-700: #fcd4d6;
+  --color-secondary-800: #fde8e9;
+  --color-secondary-900: #fef5f5;
 
-  /* Accent: Red/Crimson (#d23b44) - Buttons, links, CTAs */
-  --color-accent-50: #fef2f3;
-  --color-accent-100: #fde3e5;
-  --color-accent-200: #fbccd0;
-  --color-accent-300: #f7a5ab;
-  --color-accent-400: #f17179;
-  --color-accent-500: #e5444d;
-  --color-accent-600: #d23b44;
-  --color-accent-700: #b02d35;
-  --color-accent-800: #922831;
-  --color-accent-900: #7c262e;
+  /* Accent: Red/Crimson - Buttons, links, CTAs */
+  --color-accent-50: #7c262e;
+  --color-accent-100: #922831;
+  --color-accent-200: #b02d35;
+  --color-accent-300: #d23b44;
+  --color-accent-400: #e5444d;
+  --color-accent-500: #f17179;
+  --color-accent-600: #f7a5ab;
+  --color-accent-700: #fbccd0;
+  --color-accent-800: #fde3e5;
+  --color-accent-900: #fef2f3;
 
-  /* Background: Light Blue (#a9ddf7) - Header background, section accents */
-  --color-background-50: #f0f9fe;
-  --color-background-100: #e0f3fd;
-  --color-background-200: #bae7fb;
-  --color-background-300: #a9ddf7;
-  --color-background-400: #7dcdf4;
-  --color-background-500: #51bdf1;
-  --color-background-600: #2fa8e6;
-  --color-background-700: #2088c4;
-  --color-background-800: #1e6fa0;
-  --color-background-900: #1d5c84;
+  /* Background: Dark Blues - Main backgrounds and surfaces */
+  --color-background-50: #0a0f14;
+  --color-background-100: #0f1419;
+  --color-background-200: #1a2332;
+  --color-background-300: #1e2a3a;
+  --color-background-400: #2d3f54;
+  --color-background-500: #3d5470;
+  --color-background-600: #5a7a9e;
+  --color-background-700: #7da3c9;
+  --color-background-800: #a9c9e8;
+  --color-background-900: #d4e8f7;
 }
 

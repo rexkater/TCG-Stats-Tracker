@@ -21,7 +21,7 @@ export default async function SignUpPage() {
           </h2>
           <p className="mt-2 text-center text-sm text-primary-600">
             Already have an account?{' '}
-            <Link href="/auth/signin" className="font-medium text-accent-600 hover:text-accent-700">
+            <Link href="/auth/signin" className="font-medium text-accent-500 hover:text-accent-600">
               Sign in
             </Link>
           </p>

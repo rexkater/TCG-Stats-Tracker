@@ -22,11 +22,11 @@ export default function BattlefieldAnalytics({
   const [activeTab, setActiveTab] = useState<'battlefield' | 'matchups' | 'category'>('category');
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200">
+    <div className="bg-background-200 rounded-lg border border-background-400">
       {/* Header with Tabs */}
-      <div className="border-b border-gray-200">
+      <div className="border-b border-background-400">
         <div className="px-6 py-4">
-          <h2 className="text-xl font-semibold text-gray-900 mb-3">
+          <h2 className="text-xl font-semibold text-primary-900 mb-3">
             {hasContext ? 'Context Performance' : 'Category Performance'}
           </h2>
           <div className="flex gap-2 flex-wrap">
@@ -36,7 +36,7 @@ export default function BattlefieldAnalytics({
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                 activeTab === 'category'
                   ? 'bg-accent-100 text-accent-700'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  : 'text-primary-700 hover:text-primary-900 hover:bg-background-200'
               }`}
             >
               Category
@@ -49,7 +49,7 @@ export default function BattlefieldAnalytics({
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                     activeTab === 'battlefield'
                       ? 'bg-accent-100 text-accent-700'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                      : 'text-primary-700 hover:text-primary-900 hover:bg-background-200'
                   }`}
                 >
                   {contextLabel}
@@ -59,7 +59,7 @@ export default function BattlefieldAnalytics({
                   className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                     activeTab === 'matchups'
                       ? 'bg-accent-100 text-accent-700'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                      : 'text-primary-700 hover:text-primary-900 hover:bg-background-200'
                   }`}
                 >
                   {contextLabel} Matchups
@@ -73,36 +73,36 @@ export default function BattlefieldAnalytics({
       {/* Tab Content */}
       <div className="overflow-x-auto max-h-[440px] overflow-y-auto">
         {activeTab === 'battlefield' ? (
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-background-400">
+            <thead className="bg-background-100">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Deck
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   {contextLabel}
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Record
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Win Rate
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Games
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-background-200 divide-y divide-background-400">
               {byContext.map((context, idx) => (
-                <tr key={`${context.deckName}-${context.contextOptionId || 'none'}-${idx}`} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                <tr key={`${context.deckName}-${context.contextOptionId || 'none'}-${idx}`} className="hover:bg-background-100">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-primary-900">
                     {context.deckName}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-primary-900">
                     {context.contextOptionName || 'None'}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-primary-900">
                     {formatRecord(context)}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
@@ -114,7 +114,7 @@ export default function BattlefieldAnalytics({
                       {formatWinRate(context.winRate)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-primary-600">
                     {context.total}
                   </td>
                 </tr>
@@ -122,42 +122,42 @@ export default function BattlefieldAnalytics({
             </tbody>
           </table>
         ) : activeTab === 'matchups' ? (
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-background-400">
+            <thead className="bg-background-100">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Deck
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   My {contextLabel}
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Opponent {contextLabel}
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Record
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Win Rate
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Games
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-background-200 divide-y divide-background-400">
               {byContextMatchup.map((matchup, idx) => (
-                <tr key={`${matchup.deckName}-${matchup.myContextId}-${matchup.oppContextId}-${idx}`} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                <tr key={`${matchup.deckName}-${matchup.myContextId}-${matchup.oppContextId}-${idx}`} className="hover:bg-background-100">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-primary-900">
                     {matchup.deckName}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-primary-900">
                     {matchup.myContextName || 'None'}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-primary-900">
                     {matchup.oppContextName || 'None'}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-primary-900">
                     {formatRecord(matchup)}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
@@ -169,7 +169,7 @@ export default function BattlefieldAnalytics({
                       {formatWinRate(matchup.winRate)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-primary-600">
                     {matchup.total}
                   </td>
                 </tr>
@@ -177,36 +177,36 @@ export default function BattlefieldAnalytics({
             </tbody>
           </table>
         ) : (
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-background-400">
+            <thead className="bg-background-100">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Deck
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Category
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Record
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Win Rate
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Games
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-background-200 divide-y divide-background-400">
               {byCategory.map((category, idx) => (
-                <tr key={`${category.deckName}-${category.categoryId}-${idx}`} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                <tr key={`${category.deckName}-${category.categoryId}-${idx}`} className="hover:bg-background-100">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-primary-900">
                     {category.deckName}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-primary-900">
                     {category.categoryName}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-primary-900">
                     {formatRecord(category)}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
@@ -218,7 +218,7 @@ export default function BattlefieldAnalytics({
                       {formatWinRate(category.winRate)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-primary-600">
                     {category.total}
                   </td>
                 </tr>

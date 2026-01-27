@@ -133,24 +133,24 @@ export default async function NewProjectPage() {
       <div>
         <Link
           href="/projects"
-          className="text-sm text-blue-600 hover:text-blue-700 mb-2 inline-block"
+          className="text-sm text-accent-500 hover:text-accent-600 mb-2 inline-block"
         >
           ← Back to projects
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">Create New Project</h1>
-        <p className="text-gray-600 mt-1">
+        <h1 className="text-3xl font-bold text-primary-900">Create New Project</h1>
+        <p className="text-primary-700 mt-1">
           Start tracking your TCG statistics by creating a new project
         </p>
       </div>
 
       {/* Form */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="bg-background-200 rounded-lg border border-background-400 p-6">
         <form action={createProject} className="space-y-6">
           {/* Project Name */}
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-primary-800 mb-2"
             >
               Project Name <span className="text-red-500">*</span>
             </label>
@@ -159,10 +159,10 @@ export default async function NewProjectPage() {
               id="name"
               name="name"
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-background-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="e.g., My Riftbound Journey, Competitive Season 2024"
             />
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-primary-600 mt-1">
               Choose a descriptive name for your project
             </p>
           </div>
@@ -171,7 +171,7 @@ export default async function NewProjectPage() {
           <div>
             <label
               htmlFor="tcgId"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-primary-800 mb-2"
             >
               Trading Card Game <span className="text-red-500">*</span>
             </label>
@@ -179,7 +179,7 @@ export default async function NewProjectPage() {
               id="tcgId"
               name="tcgId"
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-background-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Select a TCG...</option>
               {tcgs.map((tcg: TCG) => (
@@ -188,7 +188,7 @@ export default async function NewProjectPage() {
                 </option>
               ))}
             </select>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-primary-600 mt-1">
               Select the card game you want to track
             </p>
           </div>
@@ -219,7 +219,7 @@ export default async function NewProjectPage() {
 
                 return (
                   <li key={tcg.id} className="flex items-start gap-2">
-                    <span className="text-blue-600">•</span>
+                    <span className="text-accent-500">•</span>
                     <div>
                       <strong>{tcg.name}</strong>
                       {features.length > 0 && (
@@ -236,13 +236,13 @@ export default async function NewProjectPage() {
           <div className="flex gap-3">
             <Link
               href="/projects"
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-center font-medium"
+              className="flex-1 px-4 py-2 border border-background-400 rounded-lg hover:bg-background-100 transition-colors text-center font-medium"
             >
               Cancel
             </Link>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              className="flex-1 px-4 py-2 bg-secondary-300 text-white rounded-lg hover:bg-secondary-400 transition-colors font-medium"
             >
               Create Project
             </button>
@@ -251,11 +251,11 @@ export default async function NewProjectPage() {
       </div>
 
       {/* Help Text */}
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-2">
+      <div className="bg-background-100 border border-background-400 rounded-lg p-4">
+        <h3 className="text-sm font-semibold text-primary-900 mb-2">
           What happens next?
         </h3>
-        <ul className="space-y-1 text-sm text-gray-700">
+        <ul className="space-y-1 text-sm text-primary-800">
           <li className="flex items-start gap-2">
             <span className="text-green-600">1.</span>
             <span>Your project will be created with the selected TCG settings</span>
