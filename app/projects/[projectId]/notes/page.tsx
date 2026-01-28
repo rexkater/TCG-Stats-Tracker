@@ -174,13 +174,9 @@ export default async function MatchupNotesPage({ params, searchParams }: PagePro
               </div>
 
               {/* Footer */}
-              <div className="text-xs text-primary-600 flex items-center gap-4">
+              <div className="text-xs text-primary-600">
                 <span>
                   Updated {new Date(note.updatedAt).toLocaleDateString()}
-                </span>
-                <span>•</span>
-                <span>
-                  Created by {note.author.username}
                 </span>
               </div>
             </div>
