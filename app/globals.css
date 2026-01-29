@@ -71,3 +71,26 @@ a.user-nav-dropdown-item.user-nav-dropdown-item:hover {
 p.user-nav-dropdown-header.user-nav-dropdown-header {
   color: #ffffff !important;
 }
+
+/* Form elements - select dropdowns, inputs, textareas */
+select,
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+textarea {
+  background-color: #1a2332 !important;
+  color: #faf8f7 !important;
+}
+
+/* Select dropdown options */
+select option {
+  background-color: #1a2332 !important;
+  color: #faf8f7 !important;
+}
+
+/* Placeholder text */
+::placeholder {
+  color: #a38876 !important;
+  opacity: 0.7 !important;
+}
