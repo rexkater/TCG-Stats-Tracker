@@ -64,14 +64,17 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
         </button>
 
         {isOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 py-1 z-50">
-            <div className="px-4 py-2 border-b border-gray-700">
-              <p className="text-sm font-medium text-white">{username}</p>
+          <div className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-1 z-50" style={{ backgroundColor: '#1a2332', borderColor: '#2d3f54', borderWidth: '1px' }}>
+            <div className="px-4 py-2" style={{ borderBottomColor: '#2d3f54', borderBottomWidth: '1px' }}>
+              <p className="text-sm font-medium" style={{ color: '#faf8f7' }}>{username}</p>
             </div>
 
             <Link
               href="/projects"
-              className="block px-4 py-2 text-sm text-white hover:bg-gray-700 transition-colors"
+              className="block px-4 py-2 text-sm transition-colors"
+              style={{ color: '#faf8f7' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1e2a3a'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
               onClick={() => setIsOpen(false)}
             >
               📊 Projects
@@ -82,18 +85,24 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
               <>
                 <Link
                   href="/analytics"
-                  className="block px-4 py-2 text-sm text-white hover:bg-gray-700 transition-colors"
+                  className="block px-4 py-2 text-sm transition-colors"
+                  style={{ color: '#faf8f7' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1e2a3a'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                   onClick={() => setIsOpen(false)}
                 >
                   📈 Analytics
-                  <span className="ml-2 text-xs bg-accent-300 text-white px-2 py-0.5 rounded-full">
+                  <span className="ml-2 text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: '#d23b44', color: '#ffffff' }}>
                     Premium
                   </span>
                 </Link>
 
                 <Link
                   href="/subscription"
-                  className="block px-4 py-2 text-sm text-white hover:bg-gray-700 transition-colors"
+                  className="block px-4 py-2 text-sm transition-colors"
+                  style={{ color: '#faf8f7' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1e2a3a'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                   onClick={() => setIsOpen(false)}
                 >
                   ⭐ Premium
@@ -103,7 +112,10 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
 
             <Link
               href="/auth/reset-password"
-              className="block px-4 py-2 text-sm text-white hover:bg-gray-700 transition-colors"
+              className="block px-4 py-2 text-sm transition-colors"
+              style={{ color: '#faf8f7' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1e2a3a'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
               onClick={() => setIsOpen(false)}
             >
               🔑 Reset Password
