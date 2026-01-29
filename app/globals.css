@@ -51,20 +51,23 @@
   --color-background-900: #d4e8f7;
 }
 
-/* Force dropdown dark styling */
-.user-nav-dropdown {
+/* Force dropdown dark styling - using higher specificity */
+div.user-nav-dropdown.user-nav-dropdown {
   background-color: #1a2332 !important;
 }
 
-.user-nav-dropdown-item {
+a.user-nav-dropdown-item.user-nav-dropdown-item,
+a.user-nav-dropdown-item.user-nav-dropdown-item:link,
+a.user-nav-dropdown-item.user-nav-dropdown-item:visited {
   color: #ffffff !important;
   background-color: transparent !important;
 }
 
-.user-nav-dropdown-item:hover {
+a.user-nav-dropdown-item.user-nav-dropdown-item:hover {
   background-color: #1e2a3a !important;
+  color: #ffffff !important;
 }
 
-.user-nav-dropdown-header {
+p.user-nav-dropdown-header.user-nav-dropdown-header {
   color: #ffffff !important;
 }
