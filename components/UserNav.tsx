@@ -13,6 +13,31 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // Add styles directly to the document
+  useEffect(() => {
+    const styleId = 'user-nav-dropdown-styles';
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement('style');
+      style.id = styleId;
+      style.textContent = `
+        .user-nav-dropdown {
+          background-color: #1a2332 !important;
+        }
+        .user-nav-dropdown-item {
+          color: #ffffff !important;
+          background-color: transparent !important;
+        }
+        .user-nav-dropdown-item:hover {
+          background-color: #1e2a3a !important;
+        }
+        .user-nav-dropdown-header {
+          color: #ffffff !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, []);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -65,24 +90,20 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
 
         {isOpen && (
           <div
-            className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-1 z-50"
+            className="user-nav-dropdown absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-1 z-50"
             style={{
-              backgroundColor: '#1a2332 !important',
               borderColor: '#2d3f54',
               borderWidth: '1px',
               borderStyle: 'solid'
             }}
           >
             <div className="px-4 py-2" style={{ borderBottom: '1px solid #2d3f54' }}>
-              <p className="text-sm font-medium" style={{ color: '#ffffff !important' }}>{username}</p>
+              <p className="user-nav-dropdown-header text-sm font-medium">{username}</p>
             </div>
 
             <Link
               href="/projects"
-              className="block px-4 py-2 text-sm"
-              style={{ color: '#ffffff !important', backgroundColor: 'transparent' }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#1e2a3a'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+              className="user-nav-dropdown-item block px-4 py-2 text-sm"
               onClick={() => setIsOpen(false)}
             >
               📊 Projects
@@ -93,10 +114,7 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
               <>
                 <Link
                   href="/analytics"
-                  className="block px-4 py-2 text-sm"
-                  style={{ color: '#ffffff !important', backgroundColor: 'transparent' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#1e2a3a'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+                  className="user-nav-dropdown-item block px-4 py-2 text-sm"
                   onClick={() => setIsOpen(false)}
                 >
                   📈 Analytics
@@ -107,10 +125,7 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
 
                 <Link
                   href="/subscription"
-                  className="block px-4 py-2 text-sm"
-                  style={{ color: '#ffffff !important', backgroundColor: 'transparent' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#1e2a3a'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+                  className="user-nav-dropdown-item block px-4 py-2 text-sm"
                   onClick={() => setIsOpen(false)}
                 >
                   ⭐ Premium
@@ -120,10 +135,7 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
 
             <Link
               href="/auth/reset-password"
-              className="block px-4 py-2 text-sm"
-              style={{ color: '#ffffff !important', backgroundColor: 'transparent' }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#1e2a3a'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+              className="user-nav-dropdown-item block px-4 py-2 text-sm"
               onClick={() => setIsOpen(false)}
             >
               🔑 Reset Password
