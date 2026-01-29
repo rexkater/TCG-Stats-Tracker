@@ -13,31 +13,6 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Add styles directly to the document
-  useEffect(() => {
-    const styleId = 'user-nav-dropdown-styles';
-    if (!document.getElementById(styleId)) {
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        .user-nav-dropdown {
-          background-color: #1a2332 !important;
-        }
-        .user-nav-dropdown-item {
-          color: #ffffff !important;
-          background-color: transparent !important;
-        }
-        .user-nav-dropdown-item:hover {
-          background-color: #1e2a3a !important;
-        }
-        .user-nav-dropdown-header {
-          color: #ffffff !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
-  }, []);
-
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
