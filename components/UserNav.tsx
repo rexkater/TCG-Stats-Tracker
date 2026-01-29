@@ -64,17 +64,25 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
         </button>
 
         {isOpen && (
-          <div className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-1 z-50" style={{ backgroundColor: '#1a2332', borderColor: '#2d3f54', borderWidth: '1px' }}>
-            <div className="px-4 py-2" style={{ borderBottomColor: '#2d3f54', borderBottomWidth: '1px' }}>
-              <p className="text-sm font-medium" style={{ color: '#faf8f7' }}>{username}</p>
+          <div
+            className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-1 z-50"
+            style={{
+              backgroundColor: '#1a2332 !important',
+              borderColor: '#2d3f54',
+              borderWidth: '1px',
+              borderStyle: 'solid'
+            }}
+          >
+            <div className="px-4 py-2" style={{ borderBottom: '1px solid #2d3f54' }}>
+              <p className="text-sm font-medium" style={{ color: '#ffffff !important' }}>{username}</p>
             </div>
 
             <Link
               href="/projects"
-              className="block px-4 py-2 text-sm transition-colors"
-              style={{ color: '#faf8f7' }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1e2a3a'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              className="block px-4 py-2 text-sm"
+              style={{ color: '#ffffff !important', backgroundColor: 'transparent' }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#1e2a3a'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
               onClick={() => setIsOpen(false)}
             >
               📊 Projects
@@ -85,10 +93,10 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
               <>
                 <Link
                   href="/analytics"
-                  className="block px-4 py-2 text-sm transition-colors"
-                  style={{ color: '#faf8f7' }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1e2a3a'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  className="block px-4 py-2 text-sm"
+                  style={{ color: '#ffffff !important', backgroundColor: 'transparent' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#1e2a3a'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
                   onClick={() => setIsOpen(false)}
                 >
                   📈 Analytics
@@ -99,10 +107,10 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
 
                 <Link
                   href="/subscription"
-                  className="block px-4 py-2 text-sm transition-colors"
-                  style={{ color: '#faf8f7' }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1e2a3a'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  className="block px-4 py-2 text-sm"
+                  style={{ color: '#ffffff !important', backgroundColor: 'transparent' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#1e2a3a'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
                   onClick={() => setIsOpen(false)}
                 >
                   ⭐ Premium
@@ -112,10 +120,10 @@ export default function UserNav({ username, isPremium = false }: UserNavProps) {
 
             <Link
               href="/auth/reset-password"
-              className="block px-4 py-2 text-sm transition-colors"
-              style={{ color: '#faf8f7' }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1e2a3a'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              className="block px-4 py-2 text-sm"
+              style={{ color: '#ffffff !important', backgroundColor: 'transparent' }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#1e2a3a'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
               onClick={() => setIsOpen(false)}
             >
               🔑 Reset Password
